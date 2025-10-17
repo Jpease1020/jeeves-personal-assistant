@@ -1,0 +1,18 @@
+# Minimal Supabase config
+[api]
+enabled = true
+
+[db]
+port = 54322
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+
+[auth]
+enabled = true
+
+[storage]
+enabled = true

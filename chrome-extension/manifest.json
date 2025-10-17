@@ -1,0 +1,54 @@
+{
+    "manifest_version": 3,
+    "name": "Personal Assistant - Focus & Productivity",
+    "version": "1.0.0",
+    "description": "Track website usage, block distracting sites, and sync with your personal assistant",
+    "permissions": [
+        "activeTab",
+        "storage",
+        "tabs",
+        "webNavigation",
+        "declarativeNetRequest",
+        "alarms"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Personal Assistant"
+    },
+    "declarative_net_request": {
+        "rule_resources": [
+            {
+                "id": "blocked_sites",
+                "enabled": true,
+                "path": "rules.json"
+            }
+        ]
+    },
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "blocked.html"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ]
+}
