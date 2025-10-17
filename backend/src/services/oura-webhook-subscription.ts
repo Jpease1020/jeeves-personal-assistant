@@ -112,7 +112,7 @@ export class OuraWebhookSubscriptionService {
                 throw new Error(`HTTP ${response.status}: ${errorText}`);
             }
 
-            const result = await response.json();
+            const result = await response.json() as any;
             console.log('✅ Webhook subscriptions retrieved:', result);
             return result.data || [];
 

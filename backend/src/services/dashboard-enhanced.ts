@@ -238,21 +238,22 @@ async function fetchTasksDataDirectAPI(userId: string) {
         const tasks: any[] = [];
 
         for (const block of blocksResponse.results) {
-            if (block.type === 'to_do') {
+            const blockAny = block as any;
+            if (blockAny.type === 'to_do') {
                 tasks.push({
                     id: block.id,
-                    title: block.to_do?.rich_text?.[0]?.plain_text || 'Untitled',
-                    status: block.to_do?.checked ? 'Done' : 'Not started',
+                    title: blockAny.to_do?.rich_text?.[0]?.plain_text || 'Untitled',
+                    status: blockAny.to_do?.checked ? 'Done' : 'Not started',
                     priority: 'Medium',
                     dueDate: null,
                     url: `https://notion.so/${pageId}#${block.id}`,
                     list: 'justin',
-                    completed: block.to_do?.checked || false
+                    completed: blockAny.to_do?.checked || false
                 });
-            } else if (block.type === 'bulleted_list_item') {
+            } else if (blockAny.type === 'bulleted_list_item') {
                 tasks.push({
                     id: block.id,
-                    title: block.bulleted_list_item?.rich_text?.[0]?.plain_text || 'Untitled',
+                    title: blockAny.bulleted_list_item?.rich_text?.[0]?.plain_text || 'Untitled',
                     status: 'Not started',
                     priority: 'Medium',
                     dueDate: null,
@@ -260,10 +261,10 @@ async function fetchTasksDataDirectAPI(userId: string) {
                     list: 'justin',
                     completed: false
                 });
-            } else if (block.type === 'numbered_list_item') {
+            } else if (blockAny.type === 'numbered_list_item') {
                 tasks.push({
                     id: block.id,
-                    title: block.numbered_list_item?.rich_text?.[0]?.plain_text || 'Untitled',
+                    title: blockAny.numbered_list_item?.rich_text?.[0]?.plain_text || 'Untitled',
                     status: 'Not started',
                     priority: 'Medium',
                     dueDate: null,
@@ -491,7 +492,7 @@ async function fetchScreenTimeData(userId: string) {
     try {
         const today = new Date().toISOString().split('T')[0];
         const response = await fetch(`http://localhost:4018/screen-time/${userId}/${today}`);
-        const data = await response.json();
+        const data = await response.json() as any;
 
         return {
             totalMinutes: data.totalScreenTime || 0,
