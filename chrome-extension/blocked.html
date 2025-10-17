@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Site Blocked - Personal Assistant</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px 20px;
+        }
+
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+
+        .site-name {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 32px;
+            font-weight: 500;
+        }
+
+        .message {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+            opacity: 0.9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .motivation {
+            margin-top: 24px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="icon">🚫</div>
+        <h1>Site Blocked</h1>
+        <div class="subtitle">Your Personal Assistant is protecting your focus</div>
+
+        <div class="site-name" id="blockedSite">Loading...</div>
+
+        <div class="message">
+            This site has been blocked to help you stay focused and productive.
+            Your Personal Assistant is working to protect your time and mental well-being.
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="goBack()">Go Back</button>
+            <a href="https://www.google.com" class="btn btn-secondary">Search Google</a>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <span>Time saved today:</span>
+                <span id="timeSaved">0 minutes</span>
+            </div>
+            <div class="stat-item">
+                <span>Focus score:</span>
+                <span id="focusScore">100%</span>
+            </div>
+            <div class="stat-item">
+                <span>Productive time:</span>
+                <span id="productiveTime">0h 0m</span>
+            </div>
+        </div>
+
+        <div class="motivation">
+            "The best time to plant a tree was 20 years ago. The second best time is now."
+        </div>
+    </div>
+
+    <script>
+        // Get blocked site from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const blockedSite = urlParams.get('site') || 'this site';
+        document.getElementById('blockedSite').textContent = blockedSite;
+
+        // Load stats
+        loadStats();
+
+        // Go back function
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'https://www.google.com';
+            }
+        }
+
+        // Load stats from extension
+        async function loadStats() {
+            try {
+                const response = await chrome.runtime.sendMessage({ action: 'getStats' });
+                const stats = response.dailyStats;
+                const today = new Date().toISOString().split('T')[0];
+                const todayStats = stats[today];
+
+                if (todayStats) {
+                    // Calculate time saved (estimate based on distracting time)
+                    const timeSaved = Math.round(todayStats.distractingTime / 1000 / 60);
+                    document.getElementById('timeSaved').textContent = `${timeSaved} minutes`;
+
+                    // Calculate focus score
+                    const focusScore = Math.round((todayStats.productiveTime / todayStats.totalTime) * 100) || 100;
+                    document.getElementById('focusScore').textContent = `${focusScore}%`;
+
+                    // Show productive time
+                    const productiveMinutes = Math.round(todayStats.productiveTime / 1000 / 60);
+                    const hours = Math.floor(productiveMinutes / 60);
+                    const minutes = productiveMinutes % 60;
+                    document.getElementById('productiveTime').textContent = `${hours}h ${minutes}m`;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                goBack();
+            }
+        });
+    </script>
+</body>
+
+</html>

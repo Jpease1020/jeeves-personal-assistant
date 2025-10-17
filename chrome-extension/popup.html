@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            width: 350px;
+            min-height: 400px;
+            margin: 0;
+            padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .stat-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .focus-score {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .focus-good {
+            color: #28a745;
+        }
+
+        .focus-warning {
+            color: #ffc107;
+        }
+
+        .focus-danger {
+            color: #dc3545;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle.active {
+            background: #007bff;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle.active::after {
+            transform: translateX(26px);
+        }
+
+        .site-list {
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .site-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+        }
+
+        .site-item:last-child {
+            border-bottom: none;
+        }
+
+        .site-name {
+            color: #495057;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .site-time {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .loading {
+            text-align: center;
+            color: #6c757d;
+            padding: 20px;
+        }
+
+        .error {
+            color: #dc3545;
+            text-align: center;
+            padding: 10px;
+            background: #f8d7da;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>🎯 Personal Assistant</h1>
+    </div>
+
+    <div id="loading" class="loading">
+        Loading your data...
+    </div>
+
+    <div id="content" style="display: none;">
+        <div class="toggle-container">
+            <span>Track & Block Sites</span>
+            <div id="trackingToggle" class="toggle active"></div>
+        </div>
+
+        <div class="controls">
+            <button id="syncBtn" class="btn btn-primary">Sync Now</button>
+            <button id="settingsBtn" class="btn btn-secondary">Settings</button>
+        </div>
+
+        <div class="stats-card">
+            <div class="stat-row">
+                <span class="stat-label">Total Time Today</span>
+                <span id="totalTime" class="stat-value">0h 0m</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Productive Time</span>
+                <span id="productiveTime" class="stat-value">0h 0m</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Distracting Time</span>
+                <span id="distractingTime" class="stat-value">0h 0m</span>
+            </div>
+            <div id="focusScore" class="focus-score focus-good">100%</div>
+        </div>
+
+        <div class="stats-card">
+            <div style="margin-bottom: 8px; font-weight: 600; color: #2c3e50;">Top Sites</div>
+            <div id="siteList" class="site-list">
+                <div style="text-align: center; color: #6c757d; padding: 20px;">
+                    No data yet
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <div style="margin-bottom: 8px; font-weight: 600; color: #2c3e50;">Current Tab</div>
+            <div id="currentTab" style="font-size: 12px; color: #6c757d;">
+                No active tab
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

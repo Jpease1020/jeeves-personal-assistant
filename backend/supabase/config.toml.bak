@@ -1,0 +1,165 @@
+# Supabase Configuration
+# This file configures Supabase CLI for local development
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.pooler]
+enabled = false
+port = 54329
+pool_mode = "transaction"
+default_pool_size = 20
+max_client_conn = 100
+
+[realtime]
+enabled = true
+port = 54323
+ip_version = "ipv4"
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1:54321"
+openai_api_key = "env(OPENAI_API_KEY)"
+
+# Email testing
+[inbucket]
+enabled = true
+port = 54324
+smtp_port = 54325
+pop3_port = 54326
+
+[storage]
+enabled = true
+port = 54327
+file_size_limit = "50MiB"
+buckets = [
+  { name = "avatars", public = true },
+  { name = "documents", public = false }
+]
+
+[auth]
+enabled = true
+port = 54324
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["https://localhost:3000"]
+jwt_expiry = 3600
+enable_signup = true
+enable_anonymous_users = false
+enable_phone_auth = false
+enable_email_auth = true
+enable_confirmations = false
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+
+# External OAuth providers
+[auth.external.apple]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.azure]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.bitbucket]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.discord]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.facebook]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.github]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.gitlab]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.google]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.keycloak]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.linkedin]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.notion]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.twitch]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.twitter]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.slack]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.spotify]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.workos]
+enabled = false
+client_id = ""
+secret = ""
+
+[auth.external.zoom]
+enabled = false
+client_id = ""
+secret = ""
+
+[edge_runtime]
+enabled = true
+port = 54325
+inspector_port = 54326
+
+[analytics]
+enabled = false
+port = 54327
+vector_port = 54328
+# Setup BigQuery project to enable analytics
+# gcp_project_id = ""
+# gcp_project_number = ""
+# gcp_jwt_path = "supabase/gcp.json"
