@@ -51,7 +51,7 @@ export class PushNotificationManager {
             // Create new subscription
             const subscription = await this.registration.pushManager.subscribe({
                 userVisibleOnly: true,
-                applicationServerKey: this.urlBase64ToUint8Array(process.env.VITE_VAPID_PUBLIC_KEY || '')
+                applicationServerKey: new Uint8Array(this.urlBase64ToUint8Array(process.env.VITE_VAPID_PUBLIC_KEY || ''))
             });
 
             console.log('✅ Push Notifications: Subscribed successfully');

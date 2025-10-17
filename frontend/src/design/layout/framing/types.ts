@@ -1,23 +1,23 @@
-import { 
-  Breakpoint, 
-  FlexDirection, 
-  FlexWrap, 
-  AlignItems, 
-  JustifyContent, 
-  Spacing,
-  ResponsiveValue,
-  BaseLayoutProps 
+import {
+  type Breakpoint,
+  type FlexDirection,
+  type FlexWrap,
+  type AlignItems,
+  type JustifyContent,
+  type Spacing,
+  type ResponsiveValue,
+  type BaseLayoutProps
 } from '../../system/shared-types';
 
 // Grid System Types - Comprehensive type definitions for CSS Grid and Flexbox system
 
 // Re-export shared types
-export type { 
-  Breakpoint, 
-  FlexDirection, 
-  FlexWrap, 
-  AlignItems, 
-  JustifyContent, 
+export type {
+  Breakpoint,
+  FlexDirection,
+  FlexWrap,
+  AlignItems,
+  JustifyContent,
   Spacing,
   ResponsiveValue
 };
@@ -42,7 +42,7 @@ export type MaxWidth = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
 export type GridGap = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
 // Base component props
-export interface BaseGridProps extends BaseLayoutProps {}
+export interface BaseGridProps extends BaseLayoutProps { }
 
 // Row component props
 export interface RowProps extends BaseGridProps {

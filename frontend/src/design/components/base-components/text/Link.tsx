@@ -3,12 +3,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors, fontSize, fontWeight, fontFamily, transitions } from '../../../system/tokens/tokens';
-import { BaseTextComponentProps, TextComponentChildren } from '../../../system/shared-types';
+import { type BaseTextComponentProps, type TextComponentChildren } from '../../../system/shared-types';
 
 // Styled link component
 const StyledLink = styled.a.withConfig({
   shouldForwardProp: (prop) => !['variant', 'size', 'external', 'cmsId'].includes(prop)
-})<{
+}) <{
   variant: 'primary' | 'secondary' | 'muted' | 'underline' | 'button';
   size: 'sm' | 'base' | 'lg';
   external: boolean;
@@ -100,20 +100,20 @@ const StyledLink = styled.a.withConfig({
   }
 `;
 
-export interface LinkProps extends Omit<BaseTextComponentProps, 'cmsId' | 'cmsData'> {
+export interface LinkProps extends Omit<BaseTextComponentProps, 'cmsId' | 'cmsData' | 'variant'> {
   // Core props - now type-safe
   children: TextComponentChildren;
-  
+
   // Appearance
   variant?: 'primary' | 'secondary' | 'muted' | 'underline' | 'button';
   size?: 'sm' | 'base' | 'lg';
   external?: boolean;
-  
+
   // Navigation
   href: string;
   target?: string;
   rel?: string;
-  
+
   // Content editing (optional)
   cmsId?: string;
   cmsData?: any;
@@ -121,10 +121,10 @@ export interface LinkProps extends Omit<BaseTextComponentProps, 'cmsId' | 'cmsDa
   // cmsId: string; - now mandatory
   // cmsData: any; - optional
   // mode?: 'edit' | 'comment' | null; - optional
-  
+
   // Event handlers
   onClick?: (e: React.MouseEvent) => void;
-  
+
   // Rest props
   [key: string]: any;
 }

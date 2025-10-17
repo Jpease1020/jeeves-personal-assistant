@@ -2,10 +2,10 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { 
-  FlexboxPositioningProps, 
-  ResponsiveValue, 
-  Breakpoint 
+import {
+  type FlexboxPositioningProps,
+  type ResponsiveValue,
+  type Breakpoint
 } from '../../system/shared-types';
 
 // Utility function to resolve responsive values
@@ -16,16 +16,16 @@ function resolveResponsiveValue<T>(
   if (typeof value === 'object' && value !== null) {
     // Type guard to ensure we have a responsive object
     const responsiveValue = value as Record<Breakpoint, T>;
-    
+
     // Find the best matching breakpoint
     const breakpointOrder: Breakpoint[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl'];
     const currentIndex = breakpointOrder.indexOf(breakpoint);
-    
+
     // Look for exact match first
     if (responsiveValue[breakpoint] !== undefined) {
       return responsiveValue[breakpoint];
     }
-    
+
     // Look for closest smaller breakpoint
     for (let i = currentIndex; i >= 0; i--) {
       const bp = breakpointOrder[i];
@@ -33,7 +33,7 @@ function resolveResponsiveValue<T>(
         return responsiveValue[bp];
       }
     }
-    
+
     // Fallback to xs if available
     if (responsiveValue.xs !== undefined) {
       return responsiveValue.xs;
@@ -43,11 +43,11 @@ function resolveResponsiveValue<T>(
     if (firstValue !== undefined) {
       return firstValue;
     }
-    
+
     // If we somehow get here, return the first value as fallback
     return Object.values(responsiveValue)[0] as T;
   }
-  
+
   // If value is not an object, return it directly
   return value as T;
 }
@@ -61,7 +61,7 @@ function generateResponsiveCSS<T>(
   if (typeof value === 'object' && value !== null) {
     const cssRules: string[] = [];
     const responsiveValue = value as Record<Breakpoint, T>;
-    
+
     Object.entries(responsiveValue).forEach(([breakpoint, val]) => {
       if (val !== undefined) {
         const transformedValue = transformer ? transformer(val) : String(val);
@@ -80,10 +80,10 @@ function generateResponsiveCSS<T>(
         }
       }
     });
-    
+
     return cssRules.join('\n');
   }
-  
+
   const transformedValue = transformer ? transformer(value) : String(value);
   return `${property}: ${transformedValue};`;
 }
@@ -95,7 +95,7 @@ const StyledFlexboxContainer = styled.div.withConfig({
     'position', 'top', 'right', 'bottom', 'left', 'zIndex',
     'direction', 'wrap', 'align', 'justify'
   ].includes(prop)
-})<FlexboxPositioningProps>`
+}) <FlexboxPositioningProps>`
   display: flex;
   
   /* Flexbox positioning (primary) */
@@ -174,34 +174,34 @@ const StyledFlexboxContainer = styled.div.withConfig({
   ${({ position, top, right, bottom, left, zIndex }) => {
     if (position) {
       const resolvedPosition = typeof position === 'object' ? resolveResponsiveValue(position) : position;
-      
+
       let css = `position: ${resolvedPosition};`;
-      
+
       if (top) {
         const resolvedTop = typeof top === 'object' ? resolveResponsiveValue(top) : top;
         css += `\n  top: ${resolvedTop};`;
       }
-      
+
       if (right) {
         const resolvedRight = typeof right === 'object' ? resolveResponsiveValue(right) : right;
         css += `\n  right: ${resolvedRight};`;
       }
-      
+
       if (bottom) {
         const resolvedBottom = typeof bottom === 'object' ? resolveResponsiveValue(bottom) : bottom;
         css += `\n  bottom: ${resolvedBottom};`;
       }
-      
+
       if (left) {
         const resolvedLeft = typeof left === 'object' ? resolveResponsiveValue(left) : left;
         css += `\n  left: ${resolvedLeft};`;
       }
-      
+
       if (zIndex) {
         const resolvedZIndex = typeof zIndex === 'object' ? resolveResponsiveValue(zIndex) : zIndex;
         css += `\n  z-index: ${resolvedZIndex};`;
       }
-      
+
       return css;
     }
     return '';
@@ -210,42 +210,60 @@ const StyledFlexboxContainer = styled.div.withConfig({
   /* Responsive behavior */
   @media (max-width: 768px) {
     ${({ direction, align, justify }) => {
-      const responsiveStyles: string[] = [];
-      
-      if (direction && typeof direction === 'object' && direction.sm) {
-        responsiveStyles.push(`flex-direction: ${direction.sm};`);
+    const responsiveStyles: string[] = [];
+
+    if (direction && typeof direction === 'object' && 'sm' in direction) {
+      const dirObj = direction as Record<string, any>;
+      if (dirObj.sm) {
+        responsiveStyles.push(`flex-direction: ${dirObj.sm};`);
       }
-      
-      if (align && typeof align === 'object' && align.sm) {
-        responsiveStyles.push(`align-items: ${align.sm};`);
+    }
+
+    if (align && typeof align === 'object' && 'sm' in align) {
+      const alignObj = align as Record<string, any>;
+      if (alignObj.sm) {
+        responsiveStyles.push(`align-items: ${alignObj.sm};`);
       }
-      
-      if (justify && typeof justify === 'object' && justify.sm) {
-        responsiveStyles.push(`justify-content: ${justify.sm};`);
+    }
+
+    if (justify && typeof justify === 'object' && 'sm' in justify) {
+      const justifyObj = justify as Record<string, any>;
+      if (justifyObj.sm) {
+        responsiveStyles.push(`justify-content: ${justifyObj.sm};`);
       }
-      
-      return responsiveStyles.join('\n  ');
-    }}
+    }
+
+    return responsiveStyles.join('\n  ');
+  }}
   }
   
   @media (max-width: 640px) {
     ${({ direction, align, justify }) => {
-      const responsiveStyles: string[] = [];
-      
-      if (direction && typeof direction === 'object' && direction.xs) {
-        responsiveStyles.push(`flex-direction: ${direction.xs};`);
+    const responsiveStyles: string[] = [];
+
+    if (direction && typeof direction === 'object' && 'xs' in direction) {
+      const dirObj = direction as Record<string, any>;
+      if (dirObj.xs) {
+        responsiveStyles.push(`flex-direction: ${dirObj.xs};`);
       }
-      
-      if (align && typeof align === 'object' && align.xs) {
-        responsiveStyles.push(`align-items: ${align.xs};`);
+    }
+
+    if (align && typeof align === 'object' && 'xs' in align) {
+      const alignObj = align as Record<string, any>;
+      if (alignObj.xs) {
+        responsiveStyles.push(`align-items: ${alignObj.xs};`);
       }
-      
-      if (justify && typeof justify === 'object' && justify.xs) {
-        responsiveStyles.push(`justify-content: ${justify.xs};`);
+    }
+
+    if (justify && typeof justify === 'object' && 'xs' in justify) {
+      const justifyObj = justify as Record<string, any>;
+      if (justifyObj.xs) {
+        responsiveStyles.push(`justify-content: ${justifyObj.xs};`);
       }
-      
-      return responsiveStyles.join('\n  ');
-    }}
+    }
+
+    return responsiveStyles.join('\n  ');
+  }}
   }
 `;
 

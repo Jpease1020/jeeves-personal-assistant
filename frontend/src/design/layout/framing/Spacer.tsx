@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { spacing } from '../../system/tokens/tokens';
-import { FlexboxMargin } from '../../system/shared-types';
+import { type FlexboxMargin } from '../../system/shared-types';
 
 // Spacer component for flexbox-based spacing
 interface SpacerProps {
@@ -20,7 +20,7 @@ interface SpacerProps {
 
 const StyledSpacer = styled.div.withConfig({
   shouldForwardProp: (prop) => !['size', 'span', 'direction', 'margin', 'alignSelf', 'grow', 'shrink'].includes(prop)
-})<{
+}) <{
   size: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   span?: number;
   direction: 'horizontal' | 'vertical';
@@ -58,9 +58,9 @@ const StyledSpacer = styled.div.withConfig({
   ${({ size, direction, span }) => {
     // If span is provided, don't use size-based spacing
     if (span) return '';
-    
+
     const spacingValue = size === 'none' ? '0' : spacing[size as keyof typeof spacing];
-    
+
     if (direction === 'horizontal') {
       return `
         width: ${spacingValue};

@@ -261,9 +261,9 @@ export class OfflineStorageManager {
             const routineStore = transaction.objectStore('routineLogs');
             const actionsStore = transaction.objectStore('offlineActions');
 
-            const habitsRequest = habitsStore.clear();
-            const routineRequest = routineStore.clear();
-            const actionsRequest = actionsStore.clear();
+            habitsStore.clear();
+            routineStore.clear();
+            actionsStore.clear();
 
             transaction.oncomplete = () => {
                 console.log('✅ Offline Storage: All offline data cleared');

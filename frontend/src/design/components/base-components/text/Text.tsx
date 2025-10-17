@@ -3,14 +3,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors, fontSize, fontWeight, fontFamily, transitions } from '../../../system/tokens/tokens';
-import { BaseComponentProps, TextVariant, TextSize, FontWeight, TextAlign, ColorVariant, SpacingScale } from '../../../system/shared-types';
+import { type BaseComponentProps, type TextVariant, type TextSize, type FontWeight, type TextAlign, type ColorVariant, type SpacingScale } from '../../../system/shared-types';
 import { useCMSData } from '../../../providers/CMSDataProvider';
 import { useInteractionMode } from '../../../providers/InteractionModeProvider';
 
 // Styled text component
 const StyledText = styled.p.withConfig({
   shouldForwardProp: (prop) => !['variant', 'size', 'weight', 'align', 'color', 'isInteractive', 'cmsId'].includes(prop)
-})<{
+}) <{
   variant: TextVariant;
   size: TextSize;
   weight: FontWeight;
@@ -99,25 +99,25 @@ const StyledText = styled.p.withConfig({
   ${({ color }) => {
     switch (color) {
       case 'default':
-        return `color: ${colors.text.primary};`;
+        return `color: ${colors.gray[600]};`;
       case 'primary':
         return `color: ${colors.primary[600]};`;
       case 'secondary':
-        return `color: ${colors.text.secondary};`;
+        return `color: ${colors.gray[500]};`;
       case 'muted':
-        return `color: ${colors.text.secondary};`;
+        return `color: ${colors.gray[500]};`;
       case 'success':
-        return `color: ${colors.success[600]};`;
+        return `color: ${colors.success};`;
       case 'warning':
-        return `color: ${colors.warning[600]};`;
+        return `color: ${colors.warning};`;
       case 'error':
-        return `color: ${colors.danger[600]};`;
+        return `color: ${colors.error};`;
       case 'info':
-        return `color: ${colors.primary[600]};`;
+        return `color: ${colors.info};`;
       case 'inherit':
         return `color: inherit;`;
       default:
-        return `color: ${colors.text.primary};`;
+        return `color: ${colors.gray[600]};`;
     }
   }}
 `;
@@ -125,35 +125,35 @@ const StyledText = styled.p.withConfig({
 export interface TextProps extends BaseComponentProps {
   // Core props
   children: React.ReactNode;
-  
+
   // Appearance
   variant?: TextVariant;
   size?: TextSize;
   weight?: FontWeight;
   align?: TextAlign;
   color?: ColorVariant | 'inherit';
-  
+
   // Layout
   marginTop?: SpacingScale;
   marginBottom?: SpacingScale;
   marginLeft?: SpacingScale;
   marginRight?: SpacingScale;
-  
+
   // HTML attributes
   as?: 'p' | 'span' | 'div' | 'article' | 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  
+
   // Content editing
   contentEditable?: boolean;
   suppressContentEditableWarning?: boolean;
   cmsKey?: string;
   cmsId?: string; // Add cmsId property
-  
+
   // Event handlers
   onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLDivElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLDivElement>) => void;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
-  
+
   // Styling
   style?: React.CSSProperties;
 }
@@ -171,26 +171,26 @@ export const Text: React.FC<TextProps> = ({
 }) => {
   // Get CMS data from provider
   const { cmsData } = useCMSData();
-  
+
   // Get mode from provider
   let mode: 'edit' | 'comment' | null = null;
   try {
     const context = useInteractionMode();
-    mode = context.mode;
+    mode = context.mode as any;
   } catch {
     // Provider not available, use null as default
     mode = null;
   }
   const ref = React.useRef<HTMLElement | null>(null);
-  
+
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // Get cmsId from either cmsId prop or cmsId attribute
     const cmsIdentifier = cmsId || (e.currentTarget as HTMLElement).getAttribute('cmsId');
-    
+
     if (mode === 'edit' && cmsIdentifier) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       // Dispatch custom event to open edit modal
       const event = new (window as any).CustomEvent('openInlineEditor', {
         detail: { cmsId: cmsIdentifier, element: e.currentTarget, x: e.clientX, y: e.clientY }
@@ -199,22 +199,22 @@ export const Text: React.FC<TextProps> = ({
     } else if (mode === 'comment' && cmsIdentifier) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       // Dispatch custom event to open comment modal
       const event = new (window as any).CustomEvent('openCommentModal', {
         detail: { cmsId: cmsIdentifier, element: e.currentTarget, x: e.clientX, y: e.clientY }
       });
       document.dispatchEvent(event);
     }
-    
+
     rest.onClick?.(e);
   };
-  
+
   // Don't add data-cms-id for decorative elements
   const shouldIgnoreCMS = cmsId === 'ignore';
-  
+
   // If we have CMS data and cmsId, try to get the field value
-  const displayContent = cmsData && cmsId && !shouldIgnoreCMS 
+  const displayContent = cmsData && cmsId && !shouldIgnoreCMS
     ? ((cmsData as any)?.[cmsId] || children)
     : children;
 

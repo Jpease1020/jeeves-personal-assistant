@@ -3,13 +3,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors, spacing, fontSize, fontWeight, fontFamily, transitions } from '../../../system/tokens/tokens';
-import { BaseTextComponentProps, TextComponentChildren } from '../../../system/shared-types';
+import { type BaseTextComponentProps, type TextComponentChildren } from '../../../system/shared-types';
 import { useCMSData } from '../../../providers/CMSDataProvider';
 
 // Styled span component
 const StyledSpan = styled.span.withConfig({
   shouldForwardProp: (prop) => !['variant', 'size', 'color', 'weight', 'cmsId'].includes(prop)
-})<{
+}) <{
   variant: 'default' | 'bold' | 'italic' | 'code' | 'mark' | 'link' | 'badge';
   size: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   color: 'default' | 'primary' | 'secondary' | 'muted' | 'success' | 'warning' | 'error' | 'info' | 'inherit';
@@ -127,25 +127,25 @@ const StyledSpan = styled.span.withConfig({
   }}
 `;
 
-export interface SpanProps extends Omit<BaseTextComponentProps, 'cmsData' | 'cmsId'> {
+export interface SpanProps extends Omit<BaseTextComponentProps, 'cmsData' | 'cmsId' | 'variant'> {
   // Core props - now type-safe
   children: TextComponentChildren;
-  
+
   // Appearance
   variant?: 'default' | 'bold' | 'italic' | 'code' | 'mark' | 'link' | 'badge';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   color?: 'default' | 'primary' | 'secondary' | 'muted' | 'success' | 'warning' | 'error' | 'info';
   weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold';
-  
+
   // Content editing
   cmsId?: string; // Optional for admin components
-  
+
   // Rest props
   [key: string]: any;
 }
 
-export const Span: React.FC<SpanProps> = ({ 
-  children, 
+export const Span: React.FC<SpanProps> = ({
+  children,
   variant = 'default',
   size = 'md',
   color = 'default',
@@ -155,15 +155,15 @@ export const Span: React.FC<SpanProps> = ({
 }) => {
   // Get CMS data from provider
   const { cmsData } = useCMSData();
-  
+
   // Don't add data-cms-id for decorative elements
   const shouldIgnoreCMS = cmsId === 'ignore';
-  
+
   // If we have CMS data and cmsId, try to get the field value
-  const displayContent = cmsData && cmsId && !shouldIgnoreCMS 
+  const displayContent = cmsData && cmsId && !shouldIgnoreCMS
     ? ((cmsData as any)?.[cmsId] || children)
     : children;
-  
+
   return (
     <StyledSpan
       variant={variant}

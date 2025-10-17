@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { spacing, breakpoints } from '../../system/tokens/tokens';
-import { FlexboxMargin } from '../../system/shared-types';
+import { type FlexboxMargin } from '../../system/shared-types';
 
 // Define types locally for this component
 type ColSpan = number;
@@ -57,14 +57,14 @@ const generateFlexBasis = (span: ColSpan | ResponsiveColSpan): string => {
   if (typeof span === 'number') {
     return `${(span / 12) * 100}%`;
   }
-  
+
   // Responsive spans - start with xs, then override for larger breakpoints
   const responsiveBasis = [];
-  
+
   if (span.xs) {
     responsiveBasis.push(`${(span.xs / 12) * 100}%`);
   }
-  
+
   if (span.sm) {
     responsiveBasis.push(`
       @media (min-width: ${breakpoints.sm}) {
@@ -73,7 +73,7 @@ const generateFlexBasis = (span: ColSpan | ResponsiveColSpan): string => {
       }
     `);
   }
-  
+
   if (span.md) {
     responsiveBasis.push(`
       @media (min-width: ${breakpoints.md}) {
@@ -82,7 +82,7 @@ const generateFlexBasis = (span: ColSpan | ResponsiveColSpan): string => {
       }
     `);
   }
-  
+
   if (span.lg) {
     responsiveBasis.push(`
       @media (min-width: ${breakpoints.lg}) {
@@ -91,7 +91,7 @@ const generateFlexBasis = (span: ColSpan | ResponsiveColSpan): string => {
       }
     `);
   }
-  
+
   if (span.xl) {
     responsiveBasis.push(`
       @media (min-width: ${breakpoints.xl}) {
@@ -100,7 +100,7 @@ const generateFlexBasis = (span: ColSpan | ResponsiveColSpan): string => {
       }
     `);
   }
-  
+
   if (span['2xl']) {
     responsiveBasis.push(`
       @media (min-width: ${breakpoints['2xl']}) {
@@ -109,7 +109,7 @@ const generateFlexBasis = (span: ColSpan | ResponsiveColSpan): string => {
       }
     `);
   }
-  
+
   return responsiveBasis.join('\n');
 };
 
@@ -118,13 +118,13 @@ const generateOffset = (offset: ColSpan | ResponsiveColSpan): string => {
   if (typeof offset === 'number') {
     return `margin-left: ${(offset / 12) * 100}%;`;
   }
-  
+
   const responsiveOffset = [];
-  
+
   if (offset.xs) {
     responsiveOffset.push(`margin-left: ${(offset.xs / 12) * 100}%;`);
   }
-  
+
   if (offset.sm) {
     responsiveOffset.push(`
       @media (min-width: ${breakpoints.sm}) {
@@ -132,7 +132,7 @@ const generateOffset = (offset: ColSpan | ResponsiveColSpan): string => {
       }
     `);
   }
-  
+
   if (offset.md) {
     responsiveOffset.push(`
       @media (min-width: ${breakpoints.md}) {
@@ -140,7 +140,7 @@ const generateOffset = (offset: ColSpan | ResponsiveColSpan): string => {
       }
     `);
   }
-  
+
   if (offset.lg) {
     responsiveOffset.push(`
       @media (min-width: ${breakpoints.lg}) {
@@ -148,7 +148,7 @@ const generateOffset = (offset: ColSpan | ResponsiveColSpan): string => {
       }
     `);
   }
-  
+
   if (offset.xl) {
     responsiveOffset.push(`
       @media (min-width: ${breakpoints.xl}) {
@@ -156,7 +156,7 @@ const generateOffset = (offset: ColSpan | ResponsiveColSpan): string => {
       }
     `);
   }
-  
+
   if (offset['2xl']) {
     responsiveOffset.push(`
       @media (min-width: ${breakpoints['2xl']}) {
@@ -164,14 +164,14 @@ const generateOffset = (offset: ColSpan | ResponsiveColSpan): string => {
       }
     `);
   }
-  
+
   return responsiveOffset.join('\n');
 };
 
 // Styled Column component
 const StyledCol = styled.div.withConfig({
   shouldForwardProp: (prop) => !['span', 'offset', 'align', 'justify', 'padding', 'margin', 'alignSelf', 'order', 'grow', 'shrink'].includes(prop)
-})<{
+}) <{
   span?: ColSpan | ResponsiveColSpan;
   offset?: ColSpan | ResponsiveColSpan;
   align: ColProps['align'];

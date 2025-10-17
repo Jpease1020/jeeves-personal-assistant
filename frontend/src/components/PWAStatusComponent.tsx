@@ -5,165 +5,165 @@ import { pushNotificationManager } from '../utils/push-notifications';
 import { offlineStorage } from '../utils/offline-storage';
 
 interface PWAStatus {
-    isInstalled: boolean;
-    isOnline: boolean;
-    hasServiceWorker: boolean;
-    canInstall: boolean;
-    notificationPermission: string;
-    isSubscribed: boolean;
-    offlineDataCount: number;
+  isInstalled: boolean;
+  isOnline: boolean;
+  hasServiceWorker: boolean;
+  canInstall: boolean;
+  notificationPermission: string;
+  isSubscribed: boolean;
+  offlineDataCount: number;
 }
 
 export const PWAStatusComponent: React.FC = () => {
-    const [status, setStatus] = useState<PWAStatus>({
-        isInstalled: false,
-        isOnline: true,
-        hasServiceWorker: false,
-        canInstall: false,
-        notificationPermission: 'default',
-        isSubscribed: false,
-        offlineDataCount: 0
+  const [status, setStatus] = useState<PWAStatus>({
+    isInstalled: false,
+    isOnline: true,
+    hasServiceWorker: false,
+    canInstall: false,
+    notificationPermission: 'default',
+    isSubscribed: false,
+    offlineDataCount: 0
+  });
+
+  useEffect(() => {
+    updateStatus();
+    setupEventListeners();
+  }, []);
+
+  const updateStatus = async () => {
+    const appInfo = pwaManager.getAppInfo();
+    const notificationStatus = await pushNotificationManager.getSubscriptionStatus();
+    const storageUsage = await offlineStorage.getStorageUsage();
+
+    setStatus({
+      isInstalled: appInfo.isInstalled,
+      isOnline: appInfo.isOnline,
+      hasServiceWorker: appInfo.hasServiceWorker,
+      canInstall: appInfo.canInstall,
+      notificationPermission: notificationStatus.permission || 'default',
+      isSubscribed: notificationStatus.subscribed,
+      offlineDataCount: storageUsage.habits + storageUsage.routines + storageUsage.actions
     });
+  };
 
-    useEffect(() => {
-        updateStatus();
-        setupEventListeners();
-    }, []);
+  const setupEventListeners = () => {
+    // Listen for online/offline changes
+    window.addEventListener('online', updateStatus);
+    window.addEventListener('offline', updateStatus);
 
-    const updateStatus = async () => {
-        const appInfo = pwaManager.getAppInfo();
-        const notificationStatus = await pushNotificationManager.getSubscriptionStatus();
-        const storageUsage = await offlineStorage.getStorageUsage();
+    // Listen for app installation
+    window.addEventListener('appinstalled', updateStatus);
+  };
 
-        setStatus({
-            isInstalled: appInfo.isInstalled,
-            isOnline: appInfo.isOnline,
-            hasServiceWorker: appInfo.hasServiceWorker,
-            canInstall: appInfo.canInstall,
-            notificationPermission: notificationStatus.permission,
-            isSubscribed: notificationStatus.subscribed,
-            offlineDataCount: storageUsage.habits + storageUsage.routines + storageUsage.actions
-        });
-    };
+  const handleInstall = async () => {
+    await pwaManager.installApp();
+    updateStatus();
+  };
 
-    const setupEventListeners = () => {
-        // Listen for online/offline changes
-        window.addEventListener('online', updateStatus);
-        window.addEventListener('offline', updateStatus);
+  const handleSubscribe = async () => {
+    const permission = await pushNotificationManager.requestPermission();
+    if (permission) {
+      await pushNotificationManager.subscribe();
+      updateStatus();
+    }
+  };
 
-        // Listen for app installation
-        window.addEventListener('appinstalled', updateStatus);
-    };
+  const handleTestNotification = async () => {
+    await pushNotificationManager.testNotification();
+  };
 
-    const handleInstall = async () => {
-        await pwaManager.installApp();
-        updateStatus();
-    };
+  const handleSyncOfflineData = async () => {
+    if (status.isOnline) {
+      // Trigger background sync
+      const registration = await navigator.serviceWorker.ready;
+      await (registration as any).sync.register('habit-sync');
+      await (registration as any).sync.register('routine-sync');
 
-    const handleSubscribe = async () => {
-        const permission = await pushNotificationManager.requestPermission();
-        if (permission) {
-            await pushNotificationManager.subscribe();
-            updateStatus();
-        }
-    };
+      // Update status after sync
+      setTimeout(updateStatus, 2000);
+    }
+  };
 
-    const handleTestNotification = async () => {
-        await pushNotificationManager.testNotification();
-    };
+  return (
+    <div className="pwa-status-component">
+      <h3>📱 PWA Status</h3>
 
-    const handleSyncOfflineData = async () => {
-        if (status.isOnline) {
-            // Trigger background sync
-            const registration = await navigator.serviceWorker.ready;
-            await registration.sync.register('habit-sync');
-            await registration.sync.register('routine-sync');
+      <div className="status-grid">
+        <div className="status-item">
+          <span className="status-label">App Installed:</span>
+          <span className={`status-value ${status.isInstalled ? 'success' : 'warning'}`}>
+            {status.isInstalled ? '✅ Yes' : '❌ No'}
+          </span>
+        </div>
 
-            // Update status after sync
-            setTimeout(updateStatus, 2000);
-        }
-    };
+        <div className="status-item">
+          <span className="status-label">Online Status:</span>
+          <span className={`status-value ${status.isOnline ? 'success' : 'error'}`}>
+            {status.isOnline ? '🌐 Online' : '🌐 Offline'}
+          </span>
+        </div>
 
-    return (
-        <div className="pwa-status-component">
-            <h3>📱 PWA Status</h3>
+        <div className="status-item">
+          <span className="status-label">Service Worker:</span>
+          <span className={`status-value ${status.hasServiceWorker ? 'success' : 'error'}`}>
+            {status.hasServiceWorker ? '✅ Active' : '❌ Inactive'}
+          </span>
+        </div>
 
-            <div className="status-grid">
-                <div className="status-item">
-                    <span className="status-label">App Installed:</span>
-                    <span className={`status-value ${status.isInstalled ? 'success' : 'warning'}`}>
-                        {status.isInstalled ? '✅ Yes' : '❌ No'}
-                    </span>
-                </div>
+        <div className="status-item">
+          <span className="status-label">Notifications:</span>
+          <span className={`status-value ${status.isSubscribed ? 'success' : 'warning'}`}>
+            {status.isSubscribed ? '🔔 Enabled' : '🔕 Disabled'}
+          </span>
+        </div>
 
-                <div className="status-item">
-                    <span className="status-label">Online Status:</span>
-                    <span className={`status-value ${status.isOnline ? 'success' : 'error'}`}>
-                        {status.isOnline ? '🌐 Online' : '🌐 Offline'}
-                    </span>
-                </div>
+        <div className="status-item">
+          <span className="status-label">Offline Data:</span>
+          <span className="status-value">
+            📦 {status.offlineDataCount} items
+          </span>
+        </div>
+      </div>
 
-                <div className="status-item">
-                    <span className="status-label">Service Worker:</span>
-                    <span className={`status-value ${status.hasServiceWorker ? 'success' : 'error'}`}>
-                        {status.hasServiceWorker ? '✅ Active' : '❌ Inactive'}
-                    </span>
-                </div>
+      <div className="pwa-actions">
+        {status.canInstall && !status.isInstalled && (
+          <button
+            className="pwa-action-btn install-btn"
+            onClick={handleInstall}
+          >
+            📱 Install App
+          </button>
+        )}
 
-                <div className="status-item">
-                    <span className="status-label">Notifications:</span>
-                    <span className={`status-value ${status.isSubscribed ? 'success' : 'warning'}`}>
-                        {status.isSubscribed ? '🔔 Enabled' : '🔕 Disabled'}
-                    </span>
-                </div>
+        {!status.isSubscribed && (
+          <button
+            className="pwa-action-btn subscribe-btn"
+            onClick={handleSubscribe}
+          >
+            🔔 Enable Notifications
+          </button>
+        )}
 
-                <div className="status-item">
-                    <span className="status-label">Offline Data:</span>
-                    <span className="status-value">
-                        📦 {status.offlineDataCount} items
-                    </span>
-                </div>
-            </div>
+        {status.isSubscribed && (
+          <button
+            className="pwa-action-btn test-btn"
+            onClick={handleTestNotification}
+          >
+            🧪 Test Notification
+          </button>
+        )}
 
-            <div className="pwa-actions">
-                {status.canInstall && !status.isInstalled && (
-                    <button
-                        className="pwa-action-btn install-btn"
-                        onClick={handleInstall}
-                    >
-                        📱 Install App
-                    </button>
-                )}
+        {status.offlineDataCount > 0 && status.isOnline && (
+          <button
+            className="pwa-action-btn sync-btn"
+            onClick={handleSyncOfflineData}
+          >
+            🔄 Sync Offline Data
+          </button>
+        )}
+      </div>
 
-                {!status.isSubscribed && (
-                    <button
-                        className="pwa-action-btn subscribe-btn"
-                        onClick={handleSubscribe}
-                    >
-                        🔔 Enable Notifications
-                    </button>
-                )}
-
-                {status.isSubscribed && (
-                    <button
-                        className="pwa-action-btn test-btn"
-                        onClick={handleTestNotification}
-                    >
-                        🧪 Test Notification
-                    </button>
-                )}
-
-                {status.offlineDataCount > 0 && status.isOnline && (
-                    <button
-                        className="pwa-action-btn sync-btn"
-                        onClick={handleSyncOfflineData}
-                    >
-                        🔄 Sync Offline Data
-                    </button>
-                )}
-            </div>
-
-            <style jsx>{`
+      <style>{`
         .pwa-status-component {
           background: #1a1a1a;
           border-radius: 12px;
@@ -276,6 +276,6 @@ export const PWAStatusComponent: React.FC = () => {
           background: #0891b2;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 };

@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { spacing, transitions } from '../../system/tokens/tokens';
-import { FlexboxMargin } from '../../system/shared-types';
+import { type FlexboxMargin } from '../../system/shared-types';
 
 // Define types locally for this component
 interface StackProps {
@@ -34,7 +34,7 @@ type ResponsiveValue<T> = T | {
 
 const StyledStack = styled.div.withConfig({
   shouldForwardProp: (prop) => !['direction', 'spacing', 'align', 'justify', 'wrap', 'padding', 'margin', 'alignSelf', 'order', 'fullWidth'].includes(prop)
-})<{
+}) <{
   direction: any;
   spacing: any;
   align: any;
@@ -81,11 +81,11 @@ const StyledStack = styled.div.withConfig({
     if (typeof spacingProp === 'string') {
       if (spacingProp === 'none') return '0';
       return spacingProp === 'xs' ? spacing.xs :
-             spacingProp === 'sm' ? spacing.sm :
-             spacingProp === 'md' ? spacing.md :
-             spacingProp === 'lg' ? spacing.lg :
-             spacingProp === 'xl' ? spacing.xl :
-             spacingProp === '2xl' ? spacing['2xl'] : '0';
+        spacingProp === 'sm' ? spacing.sm :
+          spacingProp === 'md' ? spacing.md :
+            spacingProp === 'lg' ? spacing.lg :
+              spacingProp === 'xl' ? spacing.xl :
+                spacingProp === '2xl' ? spacing['2xl'] : '0';
     }
     const space = spacingProp?.xs || 'md';
     return space === 'none' ? '0' : spacing[space as keyof typeof spacing];
@@ -94,11 +94,11 @@ const StyledStack = styled.div.withConfig({
     if (typeof padding === 'string') {
       if (padding === 'none') return '0';
       return padding === 'xs' ? spacing.xs :
-             padding === 'sm' ? spacing.sm :
-             padding === 'md' ? spacing.md :
-             padding === 'lg' ? spacing.lg :
-             padding === 'xl' ? spacing.xl :
-             padding === '2xl' ? spacing['2xl'] : '0';
+        padding === 'sm' ? spacing.sm :
+          padding === 'md' ? spacing.md :
+            padding === 'lg' ? spacing.lg :
+              padding === 'xl' ? spacing.xl :
+                padding === '2xl' ? spacing['2xl'] : '0';
     }
     const pad = padding?.xs || 'none';
     return pad === 'none' ? '0' : spacing[pad as keyof typeof spacing];
@@ -109,7 +109,7 @@ const StyledStack = styled.div.withConfig({
   ${({ direction, align, justify, wrap, spacing: spacingProp, padding }) => {
     const breakpoints = {
       sm: '640px',
-      md: '768px', 
+      md: '768px',
       lg: '1024px',
       xl: '1280px',
       '2xl': '1536px'
@@ -117,44 +117,44 @@ const StyledStack = styled.div.withConfig({
 
     return Object.entries(breakpoints).map(([breakpoint, width]) => {
       const responsiveStyles = [];
-      
+
       if (direction && typeof direction === 'object' && direction[breakpoint as keyof typeof direction]) {
         const dir = direction[breakpoint as keyof typeof direction];
         responsiveStyles.push(`flex-direction: ${dir === 'horizontal' ? 'row' : 'column'};`);
       }
-      
+
       if (align && typeof align === 'object' && align[breakpoint as keyof typeof align]) {
         responsiveStyles.push(`align-items: ${align[breakpoint as keyof typeof align]};`);
       }
-      
+
       if (justify && typeof justify === 'object' && justify[breakpoint as keyof typeof justify]) {
         responsiveStyles.push(`justify-content: ${justify[breakpoint as keyof typeof justify]};`);
       }
-      
+
       if (wrap && typeof wrap === 'object' && wrap[breakpoint as keyof typeof wrap]) {
         responsiveStyles.push(`flex-wrap: ${wrap[breakpoint as keyof typeof wrap]};`);
       }
-      
+
       if (spacingProp && typeof spacingProp === 'object' && spacingProp[breakpoint]) {
         const space = spacingProp[breakpoint];
         const gapValue = space === 'none' ? '0' : spacing[space as keyof typeof spacing];
         responsiveStyles.push(`gap: ${gapValue};`);
       }
-      
+
       if (padding && typeof padding === 'object' && padding[breakpoint]) {
         const pad = padding[breakpoint];
         const padValue = pad === 'none' ? '0' : spacing[pad as keyof typeof spacing];
         responsiveStyles.push(`padding: ${padValue};`);
       }
-      
-      return responsiveStyles.length > 0 
+
+      return responsiveStyles.length > 0
         ? `@media (min-width: ${width}) { ${responsiveStyles.join(' ')} }`
         : '';
     }).join(' ');
   }}
 `;
 
-export const Stack: React.FC<StackProps> = ({ 
+export const Stack: React.FC<StackProps> = ({
   children,
   direction = 'vertical',
   spacing = 'md',

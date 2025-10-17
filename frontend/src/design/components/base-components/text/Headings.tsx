@@ -7,7 +7,7 @@ import { useInteractionMode } from '../../../providers/InteractionModeProvider';
 
 const StyledHeading = styled.h1.withConfig({
   shouldForwardProp: (prop) => !['variant', 'size', 'weight', 'align', 'cmsId'].includes(prop)
-})<{
+}) <{
   variant: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
   size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl';
   weight: 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold';
@@ -107,30 +107,30 @@ const StyledHeading = styled.h1.withConfig({
 export interface HeadingProps {
   // Core props
   children: React.ReactNode;
-  
+
   // Appearance
   variant?: 'default' | 'primary' | 'secondary' | 'muted' | 'accent';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl';
   weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold';
   align?: 'left' | 'center' | 'right';
-  
+
   // HTML attributes
   id?: string;
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div' | 'span';
   cmsKey?: string; // optional explicit cms path
-  
+
   // Rest props
   [key: string]: any;
 }
 
 // Base Heading component (internal use only)
-const Heading: React.FC<HeadingProps> = ({ 
-  children, 
+const Heading: React.FC<HeadingProps> = ({
+  children,
   variant = 'default',
   size = 'md',
   weight = 'normal',
   align = 'left',
-  id, 
+  id,
   as: Component = 'h1',
   cmsId,
   ...rest
@@ -140,22 +140,22 @@ const Heading: React.FC<HeadingProps> = ({
   let mode: 'edit' | 'comment' | null = null;
   try {
     const context = useInteractionMode();
-    mode = context.mode;
+    mode = context.mode as any;
   } catch {
     // Provider not available, use null as default
     mode = null;
   }
-  
+
   const ref = React.useRef<HTMLElement | null>(null);
-  
+
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     // Get cmsId from either cmsId prop or cmsId attribute
     const cmsIdentifier = cmsId || (e.currentTarget as HTMLElement).getAttribute('cmsId');
-    
+
     if (mode === 'edit' && cmsIdentifier) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       // Dispatch custom event to open edit modal
       const event = new (window as any).CustomEvent('openInlineEditor', {
         detail: { cmsId: cmsIdentifier, element: e.currentTarget, x: e.clientX, y: e.clientY }
@@ -164,7 +164,7 @@ const Heading: React.FC<HeadingProps> = ({
     } else if (mode === 'comment' && cmsIdentifier) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       // Dispatch custom event to open comment modal
       const event = new (window as any).CustomEvent('openCommentModal', {
         detail: { cmsId: cmsIdentifier, element: e.currentTarget, x: e.clientX, y: e.clientY }
@@ -172,7 +172,7 @@ const Heading: React.FC<HeadingProps> = ({
       document.dispatchEvent(event);
     }
   };
-  
+
   return (
     <StyledHeading
       as={Component}
@@ -192,13 +192,13 @@ const Heading: React.FC<HeadingProps> = ({
 };
 
 // H1 Component - editable by default
-export const H1: React.FC<HeadingProps> = ({ 
-  children, 
+export const H1: React.FC<HeadingProps> = ({
+  children,
   variant = 'default',
   size = '5xl',
   weight = 'bold',
   align = 'left',
-  id, 
+  id,
   as: Component = 'h1',
   mode,
   ...rest
@@ -211,7 +211,7 @@ export const H1: React.FC<HeadingProps> = ({
       weight={weight}
       align={align}
       id={id}
-      
+
       {...rest}
     >
       {children}
@@ -219,13 +219,13 @@ export const H1: React.FC<HeadingProps> = ({
   );
 };
 
-export const H2: React.FC<HeadingProps> = ({ 
-  children, 
+export const H2: React.FC<HeadingProps> = ({
+  children,
   variant = 'default',
   size = '4xl',
   weight = 'bold',
   align = 'left',
-  id, 
+  id,
   as: Component = 'h2',
   mode,
   ...rest
@@ -238,7 +238,7 @@ export const H2: React.FC<HeadingProps> = ({
       weight={weight}
       align={align}
       id={id}
-      
+
       {...rest}
     >
       {children}
@@ -246,13 +246,13 @@ export const H2: React.FC<HeadingProps> = ({
   );
 };
 
-export const H3: React.FC<HeadingProps> = ({ 
-  children, 
+export const H3: React.FC<HeadingProps> = ({
+  children,
   variant = 'default',
   size = '2xl',
   weight = 'semibold',
   align = 'left',
-  id, 
+  id,
   as: Component = 'h3',
   mode,
   ...rest
@@ -265,7 +265,7 @@ export const H3: React.FC<HeadingProps> = ({
       weight={weight}
       align={align}
       id={id}
-      
+
       {...rest}
     >
       {children}
@@ -273,13 +273,13 @@ export const H3: React.FC<HeadingProps> = ({
   );
 };
 
-export const H4: React.FC<HeadingProps> = ({ 
-  children, 
+export const H4: React.FC<HeadingProps> = ({
+  children,
   variant = 'default',
   size = 'xl',
   weight = 'semibold',
   align = 'left',
-  id, 
+  id,
   as: Component = 'h4',
   mode,
   ...rest
@@ -292,7 +292,7 @@ export const H4: React.FC<HeadingProps> = ({
       weight={weight}
       align={align}
       id={id}
-      
+
       {...rest}
     >
       {children}
@@ -300,13 +300,13 @@ export const H4: React.FC<HeadingProps> = ({
   );
 };
 
-export const H5: React.FC<HeadingProps> = ({ 
-  children, 
+export const H5: React.FC<HeadingProps> = ({
+  children,
   variant = 'default',
   size = 'lg',
   weight = 'semibold',
   align = 'left',
-  id, 
+  id,
   as: Component = 'h5',
   mode,
   ...rest
@@ -319,7 +319,7 @@ export const H5: React.FC<HeadingProps> = ({
       weight={weight}
       align={align}
       id={id}
-      
+
       {...rest}
     >
       {children}
@@ -327,13 +327,13 @@ export const H5: React.FC<HeadingProps> = ({
   );
 };
 
-export const H6: React.FC<HeadingProps> = ({ 
-  children, 
+export const H6: React.FC<HeadingProps> = ({
+  children,
   variant = 'default',
   size = 'md',
   weight = 'semibold',
   align = 'left',
-  id, 
+  id,
   as: Component = 'h6',
   mode,
   ...rest
@@ -346,7 +346,7 @@ export const H6: React.FC<HeadingProps> = ({
       weight={weight}
       align={align}
       id={id}
-      
+
       {...rest}
     >
       {children}

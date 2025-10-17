@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { ResponsiveValue } from '../../system/shared-types';
+import { type ResponsiveValue } from '../../system/shared-types';
 
 // PositionedContainer component - for positioning needs
 export interface PositionedContainerProps {
@@ -28,7 +28,7 @@ export interface PositionedContainerProps {
 
 const StyledPositionedContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => !['position', 'top', 'right', 'bottom', 'left', 'zIndex', 'display', 'flexDirection', 'alignItems', 'justifyContent', 'gap', 'backgroundColor', 'boxShadow', 'padding', 'width'].includes(prop)
-})<{
+}) <{
   position: 'fixed' | 'absolute' | 'relative' | 'sticky';
   top?: string;
   right?: string;
@@ -52,7 +52,7 @@ const StyledPositionedContainer = styled.div.withConfig({
   ${({ left }) => left && `left: ${left};`}
   ${({ zIndex }) => zIndex && `z-index: ${zIndex};`}
   display: ${({ display }) => display};
-  ${({ display, flexDirection, alignItems, justifyContent }) => 
+  ${({ display, flexDirection, alignItems, justifyContent }) =>
     display === 'flex' && `
       flex-direction: ${flexDirection};
       align-items: ${alignItems};
@@ -62,18 +62,18 @@ const StyledPositionedContainer = styled.div.withConfig({
   ${({ gap }) => {
     if (!gap) return '';
     if (typeof gap === 'string') return `gap: ${gap};`;
-    
+
     // Handle responsive gap values
     const responsiveGap = gap as Record<string, string>;
     let css = '';
-    
+
     if (responsiveGap.xs) css += `gap: ${responsiveGap.xs};`;
     if (responsiveGap.sm) css += `@media (min-width: 640px) { gap: ${responsiveGap.sm}; }`;
     if (responsiveGap.md) css += `@media (min-width: 768px) { gap: ${responsiveGap.md}; }`;
     if (responsiveGap.lg) css += `@media (min-width: 1024px) { gap: ${responsiveGap.lg}; }`;
     if (responsiveGap.xl) css += `@media (min-width: 1280px) { gap: ${responsiveGap.xl}; }`;
     if (responsiveGap['2xl']) css += `@media (min-width: 1536px) { gap: ${responsiveGap['2xl']}; }`;
-    
+
     return css;
   }}
   

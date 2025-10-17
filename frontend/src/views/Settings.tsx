@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { colors, spacing } from '../design/tokens/tokens';
 

@@ -30,7 +30,7 @@ interface StatCardProps {
  * />
  * ```
  */
-export const StatCard: React.FC<StatCardProps> = ({ 
+export const StatCard: React.FC<StatCardProps> = ({
   children,
   title,
   icon,
@@ -52,7 +52,7 @@ export const StatCard: React.FC<StatCardProps> = ({
   };
 
   return (
-    <Container 
+    <Container
       variant={variant === 'elevated' ? 'elevated' : variant === 'outlined' ? 'card' : 'default'}
       padding={padding}
     >
@@ -61,16 +61,16 @@ export const StatCard: React.FC<StatCardProps> = ({
           <Text size="lg">{icon}</Text>
           <Text variant="muted" size="sm">{title}</Text>
         </Stack>
-        
+
         <Stack direction="vertical" spacing="xs">
           <Text variant="lead" size="xl" weight="bold">
             {statNumber}
           </Text>
-          <Text variant="muted" size="sm" color={getChangeColor()}>
+          <Text variant="body" size="sm" color={getChangeColor()}>
             {statChange}
           </Text>
         </Stack>
-        
+
         {children}
       </Stack>
     </Container>

@@ -6,7 +6,7 @@ import { Stack } from '../../../layout/framing/Stack';
 import { Container } from '../../../layout/containers/Container';
 import { Text } from '../text/Text';
 import { PositionedContainer } from '../../../layout/containers/PositionedContainer';
-import { colors, spacing, fontSize } from '../../../system/tokens/tokens';
+import { colors, spacing } from '../../../system/tokens/tokens';
 
 // Animation keyframes
 const spin = keyframes`
@@ -17,7 +17,7 @@ const spin = keyframes`
 const pulse = keyframes`
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
-`;    
+`;
 
 const dotPulse = keyframes`
   0%, 80%, 100% { opacity: 0.3; }
@@ -27,7 +27,7 @@ const dotPulse = keyframes`
 // Single styled component for all animations
 const AnimatedElement = styled.span.withConfig({
   shouldForwardProp: (prop) => !['variant', 'delay'].includes(prop)
-})<{
+}) <{
   variant: 'spinner' | 'pulse' | 'dot';
   delay?: number;
 }>`
@@ -74,17 +74,17 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   id,
   ...rest
 }) => {
-  const getSizeStyles = () => {
-    switch (size) {
-      case 'sm': return { fontSize: fontSize.sm, gap: spacing.xs };
-      case 'md': return { fontSize: fontSize.md, gap: spacing.sm };
-      case 'lg': return { fontSize: fontSize.lg, gap: spacing.md };
-      case 'xl': return { fontSize: fontSize.xl, gap: spacing.lg };
-      default: return { fontSize: fontSize.md, gap: spacing.sm };
-    }
-  };
+  // const getSizeStyles = () => {
+  //   switch (size) {
+  //     case 'sm': return { fontSize: fontSize.sm, gap: spacing.xs };
+  //     case 'md': return { fontSize: fontSize.md, gap: spacing.sm };
+  //     case 'lg': return { fontSize: fontSize.lg, gap: spacing.md };
+  //     case 'xl': return { fontSize: fontSize.xl, gap: spacing.lg };
+  //     default: return { fontSize: fontSize.md, gap: spacing.sm };
+  //   }
+  // };
 
-  const sizeStyles = getSizeStyles();
+  // const sizeStyles = getSizeStyles();
 
   const renderSpinner = () => {
     switch (variant) {
@@ -116,20 +116,20 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   };
 
   const content = (
-    <Stack 
-      direction="horizontal" 
-      spacing="sm" 
-      align="center" 
+    <Stack
+      direction="horizontal"
+      spacing="sm"
+      align="center"
       justify="center"
     >
       <Container>
         {renderSpinner()}
       </Container>
-      
+
       {text && (
         <Container>
-          <Text 
-            variant="body" 
+          <Text
+            variant="body"
             size={size}
           >
             {text}
