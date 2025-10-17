@@ -17,7 +17,7 @@
   "author": "Justin Pease",
   "license": "MIT",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.33.2",
+    "@anthropic-ai/sdk": "^0.32.0",
     "@notionhq/client": "^2.2.15",
     "@supabase/supabase-js": "^2.47.10",
     "cors": "^2.8.5",
