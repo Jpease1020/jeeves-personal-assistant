@@ -20,7 +20,7 @@ interface MCPResponse {
 }
 
 class NotionMCPService {
-    private baseUrl = 'http://localhost:4012/mcp';
+    private baseUrl = process.env.MCP_NOTION_URL || 'http://localhost:4012/mcp';
     private authToken = 'notion-mcp-token-123';
     private sessionId = 'personal-assistant-session';
 

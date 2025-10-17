@@ -45,7 +45,7 @@ export class OfficialNotionMCPService {
     private sessionId: string | null = null;
 
     constructor() {
-        this.baseUrl = 'http://localhost:4012/mcp';
+this.baseUrl = process.env.MCP_NOTION_URL || 'http://localhost:4012/mcp';
         this.authToken = 'notion-mcp-token-123';
     }
 
