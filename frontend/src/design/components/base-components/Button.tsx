@@ -4,16 +4,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors, spacing, fontSize, borderRadius, transitions, shadows, fontWeight } from '../../system/tokens/tokens';
 import { LoadingSpinner } from './notifications/LoadingSpinner';
-import { ButtonVariant, ButtonSize } from '../../system/shared-types';
-import { BaseTextComponentProps, TextComponentChildren } from '../../system/shared-types';
+import { type ButtonVariant, type ButtonSize } from '../../system/shared-types';
+import { type BaseTextComponentProps, type TextComponentChildren } from '../../system/shared-types';
 import { useInteractionMode } from '../../providers/InteractionModeProvider';
 import { useCMSData } from '../../providers/CMSDataProvider';
 
 // Styled button component with enhanced modern styling
 const StyledButton = styled.button.withConfig({
   shouldForwardProp: (prop) => !['variant', 'size', 'shape', 'fullWidth', 'loading', 'icon', 'iconPosition', 'cmsId'].includes(prop)
-})<{
-  variant: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success' | 'warning';
+}) <{
+  variant: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success' | 'warning' | 'link';
   size: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   shape: 'default' | 'rounded' | 'pill' | 'square';
   fullWidth: boolean;
@@ -295,7 +295,7 @@ const StyledButton = styled.button.withConfig({
 `;
 
 // Button Component - Enhanced with better props and functionality
-export interface ButtonProps extends Omit<BaseTextComponentProps, 'cmsId' | 'cmsData'> {
+export interface ButtonProps extends Omit<BaseTextComponentProps, 'cmsId' | 'cmsData' | 'variant'> {
   children?: TextComponentChildren; // Make optional since we can use text prop
   text?: string; // New: direct text prop for button content
   variant?: ButtonVariant;
@@ -340,12 +340,12 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   // Get CMS data from provider
   const { cmsData } = useCMSData();
-  
+
   // Get mode from provider
   let mode: 'edit' | 'comment' | null = null;
   try {
     const context = useInteractionMode();
-    mode = context.mode;
+    mode = context.mode as any;
   } catch {
     // Provider not available, use null as default
     mode = null;
@@ -354,21 +354,21 @@ export const Button: React.FC<ButtonProps> = ({
   // Determine the component to render
   const renderComponent = href ? 'a' : Component;
   const ref = React.useRef<any>(null);
-  
+
   // Don't add data-cms-id for decorative elements
   const shouldIgnoreCMS = cmsId === 'ignore';
-  
+
   // Determine button content - use CMS field if available
   const buttonContent = cmsData && cmsId && !shouldIgnoreCMS && text
     ? ((cmsData as any)?.[cmsId] || text)
     : (text || children);
-  
+
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     // If we're in edit/comment mode and this button doesn't have the override
     if (mode && !disableInteractionOverride) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       // If we have a cmsId, dispatch the appropriate edit event
       if (cmsId) {
         if (mode === 'edit') {
@@ -385,10 +385,10 @@ export const Button: React.FC<ButtonProps> = ({
       }
       return;
     }
-    
+
     onClick?.(e);
   };
-  
+
   return (
     <StyledButton
       as={renderComponent}

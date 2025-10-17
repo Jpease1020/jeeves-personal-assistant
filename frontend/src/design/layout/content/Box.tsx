@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors, spacing, borderRadius, transitions } from '../../system/tokens/tokens';
-import { FlexboxMargin } from '../../system/shared-types';
+import { type FlexboxMargin } from '../../system/shared-types';
 
 // Define BoxProps interface locally for this component
 interface BoxProps {
@@ -22,7 +22,7 @@ interface BoxProps {
 
 const StyledBox = styled.div.withConfig({
   shouldForwardProp: (prop) => !['variant', 'padding', 'rounded', 'spacing', 'margin', 'alignSelf', 'order'].includes(prop)
-})<{
+}) <{
   variant: 'default' | 'elevated' | 'outlined' | 'filled';
   padding: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   rounded: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
@@ -151,7 +151,7 @@ export const Box: React.FC<BoxProps> = ({
   as: Component = 'div',
   onClick,
   ...rest
-  
+
 }) => {
   return (
     <StyledBox
@@ -163,7 +163,7 @@ export const Box: React.FC<BoxProps> = ({
       alignSelf={alignSelf}
       order={order}
       as={Component}
-      onClick={onClick} 
+      onClick={onClick}
       {...rest}
     >
       {children}

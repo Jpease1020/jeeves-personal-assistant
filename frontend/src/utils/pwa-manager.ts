@@ -227,7 +227,7 @@ export class PWAManager {
             warning: '#f59e0b',
             info: '#6366f1'
         };
-        return colors[type] || colors.info;
+        return colors[type as keyof typeof colors] || colors.info;
     }
 
     // Sync offline data when back online
@@ -238,8 +238,8 @@ export class PWAManager {
             // Trigger background sync
             if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
                 const registration = await navigator.serviceWorker.ready;
-                await registration.sync.register('habit-sync');
-                await registration.sync.register('routine-sync');
+                await (registration as any).sync.register('habit-sync');
+                await (registration as any).sync.register('routine-sync');
             }
 
         } catch (error) {

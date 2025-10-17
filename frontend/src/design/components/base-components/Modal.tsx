@@ -1,9 +1,8 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import { fontSize } from '../../system/tokens/tokens';
 import { Button } from './Button';
-import { H2 } from './text/Headings'; 
+import { H2 } from './text/Headings';
 import { Overlay } from './Overlay';
 import { Container } from '../../layout/containers/Container';
 import { Stack } from '../../layout/framing/Stack';
@@ -49,11 +48,11 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(({
   ...rest
 }, ref) => {
   // Map title size to font size
-  const titleSizeMap: Record<'sm' | 'md' | 'lg', string> = {
-    sm: fontSize.md,
-    md: fontSize.lg,
-    lg: fontSize.xl
-  };
+  // const titleSizeMap: Record<'sm' | 'md' | 'lg', string> = {
+  //   sm: fontSize.md,
+  //   md: fontSize.lg,
+  //   lg: fontSize.xl
+  // };
 
   return (
     <Overlay
@@ -94,14 +93,14 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(({
               )}
             </Stack>
           </Container>
-          
+
           {/* Body */}
           <Container
             padding={bodyPadding}
           >
             {children}
           </Container>
-          
+
           {/* Footer */}
           {footer && (
             <Container

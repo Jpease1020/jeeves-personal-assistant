@@ -1,28 +1,28 @@
-import { 
-  Breakpoint, 
-  FlexDirection, 
-  FlexWrap, 
-  AlignItems, 
-  JustifyContent, 
-  Spacing,
-  ResponsiveValue,
-  BaseLayoutProps,
-  BaseComponentProps,
-  HTMLElement,
-  GridGap,
-  ColSpan,
-  ResponsiveColSpan
+import {
+  type Breakpoint,
+  type FlexDirection,
+  type FlexWrap,
+  type AlignItems,
+  type JustifyContent,
+  type Spacing,
+  type ResponsiveValue,
+  type BaseLayoutProps,
+  type BaseComponentProps,
+  type HTMLElement,
+  type GridGap,
+  type ColSpan,
+  type ResponsiveColSpan
 } from '../../system/shared-types';
 
 // Content Layout Types - Type definitions for content layout components
 
 // Re-export shared types
-export type { 
-  Breakpoint, 
-  FlexDirection, 
-  FlexWrap, 
-  AlignItems, 
-  JustifyContent, 
+export type {
+  Breakpoint,
+  FlexDirection,
+  FlexWrap,
+  AlignItems,
+  JustifyContent,
   Spacing,
   ResponsiveValue,
   ColSpan,
@@ -30,7 +30,7 @@ export type {
 };
 
 // Base component props
-export interface BaseContentProps extends BaseLayoutProps {}
+export interface BaseContentProps extends BaseLayoutProps { }
 
 // Stack component props
 export interface StackProps extends BaseComponentProps {
@@ -81,4 +81,3 @@ export interface BoxProps extends BaseContentProps {
   marginBottom?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 }
 
- 

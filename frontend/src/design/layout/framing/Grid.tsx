@@ -4,16 +4,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { spacing, colors, borderRadius, shadows } from '../../system/tokens/tokens';
 import { Container } from '../../layout/containers/Container';
-import { ResponsiveValue, Breakpoint, GridCols, SpacingScale, FlexboxMargin } from '../../system/shared-types';
+import { type ResponsiveValue, type Breakpoint, type GridCols, type SpacingScale, type FlexboxMargin } from '../../system/shared-types';
 import { H2 } from '../../components/base-components/text/Headings';
 import { Text } from '../../components/base-components/text/Text';
 
 // Helper function to resolve responsive values
 const resolveResponsiveValue = <T,>(value: ResponsiveValue<T>, breakpoint: Breakpoint = 'xs'): T => {
   if (typeof value === 'object' && value !== null) {
-    return (value as Partial<Record<Breakpoint, T>>)[breakpoint] || 
-           (value as Partial<Record<Breakpoint, T>>).xs || 
-           Object.values(value as Partial<Record<Breakpoint, T>>)[0] as T;
+    return (value as Partial<Record<Breakpoint, T>>)[breakpoint] ||
+      (value as Partial<Record<Breakpoint, T>>).xs ||
+      Object.values(value as Partial<Record<Breakpoint, T>>)[0] as T;
   }
   return value as T;
 };
@@ -33,7 +33,7 @@ interface GridProps {
 
 const Grid = styled.div.withConfig({
   shouldForwardProp: (prop) => !['cols', 'gap', 'responsive', 'spacing', 'margin', 'alignSelf', 'order'].includes(prop)
-})<{
+}) <{
   cols: ResponsiveValue<GridCols> | GridCols;
   gap: ResponsiveValue<SpacingScale>;
   responsive: boolean;
@@ -74,46 +74,46 @@ const Grid = styled.div.withConfig({
   /* Responsive breakpoints for better mobile experience */
   @media (max-width: 1024px) {
     grid-template-columns: ${({ responsive, cols }) => {
-      if (responsive) {
-        return `repeat(auto-fit, 1fr)`;
-      }
-      const resolvedCols = resolveResponsiveValue(cols, 'lg');
-      return `repeat(${resolvedCols}, 1fr)`;
-    }};
+    if (responsive) {
+      return `repeat(auto-fit, 1fr)`;
+    }
+    const resolvedCols = resolveResponsiveValue(cols, 'lg');
+    return `repeat(${resolvedCols}, 1fr)`;
+  }};
   }
   
   @media (max-width: 768px) {
     grid-template-columns: ${({ responsive, cols }) => {
-      if (responsive) {
-        return `repeat(auto-fit, 1fr)`;
-      }
-      const resolvedCols = resolveResponsiveValue(cols, 'md');
-      return `repeat(${resolvedCols}, 1fr)`;
-    }};
+    if (responsive) {
+      return `repeat(auto-fit, 1fr)`;
+    }
+    const resolvedCols = resolveResponsiveValue(cols, 'md');
+    return `repeat(${resolvedCols}, 1fr)`;
+  }};
     gap: ${({ gap }) => {
-      const resolvedGap = resolveResponsiveValue(gap, 'md');
-      return resolvedGap === 'none' ? '0' : spacing[resolvedGap as keyof typeof spacing];
-    }};
+    const resolvedGap = resolveResponsiveValue(gap, 'md');
+    return resolvedGap === 'none' ? '0' : spacing[resolvedGap as keyof typeof spacing];
+  }};
   }
   
   @media (max-width: 640px) {
     grid-template-columns: ${({ responsive, cols }) => {
-      if (responsive) {
-        return `repeat(auto-fit, 1fr)`;
-      }
-      const resolvedCols = resolveResponsiveValue(cols, 'sm');
-      return `repeat(${resolvedCols}, 1fr)`;
-    }};
+    if (responsive) {
+      return `repeat(auto-fit, 1fr)`;
+    }
+    const resolvedCols = resolveResponsiveValue(cols, 'sm');
+    return `repeat(${resolvedCols}, 1fr)`;
+  }};
     gap: ${({ gap }) => {
-      const resolvedGap = resolveResponsiveValue(gap, 'sm');
-      return resolvedGap === 'none' ? '0' : spacing[resolvedGap as keyof typeof spacing];
-    }};
+    const resolvedGap = resolveResponsiveValue(gap, 'sm');
+    return resolvedGap === 'none' ? '0' : spacing[resolvedGap as keyof typeof spacing];
+  }};
   }
 `;
 
-const GridComponent: React.FC<GridProps> = ({ 
-  cols = 3, 
-  gap = 'md', 
+const GridComponent: React.FC<GridProps> = ({
+  cols = 3,
+  gap = 'md',
   responsive = false,
   spacing = 'none',
   margin = 'none',
@@ -158,10 +158,10 @@ interface GridSectionProps {
 
 const GridSectionContainer = styled.section.withConfig({
   shouldForwardProp: (prop) => !['variant', 'padding', 'spacing', 'margin', 'alignSelf', 'order'].includes(prop)
-})<{
+}) <{
   variant: 'content' | 'default' | 'actions' | 'stats';
-  padding: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  spacing: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  padding: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '8' | '10' | '12' | '16' | '20' | '24' | '32' | '40' | '48' | '56' | '64' | 'auto';
+  spacing: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '8' | '10' | '12' | '16' | '20' | '24' | '32' | '40' | '48' | '56' | '64' | 'auto';
   margin: FlexboxMargin;
   alignSelf: 'flex-start' | 'flex-end' | 'center' | 'stretch';
   order: number;
@@ -212,7 +212,7 @@ const GridSectionContainer = styled.section.withConfig({
   }}
 `;
 
-const GridSection: React.FC<GridSectionProps> = ({ 
+const GridSection: React.FC<GridSectionProps> = ({
   children,
   title,
   subtitle,
@@ -272,7 +272,7 @@ interface GridItemProps {
 
 const GridItemContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => !['$span', '$start', '$end', 'margin', 'alignSelf', 'order'].includes(prop)
-})<{ 
+}) <{
   $span: number;
   $start?: number;
   $end?: number;
@@ -325,8 +325,8 @@ const GridItemContainer = styled.div.withConfig({
  * </Grid>
  * ```
  */
-const GridItem: React.FC<GridItemProps> = ({ 
-  children, 
+const GridItem: React.FC<GridItemProps> = ({
+  children,
   span = 1,
   start,
   end,
@@ -335,7 +335,7 @@ const GridItem: React.FC<GridItemProps> = ({
   order = 0
 }) => {
   return (
-    <GridItemContainer 
+    <GridItemContainer
       $span={span}
       $start={start}
       $end={end}

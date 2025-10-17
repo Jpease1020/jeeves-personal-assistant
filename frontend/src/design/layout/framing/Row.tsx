@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { spacing, breakpoints } from '../../system/tokens/tokens';
-import { FlexboxMargin } from '../../system/shared-types';
+import { type FlexboxMargin } from '../../system/shared-types';
 
 // Define types locally for this component
 interface RowProps {
@@ -27,7 +27,7 @@ interface RowProps {
 // Styled Row component with flexbox properties
 const StyledRow = styled.div.withConfig({
   shouldForwardProp: (prop) => !['direction', 'wrap', 'align', 'justify', 'gap', 'padding', 'margin', 'alignSelf', 'order', 'fullWidth', 'responsive'].includes(prop)
-})<{
+}) <{
   direction: RowProps['direction'];
   wrap: RowProps['wrap'];
   align: RowProps['align'];

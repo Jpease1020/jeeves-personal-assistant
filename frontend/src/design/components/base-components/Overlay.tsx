@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import { colors, spacing, shadows, zIndex } from '../../system/tokens/tokens';   
+import { colors, spacing, shadows, zIndex } from '../../system/tokens/tokens';
 // Animations
 const fadeIn = keyframes`
   from {
@@ -27,7 +27,7 @@ const slideIn = keyframes`
 // Combined styled component with all overlay variants
 const StyledOverlay = styled.div.withConfig({
   shouldForwardProp: (prop) => !['isOpen', 'position', 'backdrop', 'overlayZIndex', 'variant', 'closeOnBackdropClick'].includes(prop)
-})<{
+}) <{
   isOpen: boolean;
   position: 'center' | 'top' | 'bottom' | 'left' | 'right';
   backdrop: boolean;
@@ -142,7 +142,7 @@ export const Overlay: React.FC<OverlayProps> = ({
       isOpen={isOpen}
       position={position}
       backdrop={backdrop}
-      overlayZIndex={overlayZIndex}
+      overlayZIndex={Number(overlayZIndex)}
       variant={variant}
       closeOnBackdropClick={closeOnBackdropClick}
       role={variant === 'modal' ? 'dialog' : 'presentation'}

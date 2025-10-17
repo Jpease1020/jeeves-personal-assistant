@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors, spacing, borderRadius, shadows, transitions } from '../../system/tokens/tokens';
-import { FlexboxMargin } from '../../system/shared-types';
+import { type FlexboxMargin } from '../../system/shared-types';
 
 // Core Container component - foundational layout component
 type ResponsiveValue<T> = T | {
@@ -35,7 +35,7 @@ export interface ContainerProps {
 
 const StyledContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => !['variant', 'maxWidth', 'padding', 'spacing', 'margin', 'alignSelf', 'order'].includes(prop)
-})<{
+}) <{
   variant: 'default' | 'card' | 'section' | 'main' | 'content' | 'navigation' | 'tooltip' | 'elevated' | 'feature' | 'hero';
   maxWidth: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | 'full';
   padding: any;
@@ -99,7 +99,7 @@ const StyledContainer = styled.div.withConfig({
     const padXs = padding?.xs ?? 'none';
     let css = `padding: ${getPad(padXs)};`;
     const map: Record<string, string> = { sm: '640px', md: '768px', lg: '1024px', xl: '1280px', '2xl': '1536px' };
-    (['sm','md','lg','xl','2xl'] as const).forEach(bp => {
+    (['sm', 'md', 'lg', 'xl', '2xl'] as const).forEach(bp => {
       const val = padding?.[bp as keyof typeof padding];
       if (val) css += `@media (min-width: ${map[bp]}) { padding: ${getPad(val as string)}; }`;
     });
@@ -116,7 +116,7 @@ const StyledContainer = styled.div.withConfig({
     const gapXs = spacingProp?.xs ?? 'none';
     let css = `gap: ${getGap(gapXs)};`;
     const map: Record<string, string> = { sm: '640px', md: '768px', lg: '1024px', xl: '1280px', '2xl': '1536px' };
-    (['sm','md','lg','xl','2xl'] as const).forEach(bp => {
+    (['sm', 'md', 'lg', 'xl', '2xl'] as const).forEach(bp => {
       const val = spacingProp?.[bp as keyof typeof spacingProp];
       if (val) css += `@media (min-width: ${map[bp]}) { gap: ${getGap(val as string)}; }`;
     });
@@ -205,11 +205,11 @@ const StyledContainer = styled.div.withConfig({
   }}
 `;
 
-export const Container: React.FC<ContainerProps> = ({ 
+export const Container: React.FC<ContainerProps> = ({
   children,
   variant = 'default',
-  maxWidth = 'full', 
-  padding = 'md', 
+  maxWidth = 'full',
+  padding = 'md',
   spacing = 'none',
   margin = 'none',
   alignSelf = 'stretch',

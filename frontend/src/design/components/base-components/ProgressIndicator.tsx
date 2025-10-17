@@ -19,7 +19,7 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
   steps,
   variant = 'default',
   size = 'md',
-  color = 'primary'
+  // color = 'primary'
 }) => {
   const progress = (currentStep / totalSteps) * 100;
 
@@ -59,7 +59,7 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
               {currentStep} of {totalSteps}
             </Text>
           </Stack>
-          
+
           <Stack direction="vertical" spacing="sm">
             <Container variant="default" padding="none">
               <Container variant="elevated" padding="none">
@@ -68,9 +68,9 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
                 </Text>
               </Container>
             </Container>
-            
+
             <Stack direction="horizontal" spacing="sm">
-              {steps.map((step, index) => (
+              {steps.map((_, index) => (
                 <Container key={index} variant="default" padding="xs">
                   <Text size="xs">
                     {index + 1}
@@ -79,7 +79,7 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
               ))}
             </Stack>
           </Stack>
-          
+
           <Stack direction="vertical" spacing="xs">
             {steps.map((step, index) => (
               <Container key={index} variant="default" padding="xs">
@@ -106,7 +106,7 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
             {currentStep} of {totalSteps}
           </Text>
         </Stack>
-        
+
         <Container variant="default" padding="none">
           <Container variant="elevated" padding="none">
             <Text size="xs">

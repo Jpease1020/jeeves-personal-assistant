@@ -61,7 +61,7 @@ const TaskMeta = styled.div`
 
 const DueDate = styled.span<{ overdue?: boolean }>`
   font-size: 0.75rem;
-  color: ${props => props.overdue ? colors.error[500] : colors.text.secondary};
+  color: ${props => props.overdue ? '#ef4444' : colors.text.secondary};
 `;
 
 const ListBadge = styled.span`
@@ -98,7 +98,7 @@ export const TasksCard: React.FC<TasksCardProps> = ({ priorities, overdue }) => 
     return (
         <Card>
             <CardTitle>Tasks</CardTitle>
-            
+
             {overdue.length > 0 && (
                 <>
                     <SectionTitle>⚠️ Overdue</SectionTitle>

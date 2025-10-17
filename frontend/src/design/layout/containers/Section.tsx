@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors, spacing, transitions } from '../../system/tokens/tokens';
 import { Container } from './Container';
-import { BaseLayoutProps, SectionVariant, SpacingScale, MaxWidth, FlexboxMargin } from '../../system/shared-types';
+import { type BaseLayoutProps, type SectionVariant, type SpacingScale, type MaxWidth, type FlexboxMargin } from '../../system/shared-types';
 
 // Layout Section Props
 interface LayoutSectionProps extends Omit<BaseLayoutProps, 'margin'> {
@@ -17,11 +17,12 @@ interface LayoutSectionProps extends Omit<BaseLayoutProps, 'margin'> {
   container?: boolean;
   maxWidth?: MaxWidth;
   fullWidth?: boolean;
+  as?: React.ElementType;
 }
 
 const StyledSection = styled.section.withConfig({
   shouldForwardProp: (prop) => !['variant', 'padding', 'spacing', 'margin', 'alignSelf', 'order'].includes(prop)
-})<{
+}) <{
   variant: 'default' | 'alternate' | 'brand' | 'muted' | 'hero' | 'cta';
   padding: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   spacing: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
@@ -122,14 +123,14 @@ const StyledSection = styled.section.withConfig({
   }}
 `;
 
-export const LayoutSection: React.FC<LayoutSectionProps> = ({ 
-  variant = 'default', 
-  padding = 'lg', 
+export const LayoutSection: React.FC<LayoutSectionProps> = ({
+  variant = 'default',
+  padding = 'lg',
   spacing = 'none',
   margin = 'none',
   alignSelf = 'stretch',
   order = 0,
-  container = true, 
+  container = true,
   maxWidth = '2xl',
   fullWidth = false,
   as: Component = 'section',

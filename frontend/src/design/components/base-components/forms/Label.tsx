@@ -7,7 +7,7 @@ import { colors, spacing, fontSize, fontWeight, transitions } from '../../../sys
 // Styled label component with flexbox and proper prop filtering
 const StyledLabel = styled.label.withConfig({
   shouldForwardProp: (prop) => !['variant', 'size', 'weight', 'required', 'disabled', 'cmsId'].includes(prop)
-})<{
+}) <{
   variant: 'default' | 'primary' | 'secondary' | 'muted' | 'error';
   size: 'xs' | 'sm' | 'md' | 'lg';
   weight: 'normal' | 'medium' | 'semibold' | 'bold';
@@ -112,47 +112,47 @@ const StyledLabel = styled.label.withConfig({
   /* Responsive behavior */
   @media (max-width: 768px) {
     ${({ size }) => {
-      if (size === 'lg') {
-        return `
+    if (size === 'lg') {
+      return `
           font-size: ${fontSize.md};
           margin-bottom: ${spacing.md};
         `;
-      }
-      return '';
-    }}
+    }
+    return '';
+  }}
   }
 
   @media (max-width: 640px) {
     ${({ size }) => {
-      if (size === 'md' || size === 'lg') {
-        return `
+    if (size === 'md' || size === 'lg') {
+      return `
           font-size: ${fontSize.sm};
           margin-bottom: ${spacing.sm};
         `;
-      }
-      return '';
-    }}
+    }
+    return '';
+  }}
   }
 `;
 
 export interface LabelProps {
   // Core props
   children: React.ReactNode;
-  
+
   // Appearance
   variant?: 'default' | 'primary' | 'secondary' | 'muted' | 'error';
   size?: 'xs' | 'sm' | 'md' | 'lg';
   weight?: 'normal' | 'medium' | 'semibold' | 'bold';
-  
+
   // Form attributes
   htmlFor?: string;
   required?: boolean;
   disabled?: boolean;
-  
+
   // HTML attributes
   id?: string;
   cmsKey?: string;
-  
+
   // Rest props
   [key: string]: any;
 }
@@ -160,26 +160,26 @@ export interface LabelProps {
 export const Label: React.FC<LabelProps> = ({
   // Core props
   children,
-  
+
   // Appearance
   variant = 'default',
   size = 'md',
   weight = 'medium',
-  
+
   // Form attributes
   htmlFor,
   required = false,
   disabled = false,
-  
+
   // HTML attributes
   id,
   cmsKey,
-  
+
   // Rest props
   ...rest
 }) => {
   const ref = React.useRef<any>(null);
-  const label = typeof children === 'string' ? children : undefined;
+  // const label = typeof children === 'string' ? children : undefined;
   return (
     <StyledLabel
       htmlFor={htmlFor}

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { colors, spacing } from '../design/tokens/tokens';
@@ -48,39 +48,39 @@ const Title = styled.h1`
 `;
 
 interface LayoutProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
-    const location = useLocation();
+  const location = useLocation();
 
-    const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => location.pathname === path;
 
-    return (
-        <LayoutContainer>
-            <Nav>
-                <Title>Personal Assistant</Title>
-                <NavLink to="/" $isActive={isActive('/')}>
-                    Dashboard
-                </NavLink>
-                <NavLink to="/chat" $isActive={isActive('/chat')}>
-                    Chat
-                </NavLink>
-                <NavLink to="/routine" $isActive={isActive('/routine')}>
-                    Routine
-                </NavLink>
-                <NavLink to="/quiz" $isActive={isActive('/quiz')}>
-                    Quiz
-                </NavLink>
-                <NavLink to="/tracker" $isActive={isActive('/tracker')}>
-                    Body Tracker
-                </NavLink>
-                <NavLink to="/settings" $isActive={isActive('/settings')}>
-                    Settings
-                </NavLink>
-            </Nav>
-            <Main>{children}</Main>
-        </LayoutContainer>
-    );
+  return (
+    <LayoutContainer>
+      <Nav>
+        <Title>Personal Assistant</Title>
+        <NavLink to="/" $isActive={isActive('/')}>
+          Dashboard
+        </NavLink>
+        <NavLink to="/chat" $isActive={isActive('/chat')}>
+          Chat
+        </NavLink>
+        <NavLink to="/routine" $isActive={isActive('/routine')}>
+          Routine
+        </NavLink>
+        <NavLink to="/quiz" $isActive={isActive('/quiz')}>
+          Quiz
+        </NavLink>
+        <NavLink to="/tracker" $isActive={isActive('/tracker')}>
+          Body Tracker
+        </NavLink>
+        <NavLink to="/settings" $isActive={isActive('/settings')}>
+          Settings
+        </NavLink>
+      </Nav>
+      <Main>{children}</Main>
+    </LayoutContainer>
+  );
 }
 
