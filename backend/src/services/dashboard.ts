@@ -129,7 +129,7 @@ export async function getDashboardData(userId: string): Promise<DashboardData> {
 async function fetchHabitsData(userId: string) {
     try {
         const today = new Date().toISOString().split('T')[0];
-        const response = await fetch('http://localhost:4010/tools/get_habit_status', {
+        const response = await fetch(`${process.env.MCP_HABIT_TRACKER_URL || 'http://localhost:4010'}/tools/get_habit_status`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, date: today })
@@ -254,22 +254,22 @@ async function fetchOuraData(userId: string) {
 
         try {
             const [sleepResponse, readinessResponse, activityResponse, recoveryResponse] = await Promise.all([
-                fetch('http://localhost:4016/tools/get_sleep_data', {
+                fetch(${process.env.MCP_OURA_RING_URL || 'http://localhost:4016'}/tools/get_sleep_data', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ date: today })
                 }),
-                fetch('http://localhost:4016/tools/get_daily_readiness', {
+                fetch(${process.env.MCP_OURA_RING_URL || 'http://localhost:4016'}/tools/get_daily_readiness', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ date: today })
                 }),
-                fetch('http://localhost:4016/tools/get_activity_summary', {
+                fetch(${process.env.MCP_OURA_RING_URL || 'http://localhost:4016'}/tools/get_activity_summary', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ date: today })
                 }),
-                fetch('http://localhost:4016/tools/get_recovery_status', {
+                fetch(${process.env.MCP_OURA_RING_URL || 'http://localhost:4016'}/tools/get_recovery_status', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({})
@@ -287,17 +287,17 @@ async function fetchOuraData(userId: string) {
 
                 // Try yesterday first
                 const [yesterdaySleepResponse, yesterdayReadinessResponse, yesterdayActivityResponse] = await Promise.all([
-                    fetch('http://localhost:4016/tools/get_sleep_data', {
+                    fetch(${process.env.MCP_OURA_RING_URL || 'http://localhost:4016'}/tools/get_sleep_data', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ date: yesterday })
                     }),
-                    fetch('http://localhost:4016/tools/get_daily_readiness', {
+                    fetch(${process.env.MCP_OURA_RING_URL || 'http://localhost:4016'}/tools/get_daily_readiness', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ date: yesterday })
                     }),
-                    fetch('http://localhost:4016/tools/get_activity_summary', {
+                    fetch(${process.env.MCP_OURA_RING_URL || 'http://localhost:4016'}/tools/get_activity_summary', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ date: yesterday })
@@ -312,17 +312,17 @@ async function fetchOuraData(userId: string) {
                 if (!sleepData.data && !readinessData.data) {
                     console.log('Trying January 15th data...');
                     const [jan15SleepResponse, jan15ReadinessResponse, jan15ActivityResponse] = await Promise.all([
-                        fetch('http://localhost:4016/tools/get_sleep_data', {
+                        fetch(${process.env.MCP_OURA_RING_URL || 'http://localhost:4016'}/tools/get_sleep_data', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ date: '2025-01-15' })
                         }),
-                        fetch('http://localhost:4016/tools/get_daily_readiness', {
+                        fetch(${process.env.MCP_OURA_RING_URL || 'http://localhost:4016'}/tools/get_daily_readiness', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ date: '2025-01-15' })
                         }),
-                        fetch('http://localhost:4016/tools/get_activity_summary', {
+                        fetch(${process.env.MCP_OURA_RING_URL || 'http://localhost:4016'}/tools/get_activity_summary', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ date: '2025-01-15' })
@@ -376,7 +376,7 @@ async function fetchOuraData(userId: string) {
 async function fetchScreenTimeData(userId: string) {
     try {
         const today = new Date().toISOString().split('T')[0];
-        const response = await fetch(`http://localhost:4018/screen-time/${userId}/${today}`);
+        const response = await fetch(`${process.env.MCP_SCREEN_TIME_URL || 'http://localhost:4018'}/screen-time/${userId}/${today}`);
         const data = await response.json() as any;
 
         return {
