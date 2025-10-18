@@ -142,7 +142,7 @@ export async function getDashboardData(userId: string): Promise<DashboardData> {
 async function fetchHabitsData(userId: string) {
     try {
         const today = new Date().toISOString().split('T')[0];
-        const response = await fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/habits/status', {
+        const response = await fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/habits/status`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, date: today })
