@@ -17,6 +17,12 @@ import { ouraAuthRouter } from './routes/oura-auth';
 import { chromeExtensionRouter } from './routes/chrome-extension';
 import { notionAuthRouter } from './routes/notion-auth';
 
+// Import MCP routes
+import notionMCPRouter from './routes/mcp/notion';
+import ouraMCPRouter from './routes/mcp/oura';
+import habitsMCPRouter from './routes/mcp/habits';
+import screenTimeMCPRouter from './routes/mcp/screen-time';
+
 // Import scheduled jobs
 import { startScheduledJobs } from './jobs/scheduler';
 
@@ -44,6 +50,12 @@ app.use('/api/chat', chatRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/activity', activityRouter);
 app.use('/api', setupRouter);
+
+// MCP Routes (integrated)
+app.use('/api/mcp/notion', notionMCPRouter);
+app.use('/api/mcp/oura', ouraMCPRouter);
+app.use('/api/mcp/habits', habitsMCPRouter);
+app.use('/api/mcp/screen-time', screenTimeMCPRouter);
 
 // Webhook Routes
 app.use('/webhooks', webhookRouter);
