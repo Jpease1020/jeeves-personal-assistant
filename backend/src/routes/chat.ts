@@ -13,11 +13,25 @@ chatRouter.post('/', async (req, res) => {
             return res.status(400).json({ error: 'Message is required' });
         }
 
-        // Get response from AI agent
-        console.log('📨 Chat route: Calling chatWithAgent...');
-        const response = await chatWithAgent(message, userId || 'default-user');
-        console.log('📨 Chat route: Got response, length:', response.length);
+        // Return mock response for now to test connectivity
+        const mockResponses = {
+            'morning briefing': 'Good morning! Here\'s your personalized briefing:\n\n🌅 **Today\'s Focus**: Complete project proposal\n📊 **Habits**: 2/3 completed yesterday\n⏰ **Schedule**: Team meeting at 10 AM\n💡 **Tip**: Take a 5-minute break every hour',
+            'start routine': 'Let\'s begin your morning routine! Here\'s what we\'ll do:\n\n1. 🧘 5-minute meditation\n2. 💧 Drink a glass of water\n3. 📝 Review today\'s priorities\n4. 🏃 Quick stretch or walk\n\nReady to start?',
+            'spanish quiz': '¡Hola! Let\'s practice your Spanish:\n\n**Question**: How do you say "Good morning" in Spanish?\n\nA) Buenas tardes\nB) Buenos días\nC) Buenas noches\n\nType your answer!',
+            'today\'s priority': 'Based on your schedule and habits, today\'s priority is:\n\n🎯 **Complete the project proposal**\n\nThis aligns with your goal of finishing work tasks by 5 PM. Would you like me to break this down into smaller steps?'
+        };
 
+        const lowerMessage = message.toLowerCase();
+        let response = 'I understand you want help with that. How can I assist you today?';
+        
+        for (const [key, mockResponse] of Object.entries(mockResponses)) {
+            if (lowerMessage.includes(key)) {
+                response = mockResponse;
+                break;
+            }
+        }
+
+        console.log('📨 Chat route: Returning mock response');
         res.json({
             response,
             timestamp: new Date().toISOString()
