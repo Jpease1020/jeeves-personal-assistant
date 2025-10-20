@@ -35,10 +35,10 @@ export class OuraWebhookSubscriptionService {
             clientIdLength: this.clientId.length,
             clientSecretLength: this.clientSecret.length,
             envVars: {
-                OURA_APP_ID: !!process.env.OURA_APP_ID,
-                OURA_APP_SECRET: !!process.env.OURA_APP_SECRET,
-                OURA_API_TOKEN: !!process.env.OURA_API_TOKEN,
-                OURA_WEBHOOK_SECRET: !!process.env.OURA_WEBHOOK_SECRET
+                OURA_APP_ID: process.env.OURA_APP_ID ? 'SET' : 'NOT SET',
+                OURA_APP_SECRET: process.env.OURA_APP_SECRET ? 'SET' : 'NOT SET',
+                OURA_API_TOKEN: process.env.OURA_API_TOKEN ? 'SET' : 'NOT SET',
+                OURA_WEBHOOK_SECRET: process.env.OURA_WEBHOOK_SECRET ? 'SET' : 'NOT SET'
             }
         });
 
