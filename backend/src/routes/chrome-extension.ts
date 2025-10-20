@@ -11,7 +11,7 @@ chromeExtensionRouter.post('/screen-time', async (req, res) => {
 
         // Forward to screen time MCP server
         try {
-            const response = await fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/screen-time/chrome-data', {
+            const response = await fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/screen-time/chrome-data`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,9 +1,6 @@
 /**
- * Enhanced Dashboard service - aggregates data from multiple sources
- * Supports both direct Notion API and official MCP server
+ * Enhanced Dashboard service - aggregates data from multiple sources with fallback mechanisms
  */
-
-import { officialNotionMCP } from './notion-official-mcp';
 
 export interface DashboardData {
     habits: {
@@ -30,113 +27,41 @@ export interface DashboardData {
             title: string;
             dueDate?: string;
             list: string;
-            completed?: boolean;
-            url?: string;
         }>;
-        overdue: Array<{
-            title: string;
-            dueDate: string;
-            list: string;
-        }>;
-    };
-    goals: {
-        greenCardDaysLeft: number;
-        bodyTransformation: {
-            currentWeight?: number;
-            targetWeight?: number;
-            daysIntoChallenge: number;
-        };
-        learningProgress: Array<{
-            subject: string;
-            masteryLevel: number;
-        }>;
-    };
-    currentFocus?: {
-        activity: string;
-        startedAt: string;
-        estimatedEnd?: string;
     };
     oura: {
         sleep: {
             score: number;
-            hours: number;
+            duration: number;
             efficiency: number;
-            quality: string;
-        };
+        } | null;
         readiness: {
             score: number;
-            level: string;
-            recommendation: string;
-        };
+            restingHeartRate: number;
+            heartRateVariability: number;
+        } | null;
         activity: {
             score: number;
+            activeCalories: number;
             steps: number;
-            calories: number;
-        };
+        } | null;
         recovery: {
-            status: string;
-            readyForHeavyLifting: boolean;
-            needsRest: boolean;
-        };
+            score: number;
+            restingHeartRate: number;
+            heartRateVariability: number;
+        } | null;
     };
     screenTime: {
-        totalMinutes: number;
-        focusScore: number;
-        topApps: Array<{
-            name: string;
-            timeSpent: number;
-            pickups: number;
-        }>;
-        distractionPatterns: Array<{
-            timeRange: string;
-            appName: string;
-            duration: number;
-            level: string;
-        }>;
-    };
-    notionIntegration: {
-        method: 'direct-api' | 'official-mcp' | 'both';
+        total: number;
+        productivity: number;
+        apps: Record<string, number>;
+        websites: Record<string, number>;
+    } | null;
+    integrationStatus: {
         directApiWorking: boolean;
         officialMCPWorking: boolean;
-        lastSync: string;
+        method: string;
     };
-}
-
-export async function getDashboardData(userId: string): Promise<DashboardData> {
-    try {
-        // Fetch real data from MCP servers
-        const [habitsData, tasksData, ouraData, screenTimeData, notionStatus] = await Promise.all([
-            fetchHabitsData(userId),
-            fetchTasksDataEnhanced(userId),
-            fetchOuraData(userId),
-            fetchScreenTimeData(userId),
-            checkNotionIntegrationStatus()
-        ]);
-
-        const dashboardData: DashboardData = {
-            habits: habitsData,
-            calendar: {
-                today: [],
-                upcoming: []
-            },
-            tasks: tasksData,
-            goals: {
-                greenCardDaysLeft: 0,
-                bodyTransformation: {
-                    daysIntoChallenge: 0
-                },
-                learningProgress: []
-            },
-            oura: ouraData,
-            screenTime: screenTimeData,
-            notionIntegration: notionStatus
-        };
-
-        return dashboardData;
-    } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-        throw new Error('Failed to fetch dashboard data');
-    }
 }
 
 async function fetchHabitsData(userId: string) {
@@ -148,342 +73,220 @@ async function fetchHabitsData(userId: string) {
             body: JSON.stringify({ userId, date: today })
         });
 
-        const data = await response.json() as any;
-
-        // If we get habits data, return it, otherwise return empty array
-        if (data.habits && Array.isArray(data.habits)) {
-            return {
-                today: data.habits.map((habit: any) => ({
-                    name: habit.habit_name || habit.name,
-                    completed: habit.completed || false,
-                    streak: habit.streak || 0
-                }))
-            };
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        return { today: [] };
+        const data = await response.json() as any;
+        return {
+            today: data.habits || []
+        };
     } catch (error) {
         console.error('Error fetching habits data:', error);
         return { today: [] };
     }
 }
 
+async function fetchCalendarData(userId: string) {
+    try {
+        // Mock calendar data for now
+        return {
+            today: [
+                {
+                    title: 'Team Meeting',
+                    start: '2024-01-15T10:00:00Z',
+                    end: '2024-01-15T11:00:00Z'
+                }
+            ],
+            upcoming: [
+                {
+                    title: 'Project Review',
+                    start: '2024-01-16T14:00:00Z',
+                    end: '2024-01-16T15:30:00Z'
+                }
+            ]
+        };
+    } catch (error) {
+        console.error('Error fetching calendar data:', error);
+        return { today: [], upcoming: [] };
+    }
+}
+
 async function fetchTasksDataEnhanced(userId: string) {
+    let directApiWorking = false;
+    let officialMCPWorking = false;
+    let method = 'none';
+
+    // Try direct Notion API first
     try {
-        // Try both methods and combine results
-        const [directApiTasks, officialMCPTasks] = await Promise.allSettled([
-            fetchTasksDataDirectAPI(userId),
-            fetchTasksDataOfficialMCP(userId)
-        ]);
-
-        let combinedTasks = { priorities: [], overdue: [] };
-
-        // Use direct API results if successful
-        if (directApiTasks.status === 'fulfilled') {
-            combinedTasks = directApiTasks.value;
-            console.log('✅ Using Direct API tasks:', combinedTasks.priorities.length);
-        }
-
-        // If direct API failed, try official MCP
-        if (directApiTasks.status === 'rejected' && officialMCPTasks.status === 'fulfilled') {
-            combinedTasks = officialMCPTasks.value;
-            console.log('✅ Using Official MCP tasks:', combinedTasks.priorities.length);
-        }
-
-        // If both succeeded, prefer direct API but log both
-        if (directApiTasks.status === 'fulfilled' && officialMCPTasks.status === 'fulfilled') {
-            console.log('✅ Both methods working - Direct API:', directApiTasks.value.priorities.length, 'Official MCP:', officialMCPTasks.value.priorities.length);
-        }
-
-        return combinedTasks;
-    } catch (error) {
-        console.error('Error fetching tasks data:', error);
-        return { priorities: [], overdue: [] };
-    }
-}
-
-async function fetchTasksDataDirectAPI(userId: string) {
-    try {
-        // Use the existing Internal Integration
-        const { Client } = await import('@notionhq/client');
-
-        const notion = new Client({
-            auth: process.env.NOTION_API_KEY
+        const response = await fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/notion/tasks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ list_name: 'justin' })
         });
 
-        // Search for TO-DO pages
-        const searchResults = await notion.search({
-            query: 'TO-DO',
-            filter: {
-                property: 'object',
-                value: 'page'
-            }
-        });
-
-        if (searchResults.results.length === 0) {
-            console.log('No TO-DO pages found via Direct API');
-            return { priorities: [], overdue: [] };
+        if (response.ok) {
+            const data = await response.json() as any;
+            directApiWorking = true;
+            method = 'direct_api';
+            return {
+                priorities: data.tasks?.slice(0, 5) || [],
+                status: { directApiWorking: true, officialMCPWorking: false, method: 'direct_api' }
+            };
         }
+    } catch (error) {
+        console.error('Direct Notion API failed:', error);
+    }
 
-        // Get the first TO-DO page
-        const page = searchResults.results[0] as any;
-        const pageId = page.id;
-
-        // Get the page content
-        const blocksResponse = await notion.blocks.children.list({
-            block_id: pageId
-        });
-
-        // Extract tasks from the page content
-        const tasks: any[] = [];
-
-        for (const block of blocksResponse.results) {
-            const blockAny = block as any;
-            if (blockAny.type === 'to_do') {
-                tasks.push({
-                    id: block.id,
-                    title: blockAny.to_do?.rich_text?.[0]?.plain_text || 'Untitled',
-                    status: blockAny.to_do?.checked ? 'Done' : 'Not started',
-                    priority: 'Medium',
-                    dueDate: null,
-                    url: `https://notion.so/${pageId}#${block.id}`,
-                    list: 'justin',
-                    completed: blockAny.to_do?.checked || false
-                });
-            } else if (blockAny.type === 'bulleted_list_item') {
-                tasks.push({
-                    id: block.id,
-                    title: blockAny.bulleted_list_item?.rich_text?.[0]?.plain_text || 'Untitled',
-                    status: 'Not started',
-                    priority: 'Medium',
-                    dueDate: null,
-                    url: `https://notion.so/${pageId}#${block.id}`,
-                    list: 'justin',
-                    completed: false
-                });
-            } else if (blockAny.type === 'numbered_list_item') {
-                tasks.push({
-                    id: block.id,
-                    title: blockAny.numbered_list_item?.rich_text?.[0]?.plain_text || 'Untitled',
-                    status: 'Not started',
-                    priority: 'Medium',
-                    dueDate: null,
-                    url: `https://notion.so/${pageId}#${block.id}`,
-                    list: 'justin',
-                    completed: false
-                });
-            }
-        }
-
+    // Fallback to official MCP server
+    try {
+        // This would use the official Notion MCP server
+        // For now, return empty data
+        officialMCPWorking = false;
+        method = 'official_mcp_fallback';
         return {
-            priorities: tasks.slice(0, 5).map((task: any) => ({
-                title: task.title || task.name,
-                dueDate: task.due_date || task.dueDate,
-                list: task.list || 'justin',
-                completed: task.completed || false,
-                url: task.url
-            })),
-            overdue: []
+            priorities: [],
+            status: { directApiWorking: false, officialMCPWorking: false, method: 'fallback' }
         };
     } catch (error) {
-        console.error('Error fetching tasks data via Direct API:', error);
-        throw error;
+        console.error('Official MCP server failed:', error);
     }
-}
 
-async function fetchTasksDataOfficialMCP(userId: string) {
-    try {
-        return await officialNotionMCP.getTasksFromList('justin');
-    } catch (error) {
-        console.error('Error fetching tasks data via Official MCP:', error);
-        throw error;
-    }
-}
-
-async function checkNotionIntegrationStatus() {
-    try {
-        const [directApiTest, officialMCPTest] = await Promise.allSettled([
-            testDirectAPI(),
-            testOfficialMCP()
-        ]);
-
-        const directApiWorking = directApiTest.status === 'fulfilled';
-        const officialMCPWorking = officialMCPTest.status === 'fulfilled';
-
-        let method: 'direct-api' | 'official-mcp' | 'both';
-        if (directApiWorking && officialMCPWorking) {
-            method = 'both';
-        } else if (directApiWorking) {
-            method = 'direct-api';
-        } else if (officialMCPWorking) {
-            method = 'official-mcp';
-        } else {
-            method = 'direct-api'; // fallback
-        }
-
-        return {
-            method,
-            directApiWorking,
-            officialMCPWorking,
-            lastSync: new Date().toISOString()
-        };
-    } catch (error) {
-        console.error('Error checking Notion integration status:', error);
-        return {
-            method: 'direct-api',
-            directApiWorking: false,
-            officialMCPWorking: false,
-            lastSync: new Date().toISOString()
-        };
-    }
-}
-
-async function testDirectAPI(): Promise<boolean> {
-    try {
-        const { Client } = await import('@notionhq/client');
-        const notion = new Client({ auth: process.env.NOTION_API_KEY });
-        await notion.search({ query: 'test', filter: { property: 'object', value: 'page' } });
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
-async function testOfficialMCP(): Promise<boolean> {
-    try {
-        await officialNotionMCP.initialize();
-        return true;
-    } catch (error) {
-        return false;
-    }
+    return {
+        priorities: [],
+        status: { directApiWorking, officialMCPWorking, method }
+    };
 }
 
 async function fetchOuraData(userId: string) {
     try {
-        // Try to get data from today first, then yesterday if no data
         const today = new Date().toISOString().split('T')[0];
-        const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-
-        // Try today's data first
         let sleepData: any, readinessData: any, activityData: any, recoveryData: any;
 
         try {
             const [sleepResponse, readinessResponse, activityResponse, recoveryResponse] = await Promise.all([
-                fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/sleep', {
+                fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/sleep`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ date: today })
                 }),
-                fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/readiness', {
+                fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/readiness`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ date: today })
                 }),
-                fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/activity', {
+                fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/activity`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ date: today })
                 }),
-                fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/recovery', {
+                fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/recovery`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({})
                 })
             ]);
 
-            sleepData = await sleepResponse.json();
-            readinessData = await readinessResponse.json();
-            activityData = await activityResponse.json();
-            recoveryData = await recoveryResponse.json();
+            sleepData = sleepResponse.ok ? await sleepResponse.json() : null;
+            readinessData = readinessResponse.ok ? await readinessResponse.json() : null;
+            activityData = activityResponse.ok ? await activityResponse.json() : null;
+            recoveryData = recoveryResponse.ok ? await recoveryResponse.json() : null;
+        } catch (error) {
+            console.error('Error fetching Oura data:', error);
+            sleepData = readinessData = activityData = recoveryData = null;
+        }
 
-            // If no data for today, try yesterday and recent dates
-            if (!sleepData.data && !readinessData.data) {
-                console.log('No data for today, trying recent dates...');
+        // Try to get yesterday's data if today's is not available
+        if (!sleepData?.data) {
+            try {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = yesterday.toISOString().split('T')[0];
 
-                // Try yesterday first
                 const [yesterdaySleepResponse, yesterdayReadinessResponse, yesterdayActivityResponse] = await Promise.all([
-                    fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/sleep', {
+                    fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/sleep`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ date: yesterday })
+                        body: JSON.stringify({ date: yesterdayStr })
                     }),
-                    fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/readiness', {
+                    fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/readiness`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ date: yesterday })
+                        body: JSON.stringify({ date: yesterdayStr })
                     }),
-                    fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/activity', {
+                    fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/activity`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ date: yesterday })
+                        body: JSON.stringify({ date: yesterdayStr })
                     })
                 ]);
 
-                sleepData = await yesterdaySleepResponse.json();
-                readinessData = await yesterdayReadinessResponse.json();
-                activityData = await yesterdayActivityResponse.json();
-
-                // If still no data, try January 15th (known data date)
-                if (!sleepData.data && !readinessData.data) {
-                    console.log('Trying January 15th data...');
-                    const [jan15SleepResponse, jan15ReadinessResponse, jan15ActivityResponse] = await Promise.all([
-                        fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/sleep', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ date: '2025-01-15' })
-                        }),
-                        fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/readiness', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ date: '2025-01-15' })
-                        }),
-                        fetch('${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/activity', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ date: '2025-01-15' })
-                        })
-                    ]);
-
-                    sleepData = await jan15SleepResponse.json();
-                    readinessData = await jan15ReadinessResponse.json();
-                    activityData = await jan15ActivityResponse.json();
-                }
+                sleepData = yesterdaySleepResponse.ok ? await yesterdaySleepResponse.json() : null;
+                readinessData = yesterdayReadinessResponse.ok ? await yesterdayReadinessResponse.json() : null;
+                activityData = yesterdayActivityResponse.ok ? await yesterdayActivityResponse.json() : null;
+            } catch (error) {
+                console.error('Error fetching yesterday\'s Oura data:', error);
             }
-        } catch (error) {
-            console.error('Error fetching Oura data:', error);
-            throw error;
+        }
+
+        // Try to get sample data if no real data is available
+        if (!sleepData?.data) {
+            try {
+                const [sampleSleepResponse, sampleReadinessResponse, sampleActivityResponse] = await Promise.all([
+                    fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/sleep`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ date: '2025-01-15' })
+                    }),
+                    fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/readiness`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ date: '2025-01-15' })
+                    }),
+                    fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/oura/activity`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ date: '2025-01-15' })
+                    })
+                ]);
+
+                sleepData = sampleSleepResponse.ok ? await sampleSleepResponse.json() : null;
+                readinessData = sampleReadinessResponse.ok ? await sampleReadinessResponse.json() : null;
+                activityData = sampleActivityResponse.ok ? await sampleActivityResponse.json() : null;
+            } catch (error) {
+                console.error('Error fetching sample Oura data:', error);
+            }
         }
 
         return {
-            sleep: {
-                score: sleepData.data?.sleep_score || 0,
-                hours: sleepData.data?.total_sleep_hours || 0,
-                efficiency: sleepData.data?.efficiency || 0,
-                quality: sleepData.data?.quality || 'No data'
-            },
-            readiness: {
-                score: readinessData.data?.readiness_score || 0,
-                level: readinessData.data?.level || 'No data',
-                recommendation: readinessData.data?.recommendation || 'No data available'
-            },
-            activity: {
-                score: activityData.data?.activity_score || 0,
-                steps: activityData.data?.steps || 0,
-                calories: activityData.data?.active_calories || 0
-            },
-            recovery: {
-                status: recoveryData.data?.status || 'unknown',
-                readyForHeavyLifting: recoveryData.data?.ready_for_heavy_lifting || false,
-                needsRest: recoveryData.data?.needs_rest || true
-            }
+            sleep: sleepData?.data ? {
+                score: sleepData.data.sleepScore || 0,
+                duration: sleepData.data.totalSleepTime || 0,
+                efficiency: sleepData.data.sleepEfficiency || 0
+            } : null,
+            readiness: readinessData?.data ? {
+                score: readinessData.data.readinessScore || 0,
+                restingHeartRate: readinessData.data.restingHeartRate || 0,
+                heartRateVariability: readinessData.data.heartRateVariability || 0
+            } : null,
+            activity: activityData?.data ? {
+                score: activityData.data.activityScore || 0,
+                activeCalories: activityData.data.activeCalories || 0,
+                steps: activityData.data.steps || 0
+            } : null,
+            recovery: recoveryData?.data ? {
+                score: recoveryData.data.recoveryScore || 0,
+                restingHeartRate: recoveryData.data.restingHeartRate || 0,
+                heartRateVariability: recoveryData.data.heartRateVariability || 0
+            } : null
         };
     } catch (error) {
         console.error('Error fetching Oura data:', error);
         return {
-            sleep: { score: 0, hours: 0, efficiency: 0, quality: 'No data' },
-            readiness: { score: 0, level: 'No data', recommendation: 'No data available' },
-            activity: { score: 0, steps: 0, calories: 0 },
-            recovery: { status: 'unknown', readyForHeavyLifting: false, needsRest: true }
+            sleep: null,
+            readiness: null,
+            activity: null,
+            recovery: null
         };
     }
 }
@@ -491,31 +294,45 @@ async function fetchOuraData(userId: string) {
 async function fetchScreenTimeData(userId: string) {
     try {
         const today = new Date().toISOString().split('T')[0];
-        const response = await fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/screen-time/screen-time/${userId}/${today}`);
-        const data = await response.json() as any;
+        const response = await fetch(`${process.env.BACKEND_URL || 'http://localhost:4001'}/api/mcp/screen-time/${userId}/${today}`);
 
-        return {
-            totalMinutes: data.totalScreenTime || 0,
-            focusScore: data.focusScore || 0,
-            topApps: data.appUsage?.slice(0, 3).map((app: any) => ({
-                name: app.appName,
-                timeSpent: app.timeSpent,
-                pickups: app.pickups
-            })) || [],
-            distractionPatterns: data.distractionPatterns?.map((pattern: any) => ({
-                timeRange: pattern.timeRange,
-                appName: pattern.appName,
-                duration: pattern.duration,
-                level: pattern.distractionLevel
-            })) || []
-        };
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json() as any;
+        return data.data ? {
+            total: data.data.totalScreenTime || 0,
+            productivity: data.data.productivityScore || 0,
+            apps: data.data.appBreakdown || {},
+            websites: data.data.websiteBreakdown || {}
+        } : null;
     } catch (error) {
         console.error('Error fetching screen time data:', error);
+        return null;
+    }
+}
+
+export async function getDashboardData(userId: string): Promise<DashboardData> {
+    try {
+        const [habits, calendar, tasksResult, oura, screenTime] = await Promise.all([
+            fetchHabitsData(userId),
+            fetchCalendarData(userId),
+            fetchTasksDataEnhanced(userId),
+            fetchOuraData(userId),
+            fetchScreenTimeData(userId)
+        ]);
+
         return {
-            totalMinutes: 0,
-            focusScore: 0,
-            topApps: [],
-            distractionPatterns: []
+            habits,
+            calendar,
+            tasks: { priorities: tasksResult.priorities },
+            oura,
+            screenTime,
+            integrationStatus: tasksResult.status
         };
+    } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+        throw error;
     }
 }

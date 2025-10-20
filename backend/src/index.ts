@@ -11,11 +11,10 @@ dotenv.config();
 import { chatRouter } from './routes/chat';
 import { dashboardRouter } from './routes/dashboard';
 import { activityRouter } from './routes/activity';
+import notionAIRouter from './routes/notion-ai';
 import { webhookRouter } from './routes/webhooks';
 import setupRouter from './routes/setup';
-import { ouraAuthRouter } from './routes/oura-auth';
 import { chromeExtensionRouter } from './routes/chrome-extension';
-import { notionAuthRouter } from './routes/notion-auth';
 
 // Import MCP routes
 import notionMCPRouter from './routes/mcp/notion';
@@ -38,8 +37,8 @@ app.use(express.json());
 
 // Health check
 app.get('/health', (req, res) => {
-    res.json({ 
-        status: 'ok', 
+    res.json({
+        status: 'ok',
         timestamp: new Date().toISOString(),
         version: '1.0.0'
     });
@@ -49,6 +48,7 @@ app.get('/health', (req, res) => {
 app.use('/api/chat', chatRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/activity', activityRouter);
+app.use('/api', notionAIRouter);
 app.use('/api', setupRouter);
 
 // MCP Routes (integrated)
@@ -60,9 +60,7 @@ app.use('/api/mcp/screen-time', screenTimeMCPRouter);
 // Webhook Routes
 app.use('/webhooks', webhookRouter);
 
-// OAuth Routes
-app.use('/auth', ouraAuthRouter);
-app.use('/auth', notionAuthRouter);
+// OAuth Routes (removed for now; using direct API integrations)
 
 // Chrome Extension Routes
 app.use('/api', chromeExtensionRouter);
