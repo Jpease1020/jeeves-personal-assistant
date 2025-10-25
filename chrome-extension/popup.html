@@ -185,7 +185,20 @@
             background: #f8d7da;
             border-radius: 4px;
             margin-bottom: 12px;
-        }
+
+            .error {
+                background: #f8d7da;
+                color: #721c24;
+                padding: 8px 12px;
+                border-radius: 4px;
+                margin-bottom: 12px;
+                font-size: 12px;
+                border: 1px solid #f5c6cb;
+            }
+
+            .error-icon {
+                margin-right: 6px;
+            }
     </style>
 </head>
 
@@ -207,6 +220,42 @@
         <div class="controls">
             <button id="syncBtn" class="btn btn-primary">Sync Now</button>
             <button id="settingsBtn" class="btn btn-secondary">Settings</button>
+        </div>
+
+        <div class="stats-card">
+            <div style="margin-bottom: 8px; font-weight: 600; color: #2c3e50;">🛡️ Blocking Stats</div>
+            <div class="stat-row">
+                <span class="stat-label">Sites Blocked Today</span>
+                <span id="blockedToday" class="stat-value">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Protected Sites</span>
+                <span id="protectedSites" class="stat-value">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Emergency Unlocks</span>
+                <span id="emergencyUnlocks" class="stat-value">0</span>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <div style="margin-bottom: 8px; font-weight: 600; color: #2c3e50;">⏰ Social Media Limits</div>
+            <div class="stat-row">
+                <span class="stat-label">Facebook</span>
+                <span id="facebookTime" class="stat-value">0/30m</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Instagram</span>
+                <span id="instagramTime" class="stat-value">0/15m</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Twitter</span>
+                <span id="twitterTime" class="stat-value">0/20m</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">YouTube</span>
+                <span id="youtubeTime" class="stat-value">0/60m</span>
+            </div>
         </div>
 
         <div class="stats-card">

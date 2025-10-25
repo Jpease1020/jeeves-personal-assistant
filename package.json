@@ -3,11 +3,10 @@
     "version": "1.0.0",
     "description": "AI-powered personal assistant for ADHD, habits, and life goals",
     "scripts": {
-        "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install && cd ../mcp-servers/habit-tracker && npm install && cd ../calendar && npm install && cd ../notion && npm install && cd ../quiz && npm install && cd ../morning-routine && npm install && cd ../activity-tracker && npm install && cd ../oura-ring && npm install && cd ../google-sheets && npm install",
-        "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:mcp\"",
+        "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+        "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
         "dev:frontend": "cd frontend && npm run dev",
         "dev:backend": "cd backend && npm run dev",
-        "dev:mcp": "concurrently \"cd mcp-servers/habit-tracker && npm run dev\" \"cd mcp-servers/calendar && npm run dev\" \"cd mcp-servers/notion && npm run dev\" \"cd mcp-servers/quiz && npm run dev\" \"cd mcp-servers/morning-routine && npm run dev\" \"cd mcp-servers/activity-tracker && npm run dev\" \"cd mcp-servers/oura-ring && npm run dev\" \"cd mcp-servers/google-sheets && npm run dev\" \"cd mcp-servers/screen-time && npm run dev\"",
         "build": "cd frontend && npm run build && cd ../backend && npm run build",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

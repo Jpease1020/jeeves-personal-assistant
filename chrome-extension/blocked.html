@@ -97,6 +97,19 @@
             transform: translateY(-2px);
         }
 
+        .btn-emergency {
+            background: rgba(220, 38, 38, 0.8);
+            color: white;
+            border: 2px solid rgba(220, 38, 38, 0.6);
+            font-weight: 600;
+        }
+
+        .btn-emergency:hover {
+            background: rgba(220, 38, 38, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
         .stats {
             margin-top: 40px;
             padding: 20px;
@@ -119,6 +132,61 @@
             margin-top: 24px;
             font-style: italic;
             opacity: 0.8;
+            text-align: center;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .breathing-exercise {
+            margin-top: 20px;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .breathing-exercise h3 {
+            margin: 0 0 16px 0;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .breath-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .breath-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: breathe 3s infinite;
+        }
+
+        .breath-dot:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .breath-dot:nth-child(3) {
+            animation-delay: 2s;
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(1);
+            }
+
+            50% {
+                background: rgba(255, 255, 255, 0.8);
+                transform: scale(1.3);
+            }
         }
 
         @media (max-width: 600px) {
@@ -160,9 +228,102 @@
             Your Personal Assistant is working to protect your time and mental well-being.
         </div>
 
+        <div id="timeLimitInfo"
+            style="display: none; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); padding: 20px; border-radius: 12px; margin: 20px 0; backdrop-filter: blur(10px);">
+            <h3 style="margin-top: 0; color: #ffd700;">⏰ Daily Time Limit Reached</h3>
+            <p id="timeLimitMessage">You've reached your daily time limit for this site.</p>
+            <div style="display: flex; justify-content: space-between; margin: 15px 0;">
+                <div><strong>Time used today:</strong> <span id="timeUsed" style="color: #ff6b6b;">0</span> minutes
+                </div>
+                <div><strong>Daily limit:</strong> <span id="dailyLimit" style="color: #4ecdc4;">0</span> minutes</div>
+            </div>
+            <p style="font-style: italic; opacity: 0.8; margin-bottom: 0;">Limits reset at midnight.</p>
+        </div>
+
+        <div id="workHoursInfo"
+            style="display: none; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); padding: 20px; border-radius: 12px; margin: 20px 0; backdrop-filter: blur(10px);">
+            <h3 style="margin-top: 0; color: #ffc107;">🕐 Work Hours Block</h3>
+            <p id="workHoursMessage">This content is blocked during work hours (8 AM - 6 PM).</p>
+            <div style="margin: 15px 0;">
+                <div><strong>Subreddit:</strong> <span id="blockedSubreddit" style="color: #ff6b6b;">r/unknown</span>
+                </div>
+                <div><strong>Reason:</strong> <span id="blockReason" style="color: #4ecdc4;">Distracting content</span>
+                </div>
+            </div>
+            <p style="font-style: italic; opacity: 0.8; margin-bottom: 0;">Available after 6 PM or on weekends.</p>
+        </div>
+
+        <div id="redditNotLoggedInInfo"
+            style="display: none; background: rgba(255, 87, 51, 0.1); border: 1px solid rgba(255, 87, 51, 0.3); padding: 20px; border-radius: 12px; margin: 20px 0; backdrop-filter: blur(10px);">
+            <h3 style="margin-top: 0; color: #ff5733;">🔒 Reddit Login Required</h3>
+            <p>Reddit is blocked when you're not logged in because Reddit's adult content protection doesn't work for
+                anonymous users.</p>
+            <div style="margin: 15px 0;">
+                <div><strong>Reason:</strong> <span style="color: #ff6b6b;">Adult content protection disabled for
+                        anonymous users</span></div>
+                <div><strong>Solution:</strong> <span style="color: #4ecdc4;">Log into Reddit to enable adult content
+                        blocking</span></div>
+            </div>
+            <p style="font-style: italic; opacity: 0.8; margin-bottom: 0;">This protects you from accidentally viewing
+                adult content.</p>
+        </div>
+
+        <div id="redditBlockedInfo"
+            style="display: none; background: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.3); padding: 20px; border-radius: 12px; margin: 20px 0; backdrop-filter: blur(10px);">
+            <h3 style="margin-top: 0; color: #dc3545;">🚫 Reddit Completely Blocked</h3>
+            <p>Reddit has been completely blocked by your Personal Assistant extension.</p>
+            <div style="margin: 15px 0;">
+                <div><strong>Reason:</strong> <span style="color: #ff6b6b;">Nuclear option enabled</span></div>
+                <div><strong>Setting:</strong> <span style="color: #4ecdc4;">BLOCK_REDDIT_ALWAYS = true</span></div>
+            </div>
+            <p style="font-style: italic; opacity: 0.8; margin-bottom: 0;">This is the most restrictive Reddit blocking
+                option.</p>
+        </div>
+
+        <div id="textAnalysisInfo"
+            style="display: none; background: rgba(255, 99, 132, 0.1); border: 1px solid rgba(255, 99, 132, 0.3); padding: 20px; border-radius: 12px; margin: 20px 0; backdrop-filter: blur(10px);">
+            <h3 style="margin-top: 0; color: #ff6384;">📝 Text Analysis Block</h3>
+            <p>Adult content was detected in the page text using advanced analysis.</p>
+            <div style="margin: 15px 0;">
+                <div><strong>Analysis:</strong> <span style="color: #ff6b6b;">Text content flagged as adult</span></div>
+                <div><strong>Flagged Terms:</strong> <span id="flaggedTerms" style="color: #4ecdc4;">Loading...</span>
+                </div>
+            </div>
+            <p style="font-style: italic; opacity: 0.8; margin-bottom: 0;">This page contains text that matches adult
+                content patterns.</p>
+        </div>
+
+        <div id="imageAnalysisInfo"
+            style="display: none; background: rgba(255, 159, 64, 0.1); border: 1px solid rgba(255, 159, 64, 0.3); padding: 20px; border-radius: 12px; margin: 20px 0; backdrop-filter: blur(10px);">
+            <h3 style="margin-top: 0; color: #ff9f40;">🖼️ Image Analysis Block</h3>
+            <p>Adult images were detected on this page using advanced analysis.</p>
+            <div style="margin: 15px 0;">
+                <div><strong>Analysis:</strong> <span style="color: #ff6b6b;">Images flagged as adult content</span>
+                </div>
+                <div><strong>Images Flagged:</strong> <span id="imagesFlagged" style="color: #4ecdc4;">Loading...</span>
+                </div>
+            </div>
+            <p style="font-style: italic; opacity: 0.8; margin-bottom: 0;">This page contains images that match adult
+                content patterns.</p>
+        </div>
+
+        <div id="behavioralBlockInfo"
+            style="display: none; background: rgba(75, 192, 192, 0.1); border: 1px solid rgba(75, 192, 192, 0.3); padding: 20px; border-radius: 12px; margin: 20px 0; backdrop-filter: blur(10px);">
+            <h3 style="margin-top: 0; color: #4bc0c0;">🧠 Behavioral Pattern Block</h3>
+            <p>This site was blocked based on your browsing behavior patterns.</p>
+            <div style="margin: 15px 0;">
+                <div><strong>Pattern:</strong> <span style="color: #ff6b6b;">Suspicious browsing behavior
+                        detected</span></div>
+                <div><strong>Risk Level:</strong> <span id="riskLevel" style="color: #4ecdc4;">High</span></div>
+            </div>
+            <p style="font-style: italic; opacity: 0.8; margin-bottom: 0;">Your browsing pattern suggests you may be
+                seeking adult content.</p>
+        </div>
+
         <div class="actions">
             <button class="btn btn-primary" onclick="goBack()">Go Back</button>
             <a href="https://www.google.com" class="btn btn-secondary">Search Google</a>
+            <button class="btn btn-emergency" onclick="showEmergencyUnlock()">🚨 Emergency Unlock</button>
         </div>
 
         <div class="stats">
@@ -181,15 +342,120 @@
         </div>
 
         <div class="motivation">
-            "The best time to plant a tree was 20 years ago. The second best time is now."
+            <div id="motivationalQuote">"The best time to plant a tree was 20 years ago. The second best time is now."
+            </div>
+        </div>
+
+        <div class="breathing-exercise">
+            <h3>Take a moment to breathe</h3>
+            <div class="breath-indicators">
+                <div class="breath-dot"></div>
+                <div class="breath-dot"></div>
+                <div class="breath-dot"></div>
+            </div>
+            <p>Breathe in... hold... breathe out...</p>
         </div>
     </div>
 
+    <script src="unlock-modal.js"></script>
     <script>
+        // Motivational quotes for rotation
+        const motivationalQuotes = [
+            "The best time to plant a tree was 20 years ago. The second best time is now.",
+            "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+            "The only way to do great work is to love what you do.",
+            "Your limitation—it's only your imagination.",
+            "Push yourself, because no one else is going to do it for you.",
+            "Great things never come from comfort zones.",
+            "Dream it. Wish it. Do it.",
+            "Success doesn't just find you. You have to go out and get it.",
+            "The harder you work for something, the greater you'll feel when you achieve it.",
+            "Dream bigger. Do bigger.",
+            "Don't stop when you're tired. Stop when you're done.",
+            "Wake up with determination. Go to bed with satisfaction.",
+            "Do something today that your future self will thank you for.",
+            "Little things make big days.",
+            "It's going to be hard, but hard does not mean impossible.",
+            "Don't wait for opportunity. Create it.",
+            "Sometimes we're tested not to show our weaknesses, but to discover our strengths.",
+            "The key to success is to focus on goals, not obstacles.",
+            "Dream it. Believe it. Build it.",
+            "What lies in you is stronger than what lies on you."
+        ];
+
         // Get blocked site from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const blockedSite = urlParams.get('site') || 'this site';
+        const originalUrl = urlParams.get('url') || '';
+        const blockType = urlParams.get('type') || 'porn';
+
         document.getElementById('blockedSite').textContent = blockedSite;
+
+        // Check if this is a social media time limit block
+        if (blockType === 'social_media') {
+            showTimeLimitInfo(blockedSite);
+        } else if (blockType === 'work_hours') {
+            showWorkHoursInfo(blockedSite);
+        } else if (blockType === 'reddit_not_logged_in') {
+            showRedditNotLoggedInInfo(blockedSite);
+        } else if (blockType === 'reddit_blocked') {
+            showRedditBlockedInfo(blockedSite);
+        } else if (blockType === 'text_analysis') {
+            showTextAnalysisInfo(blockedSite);
+        } else if (blockType === 'image_analysis') {
+            showImageAnalysisInfo(blockedSite);
+        } else if (blockType === 'behavioral_block') {
+            showBehavioralBlockInfo(blockedSite);
+        }
+
+        // Show time limit information for social media blocks
+        function showTimeLimitInfo(site) {
+            const timeLimitInfo = document.getElementById('timeLimitInfo');
+            const timeUsed = document.getElementById('timeUsed');
+            const dailyLimit = document.getElementById('dailyLimit');
+
+            // Social media limits (in minutes)
+            const limits = {
+                'facebook.com': 30,
+                'instagram.com': 15,
+                'twitter.com': 20,
+                'threads.net': 10,
+                'tiktok.com': 20,
+                'youtube.com': 60,
+                'reddit.com': 30,
+                'snapchat.com': 15,
+                'discord.com': 45,
+                'twitch.tv': 30,
+                'pinterest.com': 20,
+                'linkedin.com': 15
+            };
+
+            const limit = limits[site] || 30;
+            const timeUsedValue = Math.round(limit + 1); // Show slightly over limit
+
+            timeUsed.textContent = timeUsedValue;
+            dailyLimit.textContent = limit;
+
+            timeLimitInfo.style.display = 'block';
+
+            // Update the main message
+            document.querySelector('.message').innerHTML = `
+                You've reached your daily time limit for <strong>${site}</strong>.
+                This helps you stay focused and maintain healthy social media habits.
+            `;
+        }
+
+        // Rotate motivational quotes every 5 seconds
+        let quoteIndex = 0;
+        function rotateQuote() {
+            const quoteElement = document.getElementById('motivationalQuote');
+            quoteElement.textContent = motivationalQuotes[quoteIndex];
+            quoteIndex = (quoteIndex + 1) % motivationalQuotes.length;
+        }
+
+        // Start quote rotation
+        rotateQuote();
+        setInterval(rotateQuote, 5000);
 
         // Load stats
         loadStats();
@@ -200,6 +466,32 @@
                 window.history.back();
             } else {
                 window.location.href = 'https://www.google.com';
+            }
+        }
+
+        // Show emergency unlock modal
+        function showEmergencyUnlock() {
+            if (typeof emergencyUnlock !== 'undefined') {
+                emergencyUnlock.show(blockedSite, originalUrl);
+            } else {
+                // Fallback if modal script didn't load
+                const reason = prompt('Why do you need to access this site? (This will be logged)');
+                if (reason && reason.length >= 20) {
+                    // Send unlock request
+                    chrome.runtime.sendMessage({
+                        action: 'temporaryUnlock',
+                        domain: blockedSite,
+                        reason: reason
+                    }, (response) => {
+                        if (response && response.success) {
+                            window.location.href = originalUrl;
+                        } else {
+                            alert('Failed to unlock site. Please try again.');
+                        }
+                    });
+                } else if (reason) {
+                    alert('Please provide a more detailed reason (at least 20 characters).');
+                }
             }
         }
 
@@ -237,6 +529,147 @@
                 goBack();
             }
         });
+
+        // Show work hours block information
+        function showWorkHoursInfo(site) {
+            const workHoursInfo = document.getElementById('workHoursInfo');
+            const blockedSubreddit = document.getElementById('blockedSubreddit');
+            const blockReason = document.getElementById('blockReason');
+
+            // Extract subreddit from URL if available
+            const urlParams = new URLSearchParams(window.location.search);
+            const originalUrl = urlParams.get('url') || '';
+            let subreddit = 'unknown';
+
+            if (originalUrl.includes('/r/')) {
+                const match = originalUrl.match(/\/r\/([^\/]+)/);
+                if (match) {
+                    subreddit = match[1];
+                }
+            }
+
+            blockedSubreddit.textContent = `r/${subreddit}`;
+            blockReason.textContent = 'Distracting during work hours';
+
+            workHoursInfo.style.display = 'block';
+
+            // Update the main message
+            document.querySelector('.message').innerHTML = `
+                <strong>r/${subreddit}</strong> is blocked during work hours (8 AM - 6 PM).
+                This helps you stay focused on productive tasks during the day.
+            `;
+        }
+
+        // Show Reddit not logged in information
+        function showRedditNotLoggedInInfo(site) {
+            const redditNotLoggedInInfo = document.getElementById('redditNotLoggedInInfo');
+            redditNotLoggedInInfo.style.display = 'block';
+
+            // Update the main message
+            document.querySelector('.message').innerHTML = `
+                Reddit is blocked because you're not logged in.
+                Reddit's adult content protection only works for logged-in users.
+            `;
+        }
+
+        // Show Reddit completely blocked information
+        function showRedditBlockedInfo(site) {
+            const redditBlockedInfo = document.getElementById('redditBlockedInfo');
+            redditBlockedInfo.style.display = 'block';
+
+            // Update the main message
+            document.querySelector('.message').innerHTML = `
+                Reddit has been completely blocked by your Personal Assistant extension.
+                This is the most restrictive Reddit blocking option.
+            `;
+        }
+
+        // Show text analysis block information
+        function showTextAnalysisInfo(site) {
+            const textAnalysisInfo = document.getElementById('textAnalysisInfo');
+            const flaggedTerms = document.getElementById('flaggedTerms');
+
+            // Get flagged terms from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const details = urlParams.get('details');
+
+            if (details) {
+                try {
+                    const terms = JSON.parse(decodeURIComponent(details));
+                    flaggedTerms.textContent = terms.slice(0, 3).join(', ') + (terms.length > 3 ? '...' : '');
+                } catch (error) {
+                    flaggedTerms.textContent = 'Unable to load details';
+                }
+            } else {
+                flaggedTerms.textContent = 'No details available';
+            }
+
+            textAnalysisInfo.style.display = 'block';
+
+            // Update the main message
+            document.querySelector('.message').innerHTML = `
+                Adult content was detected in the page text using advanced analysis.
+                This page contains text that matches adult content patterns.
+            `;
+        }
+
+        // Show image analysis block information
+        function showImageAnalysisInfo(site) {
+            const imageAnalysisInfo = document.getElementById('imageAnalysisInfo');
+            const imagesFlagged = document.getElementById('imagesFlagged');
+
+            // Get image analysis details from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const details = urlParams.get('details');
+
+            if (details) {
+                try {
+                    const analysis = JSON.parse(decodeURIComponent(details));
+                    imagesFlagged.textContent = `${analysis.adultImages}/${analysis.totalImages} images flagged`;
+                } catch (error) {
+                    imagesFlagged.textContent = 'Unable to load details';
+                }
+            } else {
+                imagesFlagged.textContent = 'No details available';
+            }
+
+            imageAnalysisInfo.style.display = 'block';
+
+            // Update the main message
+            document.querySelector('.message').innerHTML = `
+                Adult images were detected on this page using advanced analysis.
+                This page contains images that match adult content patterns.
+            `;
+        }
+
+        // Show behavioral block information
+        function showBehavioralBlockInfo(site) {
+            const behavioralBlockInfo = document.getElementById('behavioralBlockInfo');
+            const riskLevel = document.getElementById('riskLevel');
+
+            // Get behavioral analysis details from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const details = urlParams.get('details');
+
+            if (details) {
+                try {
+                    const analysis = JSON.parse(decodeURIComponent(details));
+                    riskLevel.textContent = analysis.riskLevel || 'High';
+                } catch (error) {
+                    riskLevel.textContent = 'High';
+                }
+            } else {
+                riskLevel.textContent = 'High';
+            }
+
+            behavioralBlockInfo.style.display = 'block';
+
+            // Update the main message
+            document.querySelector('.message').innerHTML = `
+                This site was blocked based on your browsing behavior patterns.
+                Your browsing pattern suggests you may be seeking adult content.
+            `;
+        }
     </script>
 </body>
 

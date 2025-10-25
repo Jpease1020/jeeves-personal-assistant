@@ -9,7 +9,9 @@
         "tabs",
         "webNavigation",
         "declarativeNetRequest",
-        "alarms"
+        "alarms",
+        "scripting",
+        "webRequest"
     ],
     "host_permissions": [
         "<all_urls>"
@@ -44,7 +46,14 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "blocked.html"
+                "blocked.html",
+                "unlock-modal.js",
+                "settings.html",
+                "blocklists/*.json",
+                "text-analyzer.js",
+                "behavioral-detector.js",
+                "image-analyzer.js",
+                "accountability-manager.js"
             ],
             "matches": [
                 "<all_urls>"

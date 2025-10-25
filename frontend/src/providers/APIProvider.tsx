@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4001';
+const API_URL = import.meta.env.VITE_API_URL || 'https://personal-assistant-backend-production.up.railway.app';
 
 interface APIContextType {
     sendMessage: (message: string) => Promise<string>;

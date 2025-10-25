@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Personal Assistant - Settings</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .header p {
+            margin: 8px 0 0 0;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .section h2 {
+            margin: 0 0 20px 0;
+            color: #374151;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .setting-group {
+            margin-bottom: 24px;
+        }
+
+        .setting-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .setting-description {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #d1d5db;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle.active {
+            background: #3b82f6;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle.active::after {
+            transform: translateX(26px);
+        }
+
+        .select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3b82f6;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 12px;
+            margin-bottom: 12px;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Personal Assistant Settings</h1>
+            <p>Configure your productivity and blocking preferences</p>
+        </div>
+
+        <div class="content">
+            <div id="loading" class="loading">
+                Loading settings...
+            </div>
+
+            <div id="settings-content" style="display: none;">
+                <!-- Blocking Settings -->
+                <div class="section">
+                    <h2>🛡️ Blocking Settings</h2>
+                    
+                    <div class="setting-group">
+                        <label class="setting-label">Blocking Mode</label>
+                        <div class="setting-description">
+                            Choose how strict the blocking should be
+                        </div>
+                        <select id="blockingMode" class="select">
+                            <option value="strict">Strict (Porn sites only)</option>
+                            <option value="moderate">Moderate (Porn + Adult themes + Dating)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <div class="toggle-container">
+                            <div id="trackingToggle" class="toggle active"></div>
+                            <label class="setting-label">Enable Tracking & Blocking</label>
+                        </div>
+                        <div class="setting-description">
+                            Track website usage and block inappropriate content
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <div class="toggle-container">
+                            <div id="emergencyUnlockToggle" class="toggle active"></div>
+                            <label class="setting-label">Enable Emergency Unlock</label>
+                        </div>
+                        <div class="setting-description">
+                            Allow temporary unlock with reason and timer
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="section">
+                    <h2>📊 Your Statistics</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div id="totalBlocked" class="stat-value">0</div>
+                            <div class="stat-label">Sites Blocked Today</div>
+                        </div>
+                        <div class="stat-card">
+                            <div id="totalUnlocks" class="stat-value">0</div>
+                            <div class="stat-label">Emergency Unlocks</div>
+                        </div>
+                        <div class="stat-card">
+                            <div id="streakDays" class="stat-value">0</div>
+                            <div class="stat-label">Day Streak</div>
+                        </div>
+                        <div class="stat-card">
+                            <div id="blocklistSize" class="stat-value">0</div>
+                            <div class="stat-label">Protected Sites</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="section">
+                    <h2>🔧 Actions</h2>
+                    
+                    <button id="syncBtn" class="btn btn-primary">Sync Data Now</button>
+                    <button id="reloadBlocklistBtn" class="btn btn-secondary">Reload Blocklist</button>
+                    <button id="exportReportBtn" class="btn btn-secondary">Export Report</button>
+                    <button id="resetStatsBtn" class="btn btn-danger">Reset Statistics</button>
+                </div>
+
+                <!-- Blocklist Info -->
+                <div class="section">
+                    <h2>📋 Blocklist Information</h2>
+                    <div class="setting-group">
+                        <div class="setting-description">
+                            <strong>Last Updated:</strong> <span id="lastUpdated">Loading...</span><br>
+                            <strong>Total Domains:</strong> <span id="totalDomains">Loading...</span><br>
+                            <strong>Categories:</strong> <span id="categories">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+</html>
