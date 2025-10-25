@@ -1,340 +1,217 @@
-// Background service worker for Personal Assistant Chrome Extension
+// Simplified background script for Personal Assistant Chrome Extension
 
 // Configuration
 const CONFIG = {
-    API_BASE_URL: 'http://localhost:4001',
+    API_BASE_URL: 'https://personal-assistant-backend-production.up.railway.app',
     USER_ID: 'e7c8419d-9c8c-4c09-b8d3-e9caf81e8ae4',
     SYNC_INTERVAL: 5 * 60 * 1000, // 5 minutes
     TRACKING_INTERVAL: 1000, // 1 second
 };
 
-// Distracting websites to track
-const DISTRACTING_SITES = [
-    'instagram.com',
-    'facebook.com',
-    'twitter.com',
-    'tiktok.com',
-    'youtube.com',
-    'reddit.com',
-    'netflix.com',
-    'hulu.com',
-    'disneyplus.com'
-];
+// Basic blocking data
+let BLOCKED_DOMAINS = new Set();
+let MODERATE_DOMAINS = new Set();
+let TEMPORARY_WHITELIST = new Set();
 
-// Adult sites to block
-const ADULT_SITES = [
-    'pornhub.com',
-    'xvideos.com',
-    'xnxx.com',
-    'redtube.com',
-    'youporn.com',
-    'tube8.com',
-    'beeg.com',
-    'xhamster.com',
-    'xtube.com',
-    'chaturbate.com',
-    'livejasmin.com',
-    'myfreecams.com'
-];
+// Social media time limits (in minutes)
+const SOCIAL_MEDIA_LIMITS = {
+    'facebook.com': 15,
+    'instagram.com': 20,
+    'twitter.com': 10,
+    'youtube.com': 30,
+    'tiktok.com': 10,
+    'reddit.com': 20
+};
 
-// Global state
-let currentTab = null;
-let startTime = null;
-let isTracking = true;
-let dailyStats = {};
+// Track social media time
+let socialMediaTime = {};
 
-// Initialize extension
-chrome.runtime.onInstalled.addListener(async () => {
+// Initialize
+chrome.runtime.onInstalled.addListener(() => {
     console.log('Personal Assistant extension installed');
-
-    // Load existing data
-    const result = await chrome.storage.local.get(['dailyStats', 'isTracking']);
-    dailyStats = result.dailyStats || {};
-    isTracking = result.isTracking !== false;
-
-    // Set up tracking alarm
-    chrome.alarms.create('tracking', { periodInMinutes: 1 });
-
-    // Set up sync alarm
-    chrome.alarms.create('sync', { periodInMinutes: 5 });
-
-    // Update blocked sites rules
-    await updateBlockedSitesRules();
+    loadBlocklist();
+    resetDailySocialMediaLimits();
 });
 
-// Handle tab changes
-chrome.tabs.onActivated.addListener(async (activeInfo) => {
-    await handleTabChange(activeInfo.tabId);
+chrome.runtime.onStartup.addListener(() => {
+    console.log('Personal Assistant extension started');
+    loadBlocklist();
+    resetDailySocialMediaLimits();
 });
 
-chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-    if (changeInfo.status === 'complete' && tab.active) {
-        await handleTabChange(tabId);
-    }
-});
-
-// Handle tab change
-async function handleTabChange(tabId) {
+// Load blocklist
+async function loadBlocklist() {
     try {
-        // Stop tracking previous tab
-        if (currentTab && startTime) {
-            await recordTimeSpent(currentTab, Date.now() - startTime);
+        const response = await fetch(chrome.runtime.getURL('rules.json'));
+        const data = await response.json();
+        
+        BLOCKED_DOMAINS.clear();
+        MODERATE_DOMAINS.clear();
+        
+        // Load blocked domains
+        if (data.blocked) {
+            data.blocked.forEach(domain => BLOCKED_DOMAINS.add(domain));
         }
-
-        // Get new tab info
-        const tab = await chrome.tabs.get(tabId);
-        currentTab = tab;
-        startTime = Date.now();
-
-        // Check if site should be blocked
-        if (isTracking && shouldBlockSite(tab.url)) {
-            await blockSite(tabId, tab.url);
+        
+        // Load moderate domains
+        if (data.moderate) {
+            data.moderate.forEach(domain => MODERATE_DOMAINS.add(domain));
         }
-
+        
+        console.log(`Loaded ${BLOCKED_DOMAINS.size} blocked domains and ${MODERATE_DOMAINS.size} moderate domains`);
     } catch (error) {
-        console.error('Error handling tab change:', error);
+        console.error('Error loading blocklist:', error);
     }
 }
 
 // Check if site should be blocked
 function shouldBlockSite(url) {
-    if (!url) return false;
-
     try {
-        const domain = new URL(url).hostname.toLowerCase();
-        return ADULT_SITES.some(site => domain.includes(site));
-    } catch {
+        const hostname = new URL(url).hostname.toLowerCase();
+        
+        // Check temporary whitelist first
+        if (TEMPORARY_WHITELIST.has(hostname)) {
+            return false;
+        }
+        
+        // Check blocked domains
+        if (BLOCKED_DOMAINS.has(hostname)) {
+            return { blocked: true, reason: 'Blocked domain', type: 'blocked' };
+        }
+        
+        // Check moderate domains
+        if (MODERATE_DOMAINS.has(hostname)) {
+            return { blocked: true, reason: 'Moderate content', type: 'moderate' };
+        }
+        
+        return false;
+    } catch (error) {
+        console.error('Error checking site:', error);
         return false;
     }
 }
 
-// Block a site
-async function blockSite(tabId, url) {
-    try {
-        const domain = new URL(url).hostname;
+// Block site
+function blockSite(url, blockType = 'blocked', details = '') {
+    const blockedUrl = chrome.runtime.getURL(`blocked.html?url=${encodeURIComponent(url)}&type=${blockType}&details=${encodeURIComponent(details)}`);
+    chrome.tabs.update({ url: blockedUrl });
+}
 
-        // Redirect to blocked page
-        await chrome.tabs.update(tabId, {
-            url: chrome.runtime.getURL('blocked.html') + '?site=' + encodeURIComponent(domain)
-        });
+// Handle tab changes
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === 'complete' && tab.url) {
+        const blockResult = shouldBlockSite(tab.url);
+        if (blockResult) {
+            blockSite(tab.url, blockResult.type, blockResult.reason);
+        }
+    }
+});
 
-        // Log the block attempt
-        console.log(`Blocked access to: ${domain}`);
+// Handle navigation
+chrome.webNavigation.onBeforeNavigate.addListener((details) => {
+    if (details.frameId === 0) { // Main frame only
+        const blockResult = shouldBlockSite(details.url);
+        if (blockResult) {
+            blockSite(details.url, blockResult.type, blockResult.reason);
+        }
+    }
+});
 
-        // Send notification to backend
-        await sendBlockEvent(domain);
-
-    } catch (error) {
-        console.error('Error blocking site:', error);
+// Social media time tracking
+function trackSocialMediaTime(url) {
+    const hostname = new URL(url).hostname.toLowerCase();
+    if (SOCIAL_MEDIA_LIMITS[hostname]) {
+        const now = Date.now();
+        if (!socialMediaTime[hostname]) {
+            socialMediaTime[hostname] = { startTime: now, totalTime: 0 };
+        }
+        
+        const timeSpent = now - socialMediaTime[hostname].startTime;
+        socialMediaTime[hostname].totalTime += timeSpent;
+        socialMediaTime[hostname].startTime = now;
+        
+        // Check if limit exceeded
+        const limitMs = SOCIAL_MEDIA_LIMITS[hostname] * 60 * 1000;
+        if (socialMediaTime[hostname].totalTime > limitMs) {
+            blockSite(url, 'timeLimit', `Daily limit of ${SOCIAL_MEDIA_LIMITS[hostname]} minutes exceeded`);
+        }
     }
 }
 
-// Record time spent on a site
-async function recordTimeSpent(tab, timeSpent) {
-    if (!tab.url || timeSpent < 1000) return; // Ignore very short visits
-
-    try {
-        const domain = new URL(tab.url).hostname.toLowerCase();
-        const today = new Date().toISOString().split('T')[0];
-
-        // Initialize daily stats if needed
-        if (!dailyStats[today]) {
-            dailyStats[today] = {
-                totalTime: 0,
-                sites: {},
-                distractingTime: 0,
-                productiveTime: 0
-            };
-        }
-
-        // Update stats
-        dailyStats[today].totalTime += timeSpent;
-
-        if (!dailyStats[today].sites[domain]) {
-            dailyStats[today].sites[domain] = 0;
-        }
-        dailyStats[today].sites[domain] += timeSpent;
-
-        // Categorize time
-        if (DISTRACTING_SITES.some(site => domain.includes(site))) {
-            dailyStats[today].distractingTime += timeSpent;
-        } else {
-            dailyStats[today].productiveTime += timeSpent;
-        }
-
-        // Save to storage
-        await chrome.storage.local.set({ dailyStats });
-
-        console.log(`Recorded ${Math.round(timeSpent / 1000)}s on ${domain}`);
-
-    } catch (error) {
-        console.error('Error recording time:', error);
-    }
+// Reset daily limits
+function resetDailySocialMediaLimits() {
+    socialMediaTime = {};
+    chrome.alarms.create('dailyReset', { when: getNextMidnight() });
 }
 
-// Update blocked sites rules
-async function updateBlockedSitesRules() {
-    try {
-        const rules = ADULT_SITES.map((site, index) => ({
-            id: index + 1,
-            priority: 1,
-            action: {
-                type: "redirect",
-                redirect: {
-                    url: chrome.runtime.getURL('blocked.html') + '?site=' + encodeURIComponent(site)
-                }
-            },
-            condition: {
-                urlFilter: `*://${site}/*`,
-                resourceTypes: ["main_frame"]
-            }
-        }));
-
-        // Clear existing rules
-        const existingRules = await chrome.declarativeNetRequest.getDynamicRules();
-        const ruleIdsToRemove = existingRules.map(rule => rule.id);
-
-        if (ruleIdsToRemove.length > 0) {
-            await chrome.declarativeNetRequest.updateDynamicRules({
-                removeRuleIds: ruleIdsToRemove
-            });
-        }
-
-        // Add new rules
-        await chrome.declarativeNetRequest.updateDynamicRules({
-            addRules: rules
-        });
-
-        console.log(`Updated ${rules.length} blocking rules`);
-
-    } catch (error) {
-        console.error('Error updating blocking rules:', error);
-    }
+function getNextMidnight() {
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0);
+    return midnight.getTime();
 }
 
 // Handle alarms
-chrome.alarms.onAlarm.addListener(async (alarm) => {
-    if (alarm.name === 'tracking') {
-        // Update current tab time
-        if (currentTab && startTime) {
-            await recordTimeSpent(currentTab, Date.now() - startTime);
-            startTime = Date.now(); // Reset timer
-        }
-    } else if (alarm.name === 'sync') {
-        await syncDataToBackend();
+chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === 'dailyReset') {
+        resetDailySocialMediaLimits();
     }
 });
 
-// Sync data to backend
-async function syncDataToBackend() {
-    try {
-        const today = new Date().toISOString().split('T')[0];
-        const todayStats = dailyStats[today];
-
-        if (!todayStats) return;
-
-        const payload = {
-            userId: CONFIG.USER_ID,
-            date: today,
-            totalScreenTime: Math.round(todayStats.totalTime / 1000 / 60), // Convert to minutes
-            appUsage: Object.entries(todayStats.sites).map(([site, time]) => ({
-                appName: site,
-                category: DISTRACTING_SITES.some(s => site.includes(s)) ? 'Distraction' : 'Productive',
-                timeSpent: Math.round(time / 1000 / 60), // Convert to minutes
-                pickups: 1 // Simplified for now
-            })),
-            distractionPatterns: Object.entries(todayStats.sites)
-                .filter(([site, time]) => DISTRACTING_SITES.some(s => site.includes(s)))
-                .map(([site, time]) => ({
-                    timeRange: 'All Day',
-                    appName: site,
-                    duration: Math.round(time / 1000 / 60),
-                    distractionLevel: 'high'
-                })),
-            focusScore: calculateFocusScore(todayStats),
-            breakReminders: 0
-        };
-
-        const response = await fetch(`${CONFIG.API_BASE_URL}/api/screen-time`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-
-        if (response.ok) {
-            console.log('Data synced to backend successfully');
-        } else {
-            console.error('Failed to sync data to backend');
-        }
-
-    } catch (error) {
-        console.error('Error syncing data:', error);
-    }
-}
-
-// Calculate focus score
-function calculateFocusScore(stats) {
-    if (stats.totalTime === 0) return 100;
-
-    const productiveRatio = stats.productiveTime / stats.totalTime;
-    return Math.round(productiveRatio * 100);
-}
-
-// Send block event to backend
-async function sendBlockEvent(domain) {
-    try {
-        await fetch(`${CONFIG.API_BASE_URL}/api/blocked-site`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userId: CONFIG.USER_ID,
-                domain,
-                timestamp: new Date().toISOString()
-            })
-        });
-    } catch (error) {
-        console.error('Error sending block event:', error);
-    }
-}
-
-// Handle messages from popup/content scripts
+// Message handling
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
         case 'getStats':
-            sendResponse({
-                dailyStats,
-                isTracking,
-                currentTab: currentTab?.url
-            });
+            const stats = {
+                blockedToday: 0, // This would need to be tracked
+                protectedSites: BLOCKED_DOMAINS.size + MODERATE_DOMAINS.size,
+                emergencyUnlocks: 0, // This would need to be tracked
+                socialMediaTime: socialMediaTime
+            };
+            sendResponse(stats);
             break;
-
+            
         case 'toggleTracking':
-            isTracking = request.enabled;
-            chrome.storage.local.set({ isTracking });
+            // Toggle tracking state
             sendResponse({ success: true });
             break;
-
-        case 'syncNow':
-            syncDataToBackend().then(() => {
-                sendResponse({ success: true });
-            });
-            return true; // Keep message channel open for async response
-
-        case 'getCurrentTab':
-            sendResponse({
-                url: currentTab?.url,
-                timeSpent: currentTab && startTime ? Date.now() - startTime : 0
-            });
+            
+        case 'temporaryUnlock':
+            const { domain, reason } = request;
+            TEMPORARY_WHITELIST.add(domain);
+            // Remove from whitelist after 1 hour
+            setTimeout(() => {
+                TEMPORARY_WHITELIST.delete(domain);
+            }, 60 * 60 * 1000);
+            sendResponse({ success: true });
+            break;
+            
+        case 'reloadBlocklist':
+            loadBlocklist();
+            sendResponse({ success: true });
             break;
     }
+    
+    return true; // Keep message channel open for async response
 });
 
-// Handle extension startup
-chrome.runtime.onStartup.addListener(async () => {
-    console.log('Personal Assistant extension started');
-    await updateBlockedSitesRules();
+// Track active tab time
+let activeTabId = null;
+let tabStartTime = Date.now();
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+    if (activeTabId) {
+        const timeSpent = Date.now() - tabStartTime;
+        // Track time for previous tab
+    }
+    
+    activeTabId = activeInfo.tabId;
+    tabStartTime = Date.now();
+});
+
+// Track tab updates
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (tabId === activeTabId && changeInfo.status === 'complete' && tab.url) {
+        trackSocialMediaTime(tab.url);
+    }
 });

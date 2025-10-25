@@ -15,6 +15,9 @@ import notionAIRouter from './routes/notion-ai';
 import { webhookRouter } from './routes/webhooks';
 import setupRouter from './routes/setup';
 import { chromeExtensionRouter } from './routes/chrome-extension';
+import { blockedSiteRouter } from './routes/blocked-site';
+import morningRoutineRouter from './routes/morning-routine';
+import spanishQuizRouter from './routes/spanish-quiz';
 
 // Import MCP routes
 import notionMCPRouter from './routes/mcp/notion';
@@ -50,6 +53,8 @@ app.use('/api/dashboard', dashboardRouter);
 app.use('/api/activity', activityRouter);
 app.use('/api', notionAIRouter);
 app.use('/api', setupRouter);
+app.use('/api/morning-routine', morningRoutineRouter);
+app.use('/api/spanish', spanishQuizRouter);
 
 // MCP Routes (integrated)
 app.use('/api/mcp/notion', notionMCPRouter);
@@ -64,6 +69,9 @@ app.use('/webhooks', webhookRouter);
 
 // Chrome Extension Routes
 app.use('/api', chromeExtensionRouter);
+
+// Blocked Site Routes
+app.use('/api/blocked-site', blockedSiteRouter);
 
 // Create HTTP server
 const server = http.createServer(app);

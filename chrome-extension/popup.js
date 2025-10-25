@@ -15,6 +15,13 @@ const distractingTimeEl = document.getElementById('distractingTime');
 const focusScoreEl = document.getElementById('focusScore');
 const siteListEl = document.getElementById('siteList');
 const currentTabEl = document.getElementById('currentTab');
+const blockedTodayEl = document.getElementById('blockedToday');
+const protectedSitesEl = document.getElementById('protectedSites');
+const emergencyUnlocksEl = document.getElementById('emergencyUnlocks');
+const facebookTimeEl = document.getElementById('facebookTime');
+const instagramTimeEl = document.getElementById('instagramTime');
+const twitterTimeEl = document.getElementById('twitterTime');
+const youtubeTimeEl = document.getElementById('youtubeTime');
 
 // Initialize popup
 document.addEventListener('DOMContentLoaded', async () => {
@@ -25,16 +32,57 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Load data from background script
 async function loadData() {
     try {
-        const response = await chrome.runtime.sendMessage({ action: 'getStats' });
+        // Add timeout to prevent hanging
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Request timeout')), 5000)
+        );
+
+        const responsePromise = chrome.runtime.sendMessage({ action: 'getStats' });
+        const response = await Promise.race([responsePromise, timeoutPromise]);
+
+        if (!response) {
+            throw new Error('No response from background script');
+        }
+
         currentStats = response.dailyStats;
         isTracking = response.isTracking;
+
+        // Update blocking stats
+        if (response.blocklistStats) {
+            const stats = response.blocklistStats;
+            blockedTodayEl.textContent = stats.totalBlocked || 0;
+            protectedSitesEl.textContent = stats.totalBlocked || 0;
+            emergencyUnlocksEl.textContent = stats.temporaryWhitelist?.length || 0;
+        }
+
+        // Update social media time limits
+        if (response.socialMediaTime) {
+            const socialTime = response.socialMediaTime;
+            facebookTimeEl.textContent = `${Math.round(socialTime['facebook.com'] || 0)}/15m`;
+            instagramTimeEl.textContent = `${Math.round(socialTime['instagram.com'] || 0)}/20m`;
+            twitterTimeEl.textContent = `${Math.round(socialTime['twitter.com'] || 0)}/10m`;
+            youtubeTimeEl.textContent = `${Math.round(socialTime['youtube.com'] || 0)}/30m`;
+        }
 
         updateUI();
         hideLoading();
 
     } catch (error) {
         console.error('Error loading data:', error);
-        showError('Failed to load data');
+
+        // Show specific error messages based on error type
+        if (error.message === 'Request timeout') {
+            showError('Extension is taking too long to respond. Try refreshing the extension.');
+        } else if (error.message === 'No response from background script') {
+            showError('Background script not responding. Check if extension is enabled.');
+        } else if (error.message.includes('Extension context invalidated')) {
+            showError('Extension needs to be reloaded. Please refresh the extension.');
+        } else {
+            showError(`Failed to load data: ${error.message}`);
+        }
+
+        // Show basic UI even with errors
+        showBasicUI();
     }
 }
 
@@ -64,6 +112,11 @@ async function toggleTracking() {
         console.error('Error toggling tracking:', error);
         showError('Failed to toggle tracking');
     }
+}
+
+// Open settings page
+function openSettings() {
+    chrome.tabs.create({ url: chrome.runtime.getURL('settings.html') });
 }
 
 // Sync data to backend
@@ -249,6 +302,46 @@ function showError(message) {
     setTimeout(() => {
         errorEl.remove();
     }, 5000);
+}
+
+// Show basic UI when there are errors
+function showBasicUI() {
+    hideLoading();
+
+    // Show basic stats with default values
+    totalTimeEl.textContent = '0h 0m';
+    productiveTimeEl.textContent = '0h 0m';
+    distractingTimeEl.textContent = '0h 0m';
+    focusScoreEl.textContent = '100%';
+    focusScoreEl.className = 'focus-score focus-good';
+
+    // Show basic blocking stats
+    blockedTodayEl.textContent = '0';
+    protectedSitesEl.textContent = '0';
+    emergencyUnlocksEl.textContent = '0';
+
+    // Show basic social media stats
+    facebookTimeEl.textContent = '0/15m';
+    instagramTimeEl.textContent = '0/20m';
+    twitterTimeEl.textContent = '0/10m';
+    youtubeTimeEl.textContent = '0/30m';
+
+    // Show error message in site list
+    siteListEl.innerHTML = `
+        <div style="text-align: center; color: #dc3545; padding: 20px;">
+            <div style="margin-bottom: 10px;">⚠️ Extension Error</div>
+            <div style="font-size: 12px; color: #6c757d;">
+                Unable to load data from background script
+            </div>
+        </div>
+    `;
+
+    // Show error in current tab
+    currentTabEl.innerHTML = `
+        <div style="color: #dc3545; text-align: center;">
+            Error loading tab info
+        </div>
+    `;
 }
 
 // Hide loading state

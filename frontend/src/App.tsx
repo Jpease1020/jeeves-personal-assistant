@@ -6,6 +6,7 @@ import { Dashboard } from './views/Dashboard';
 import { Chat } from './views/Chat';
 import { MorningRoutine } from './views/MorningRoutine';
 import { Quiz } from './views/Quiz';
+import { SpanishStudy } from './views/SpanishStudy';
 import { BodyTracker } from './views/BodyTracker';
 import { Settings } from './views/Settings';
 
@@ -20,6 +21,7 @@ function App() {
               <Route path="/chat" element={<Chat />} />
               <Route path="/routine" element={<MorningRoutine />} />
               <Route path="/quiz" element={<Quiz />} />
+              <Route path="/spanish" element={<SpanishStudy />} />
               <Route path="/tracker" element={<BodyTracker />} />
               <Route path="/settings" element={<Settings />} />
             </Routes>

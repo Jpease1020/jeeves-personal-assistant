@@ -1,6 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { loadSystemPrompt } from './system-prompt';
-import { mcpClient } from './mcp-client';
 
 let anthropic: Anthropic | null = null;
 

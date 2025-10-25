@@ -72,6 +72,9 @@ export function Layout({ children }: LayoutProps) {
         <NavLink to="/quiz" $isActive={isActive('/quiz')}>
           Quiz
         </NavLink>
+        <NavLink to="/spanish" $isActive={isActive('/spanish')}>
+          Spanish
+        </NavLink>
         <NavLink to="/tracker" $isActive={isActive('/tracker')}>
           Body Tracker
         </NavLink>

@@ -52,7 +52,7 @@ export const NotionAuth: React.FC<NotionAuthProps> = ({ userId }) => {
 
     const checkAuthStatus = async () => {
         try {
-            const response = await fetch(`http://localhost:4001/auth/notion/status/${userId}`);
+            const response = await fetch(`https://personal-assistant-backend-production.up.railway.app/auth/notion/status/${userId}`);
             const data = await response.json();
             setIsAuthenticated(data.authenticated);
         } catch (error) {
@@ -63,7 +63,7 @@ export const NotionAuth: React.FC<NotionAuthProps> = ({ userId }) => {
     const handleAuthorize = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch(`http://localhost:4001/auth/notion/authorize?userId=${userId}`);
+            const response = await fetch(`https://personal-assistant-backend-production.up.railway.app/auth/notion/authorize?userId=${userId}`);
             const data = await response.json();
 
             if (data.authUrl) {

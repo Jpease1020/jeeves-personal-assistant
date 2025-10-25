@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { chatWithAgent } from '../services/ai-agent';
+import { formatChatResponse } from '../services/response-formatter';
 
 export const chatRouter = Router();
 
@@ -15,11 +16,15 @@ chatRouter.post('/', async (req, res) => {
 
         // Get response from AI agent
         console.log('📨 Chat route: Calling chatWithAgent...');
-        const response = await chatWithAgent(message, userId || 'default-user');
-        console.log('📨 Chat route: Got response, length:', response.length);
+        const rawResponse = await chatWithAgent(message, userId || 'default-user');
+        console.log('📨 Chat route: Got response, length:', rawResponse.length);
+
+        // Format the response based on message type
+        const responseType = determineResponseType(message);
+        const formattedResponse = formatChatResponse(rawResponse, responseType);
 
         res.json({
-            response,
+            response: formattedResponse,
             timestamp: new Date().toISOString()
         });
     } catch (error) {
@@ -37,13 +42,16 @@ chatRouter.get('/briefing', async (req, res) => {
         const userId = req.query.userId as string || 'default-user';
 
         // Generate morning briefing using AI agent
-        const briefing = await chatWithAgent(
+        const rawBriefing = await chatWithAgent(
             'Generate my morning briefing for today',
             userId
         );
 
+        // Format the briefing response
+        const formattedBriefing = formatChatResponse(rawBriefing, 'briefing');
+
         res.json({
-            briefing,
+            briefing: formattedBriefing,
             timestamp: new Date().toISOString()
         });
     } catch (error) {
@@ -61,13 +69,16 @@ chatRouter.post('/check-in', async (req, res) => {
         const { userId } = req.body;
 
         // Generate evening check-in using AI agent
-        const checkIn = await chatWithAgent(
+        const rawCheckIn = await chatWithAgent(
             'Let\'s do my evening check-in. How did I do today with my habits?',
             userId || 'default-user'
         );
 
+        // Format the check-in response
+        const formattedCheckIn = formatChatResponse(rawCheckIn, 'check-in');
+
         res.json({
-            checkIn,
+            checkIn: formattedCheckIn,
             timestamp: new Date().toISOString()
         });
     } catch (error) {
@@ -78,4 +89,45 @@ chatRouter.post('/check-in', async (req, res) => {
         });
     }
 });
+
+// Get Spanish study plan
+chatRouter.get('/spanish-study', async (req, res) => {
+    try {
+        const { notionService } = await import('../services/notion-service');
+
+        console.log('📚 Fetching Spanish study plan...');
+        const studyPlan = await notionService.getSpanishStudyPlan();
+
+        res.json({
+            studyPlan,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Error fetching Spanish study plan:', error);
+        res.status(500).json({
+            error: 'Failed to fetch Spanish study plan',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+});
+
+// Helper function to determine response type based on message
+function determineResponseType(message: string): 'briefing' | 'routine' | 'task' | 'general' | 'check-in' {
+    const lowerMessage = message.toLowerCase();
+
+    if (lowerMessage.includes('briefing') || lowerMessage.includes('morning')) {
+        return 'briefing';
+    }
+    if (lowerMessage.includes('routine')) {
+        return 'routine';
+    }
+    if (lowerMessage.includes('task') || lowerMessage.includes('priority') || lowerMessage.includes('todo')) {
+        return 'task';
+    }
+    if (lowerMessage.includes('check-in') || lowerMessage.includes('evening')) {
+        return 'check-in';
+    }
+
+    return 'general';
+}
 

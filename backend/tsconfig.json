@@ -14,7 +14,8 @@
         "resolveJsonModule": true,
         "moduleResolution": "node",
         "types": [
-            "node"
+            "node",
+            "jest"
         ]
     },
     "include": [

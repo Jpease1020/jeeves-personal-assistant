@@ -1,4 +1,119 @@
-// Content script for Personal Assistant Chrome Extension
+// Enhanced content script with third-layer blocking fallback
+// This runs on document_start to catch any sites that slip through declarativeNetRequest
+
+// Blocklist data (will be loaded from background script)
+let BLOCKED_DOMAINS = new Set();
+let MODERATE_DOMAINS = new Set();
+let TEMPORARY_WHITELIST = new Set();
+
+// Check if current domain should be blocked
+function checkDomainBlocking() {
+    try {
+        const domain = window.location.hostname.toLowerCase();
+        const cleanDomain = domain.replace(/^www\./, '');
+        
+        // Check temporary whitelist first
+        if (TEMPORARY_WHITELIST.has(cleanDomain)) {
+            return false;
+        }
+        
+        // Check against blocked domains
+        if (BLOCKED_DOMAINS.has(cleanDomain)) {
+            return true;
+        }
+        
+        // Check subdomains
+        for (const blockedDomain of BLOCKED_DOMAINS) {
+            if (cleanDomain.endsWith('.' + blockedDomain)) {
+                return true;
+            }
+        }
+        
+        return false;
+    } catch (error) {
+        console.error('Error checking domain blocking:', error);
+        return false;
+    }
+}
+
+// Show blocking overlay if domain should be blocked
+function showBlockingOverlay() {
+    if (checkDomainBlocking()) {
+        // Hide all page content
+        document.documentElement.style.display = 'none';
+        
+        // Create blocking overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'personal-assistant-block-overlay';
+        overlay.innerHTML = `
+            <div style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 999999;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                color: white;
+            ">
+                <div style="text-align: center; max-width: 500px; padding: 40px 20px;">
+                    <div style="font-size: 64px; margin-bottom: 20px;">🚫</div>
+                    <h1 style="font-size: 28px; margin-bottom: 16px; font-weight: 600;">Site Blocked</h1>
+                    <div style="font-size: 18px; margin-bottom: 24px; opacity: 0.9;">
+                        Your Personal Assistant is protecting your focus
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.2); padding: 8px 16px; border-radius: 20px; display: inline-block; margin-bottom: 32px; font-weight: 500;">
+                        ${window.location.hostname}
+                    </div>
+                    <div style="font-size: 16px; line-height: 1.6; margin-bottom: 32px; opacity: 0.9;">
+                        This site has been blocked to help you stay focused and productive.
+                    </div>
+                    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="window.history.back()" style="
+                            padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; 
+                            cursor: pointer; background: rgba(255, 255, 255, 0.2); color: white; 
+                            border: 2px solid rgba(255, 255, 255, 0.3);
+                        ">Go Back</button>
+                        <button onclick="window.location.href='https://www.google.com'" style="
+                            padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; 
+                            cursor: pointer; background: transparent; color: white; 
+                            border: 2px solid rgba(255, 255, 255, 0.5);
+                        ">Search Google</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        // Log the block to background script
+        chrome.runtime.sendMessage({
+            action: 'contentScriptBlock',
+            domain: window.location.hostname,
+            url: window.location.href,
+            timestamp: new Date().toISOString()
+        });
+        
+        return true;
+    }
+    return false;
+}
+
+// Load blocklist data from background script
+chrome.runtime.sendMessage({ action: 'getBlocklistData' }, (response) => {
+    if (response && response.success) {
+        BLOCKED_DOMAINS = new Set(response.blockedDomains || []);
+        MODERATE_DOMAINS = new Set(response.moderateDomains || []);
+        TEMPORARY_WHITELIST = new Set(response.temporaryWhitelist || []);
+        
+        // Check if current page should be blocked
+        showBlockingOverlay();
+    }
+});
 
 // Track page visibility and focus
 let isPageVisible = true;
