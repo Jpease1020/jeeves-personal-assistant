@@ -1,0 +1,1748 @@
+{
+    "name": "Spanish Conjugation Master A2",
+    "cards": [
+        {
+            "front": "PRESENT — HABLAR (yo)",
+            "back": "hablo — I speak\nEj: Yo hablo español.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present",
+                "yo"
+            ]
+        },
+        {
+            "front": "I speak (hablar, present)",
+            "back": "hablo\nEj: Yo hablo español.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — HABLAR (tú)",
+            "back": "hablas — you speak\nEj: Tú hablas inglés.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present",
+                "tu"
+            ]
+        },
+        {
+            "front": "you speak (hablar, present)",
+            "back": "hablas\nEj: Tú hablas inglés.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — HABLAR (él/ella/usted)",
+            "back": "habla — he/she/you(formal) speak\nEj: Ella habla francés.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you speak (hablar, present)",
+            "back": "habla\nEj: Ella habla francés.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — HABLAR (nosotros)",
+            "back": "hablamos — we speak\nEj: Nosotros hablamos italiano.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we speak (hablar, present)",
+            "back": "hablamos\nEj: Nosotros hablamos italiano.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — HABLAR (ellos/ellas/ustedes)",
+            "back": "hablan — they/you all speak\nEj: Ellos hablan ruso.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all speak (hablar, present)",
+            "back": "hablan\nEj: Ellos hablan ruso.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — COMER (yo)",
+            "back": "como — I eat\nEj: Yo como pollo.",
+            "tags": [
+                "verb",
+                "comer",
+                "present",
+                "yo"
+            ]
+        },
+        {
+            "front": "I eat (comer, present)",
+            "back": "como\nEj: Yo como pollo.",
+            "tags": [
+                "verb",
+                "comer",
+                "present",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — COMER (tú)",
+            "back": "comes — you eat\nEj: Tú comes arroz.",
+            "tags": [
+                "verb",
+                "comer",
+                "present",
+                "tu"
+            ]
+        },
+        {
+            "front": "you eat (comer, present)",
+            "back": "comes\nEj: Tú comes arroz.",
+            "tags": [
+                "verb",
+                "comer",
+                "present",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — COMER (él/ella/usted)",
+            "back": "come — he/she/you(formal) eat\nEj: Ella come pan.",
+            "tags": [
+                "verb",
+                "comer",
+                "present",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you eat (comer, present)",
+            "back": "come\nEj: Ella come pan.",
+            "tags": [
+                "verb",
+                "comer",
+                "present",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — COMER (nosotros)",
+            "back": "comemos — we eat\nEj: Nosotros comemos fruta.",
+            "tags": [
+                "verb",
+                "comer",
+                "present",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we eat (comer, present)",
+            "back": "comemos\nEj: Nosotros comemos fruta.",
+            "tags": [
+                "verb",
+                "comer",
+                "present",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — COMER (ellos/ellas/ustedes)",
+            "back": "comen — they/you all eat\nEj: Ellos comen mucho.",
+            "tags": [
+                "verb",
+                "comer",
+                "present",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all eat (comer, present)",
+            "back": "comen\nEj: Ellos comen mucho.",
+            "tags": [
+                "verb",
+                "comer",
+                "present",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — VIVIR (yo)",
+            "back": "vivo — I live\nEj: Yo vivo en Madrid.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present",
+                "yo"
+            ]
+        },
+        {
+            "front": "I live (vivir, present)",
+            "back": "vivo\nEj: Yo vivo en Madrid.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — VIVIR (tú)",
+            "back": "vives — you live\nEj: Tú vives en México.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present",
+                "tu"
+            ]
+        },
+        {
+            "front": "you live (vivir, present)",
+            "back": "vives\nEj: Tú vives en México.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — VIVIR (él/ella/usted)",
+            "back": "vive — he/she/you(formal) live\nEj: Ella vive en Perú.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you live (vivir, present)",
+            "back": "vive\nEj: Ella vive en Perú.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — VIVIR (nosotros)",
+            "back": "vivimos — we live\nEj: Nosotros vivimos en Barcelona.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we live (vivir, present)",
+            "back": "vivimos\nEj: Nosotros vivimos en Barcelona.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT — VIVIR (ellos/ellas/ustedes)",
+            "back": "viven — they/you all live\nEj: Ellos viven en Valencia.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all live (vivir, present)",
+            "back": "viven\nEj: Ellos viven en Valencia.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT PROGRESSIVE — HABLAR (yo)",
+            "back": "estoy hablando — I am talking\nEj: Estoy hablando con mi madre.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present_progressive",
+                "yo"
+            ]
+        },
+        {
+            "front": "I am talking (hablar, present prog.)",
+            "back": "estoy hablando\nEj: Estoy hablando con mi madre.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present_progressive",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT PROGRESSIVE — HABLAR (tú)",
+            "back": "estás hablando — you are talking\nEj: Estás hablando mucho.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present_progressive",
+                "tu"
+            ]
+        },
+        {
+            "front": "you are talking (hablar, pres prog.)",
+            "back": "estás hablando\nEj: Estás hablando mucho.",
+            "tags": [
+                "verb",
+                "hablar",
+                "present_progressive",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT PROGRESSIVE — COMER (yo)",
+            "back": "estoy comiendo — I am eating\nEj: Estoy comiendo arroz.",
+            "tags": [
+                "verb",
+                "comer",
+                "present_progressive",
+                "yo"
+            ]
+        },
+        {
+            "front": "I am eating (comer, pres prog.)",
+            "back": "estoy comiendo\nEj: Estoy comiendo arroz.",
+            "tags": [
+                "verb",
+                "comer",
+                "present_progressive",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRESENT PROGRESSIVE — VIVIR (yo)",
+            "back": "estoy viviendo — I am living\nEj: Estoy viviendo temporalmente en Lima.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present_progressive",
+                "yo"
+            ]
+        },
+        {
+            "front": "I am living (vivir, pres prog.)",
+            "back": "estoy viviendo\nEj: Estoy viviendo temporalmente en Lima.",
+            "tags": [
+                "verb",
+                "vivir",
+                "present_progressive",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — HABLAR (yo)",
+            "back": "hablé — I spoke\nEj: Ayer hablé con mi madre.",
+            "tags": [
+                "verb",
+                "hablar",
+                "preterite",
+                "yo"
+            ]
+        },
+        {
+            "front": "I spoke (hablar, preterite)",
+            "back": "hablé\nEj: Ayer hablé con mi madre.",
+            "tags": [
+                "verb",
+                "hablar",
+                "preterite",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — HABLAR (tú)",
+            "back": "hablaste — you spoke\nEj: Tú hablaste con tu profesor.",
+            "tags": [
+                "verb",
+                "hablar",
+                "preterite",
+                "tu"
+            ]
+        },
+        {
+            "front": "you spoke (hablar, preterite)",
+            "back": "hablaste\nEj: Tú hablaste con tu profesor.",
+            "tags": [
+                "verb",
+                "hablar",
+                "preterite",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — HABLAR (él/ella/usted)",
+            "back": "habló — he/she/you spoke\nEj: Ella habló con su jefe.",
+            "tags": [
+                "verb",
+                "hablar",
+                "preterite",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you spoke (hablar, preterite)",
+            "back": "habló\nEj: Ella habló con su jefe.",
+            "tags": [
+                "verb",
+                "hablar",
+                "preterite",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — HABLAR (nosotros)",
+            "back": "hablamos — we spoke\nEj: Nosotros hablamos mucho.",
+            "tags": [
+                "verb",
+                "hablar",
+                "preterite",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we spoke (hablar, preterite)",
+            "back": "hablamos\nEj: Nosotros hablamos mucho.",
+            "tags": [
+                "verb",
+                "hablar",
+                "preterite",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — HABLAR (ellos/ellas/ustedes)",
+            "back": "hablaron — they/you all spoke\nEj: Ellos hablaron ayer.",
+            "tags": [
+                "verb",
+                "hablar",
+                "preterite",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all spoke (hablar, preterite)",
+            "back": "hablaron\nEj: Ellos hablaron ayer.",
+            "tags": [
+                "verb",
+                "hablar",
+                "preterite",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — COMER (yo)",
+            "back": "comí — I ate\nEj: Ayer comí pollo.",
+            "tags": [
+                "verb",
+                "comer",
+                "preterite",
+                "yo"
+            ]
+        },
+        {
+            "front": "I ate (comer, preterite)",
+            "back": "comí\nEj: Ayer comí pollo.",
+            "tags": [
+                "verb",
+                "comer",
+                "preterite",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — COMER (tú)",
+            "back": "comiste — you ate\nEj: Tú comiste arroz.",
+            "tags": [
+                "verb",
+                "comer",
+                "preterite",
+                "tu"
+            ]
+        },
+        {
+            "front": "you ate (comer, preterite)",
+            "back": "comiste\nEj: Tú comiste arroz.",
+            "tags": [
+                "verb",
+                "comer",
+                "preterite",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — COMER (él/ella/usted)",
+            "back": "comió — he/she/you ate\nEj: Ella comió pan.",
+            "tags": [
+                "verb",
+                "comer",
+                "preterite",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you ate (comer, preterite)",
+            "back": "comió\nEj: Ella comió pan.",
+            "tags": [
+                "verb",
+                "comer",
+                "preterite",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — COMER (nosotros)",
+            "back": "comimos — we ate\nEj: Nosotros comimos juntos.",
+            "tags": [
+                "verb",
+                "comer",
+                "preterite",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we ate (comer, preterite)",
+            "back": "comimos\nEj: Nosotros comimos juntos.",
+            "tags": [
+                "verb",
+                "comer",
+                "preterite",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — COMER (ellos/ellas/ustedes)",
+            "back": "comieron — they/you all ate\nEj: Ellos comieron mucho.",
+            "tags": [
+                "verb",
+                "comer",
+                "preterite",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all ate (comer, preterite)",
+            "back": "comieron\nEj: Ellos comieron mucho.",
+            "tags": [
+                "verb",
+                "comer",
+                "preterite",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — VIVIR (yo)",
+            "back": "viví — I lived\nEj: Yo viví en Perú por tres meses.",
+            "tags": [
+                "verb",
+                "vivir",
+                "preterite",
+                "yo"
+            ]
+        },
+        {
+            "front": "I lived (vivir, preterite)",
+            "back": "viví\nEj: Yo viví en Perú por tres meses.",
+            "tags": [
+                "verb",
+                "vivir",
+                "preterite",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — VIVIR (tú)",
+            "back": "viviste — you lived\nEj: Tú viviste en México.",
+            "tags": [
+                "verb",
+                "vivir",
+                "preterite",
+                "tu"
+            ]
+        },
+        {
+            "front": "you lived (vivir, preterite)",
+            "back": "viviste\nEj: Tú viviste en México.",
+            "tags": [
+                "verb",
+                "vivir",
+                "preterite",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — VIVIR (él/ella/usted)",
+            "back": "vivió — he/she/you lived\nEj: Ella vivió en Argentina.",
+            "tags": [
+                "verb",
+                "vivir",
+                "preterite",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you lived (vivir, preterite)",
+            "back": "vivió\nEj: Ella vivió en Argentina.",
+            "tags": [
+                "verb",
+                "vivir",
+                "preterite",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — VIVIR (nosotros)",
+            "back": "vivimos — we lived\nEj: Nosotros vivimos allí un año.",
+            "tags": [
+                "verb",
+                "vivir",
+                "preterite",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we lived (vivir, preterite)",
+            "back": "vivimos\nEj: Nosotros vivimos allí un año.",
+            "tags": [
+                "verb",
+                "vivir",
+                "preterite",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "PRETERITE — VIVIR (ellos/ellas/ustedes)",
+            "back": "vivieron — they/you all lived\nEj: Ellos vivieron juntos.",
+            "tags": [
+                "verb",
+                "vivir",
+                "preterite",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all lived (vivir, preterite)",
+            "back": "vivieron\nEj: Ellos vivieron juntos.",
+            "tags": [
+                "verb",
+                "vivir",
+                "preterite",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "IMPERFECT — HABLAR (yo)",
+            "back": "hablaba — I used to speak / was speaking\nEj: Yo hablaba con mis amigos.",
+            "tags": [
+                "verb",
+                "hablar",
+                "imperfect",
+                "yo"
+            ]
+        },
+        {
+            "front": "I used to speak (hablar, imperfect)",
+            "back": "hablaba\nEj: Yo hablaba con mis amigos.",
+            "tags": [
+                "verb",
+                "hablar",
+                "imperfect",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "IMPERFECT — HABLAR (tú)",
+            "back": "hablabas — you used to speak\nEj: Tú hablabas mucho.",
+            "tags": [
+                "verb",
+                "hablar",
+                "imperfect",
+                "tu"
+            ]
+        },
+        {
+            "front": "you used to speak (hablar, imperfect)",
+            "back": "hablabas\nEj: Tú hablabas mucho.",
+            "tags": [
+                "verb",
+                "hablar",
+                "imperfect",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "IMPERFECT — HABLAR (él/ella/usted)",
+            "back": "hablaba — he/she/you used to speak\nEj: Ella hablaba con su familia.",
+            "tags": [
+                "verb",
+                "hablar",
+                "imperfect",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you used to speak (hablar, imperfect)",
+            "back": "hablaba\nEj: Ella hablaba con su familia.",
+            "tags": [
+                "verb",
+                "hablar",
+                "imperfect",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "IMPERFECT — HABLAR (nosotros)",
+            "back": "hablábamos — we used to speak\nEj: Nosotros hablábamos cada día.",
+            "tags": [
+                "verb",
+                "hablar",
+                "imperfect",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we used to speak (hablar, imperfect)",
+            "back": "hablábamos\nEj: Nosotros hablábamos cada día.",
+            "tags": [
+                "verb",
+                "hablar",
+                "imperfect",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "IMPERFECT — HABLAR (ellos/ellas/ustedes)",
+            "back": "hablaban — they/you all used to speak\nEj: Ellos hablaban siempre.",
+            "tags": [
+                "verb",
+                "hablar",
+                "imperfect",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all used to speak (hablar, imperfect)",
+            "back": "hablaban\nEj: Ellos hablaban siempre.",
+            "tags": [
+                "verb",
+                "hablar",
+                "imperfect",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "IMPERFECT — COMER (yo)",
+            "back": "comía — I used to eat / was eating\nEj: Yo comía verduras.",
+            "tags": [
+                "verb",
+                "comer",
+                "imperfect",
+                "yo"
+            ]
+        },
+        {
+            "front": "I used to eat (comer, imperfect)",
+            "back": "comía\nEj: Yo comía verduras.",
+            "tags": [
+                "verb",
+                "comer",
+                "imperfect",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "IMPERFECT — COMER (tú)",
+            "back": "comías — you used to eat\nEj: Tú comías dulces.",
+            "tags": [
+                "verb",
+                "comer",
+                "imperfect",
+                "tu"
+            ]
+        },
+        {
+            "front": "you used to eat (comer, imperfect)",
+            "back": "comías\nEj: Tú comías dulces.",
+            "tags": [
+                "verb",
+                "comer",
+                "imperfect",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — HABLAR (yo)",
+            "back": "hablaré — I will speak\nEj: Mañana hablaré con mi madre.",
+            "tags": [
+                "verb",
+                "hablar",
+                "future",
+                "yo"
+            ]
+        },
+        {
+            "front": "I will speak (hablar, future)",
+            "back": "hablaré\nEj: Mañana hablaré con mi madre.",
+            "tags": [
+                "verb",
+                "hablar",
+                "future",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — HABLAR (tú)",
+            "back": "hablarás — you will speak\nEj: Hablarás con él mañana.",
+            "tags": [
+                "verb",
+                "hablar",
+                "future",
+                "tu"
+            ]
+        },
+        {
+            "front": "you will speak (hablar, future)",
+            "back": "hablarás\nEj: Hablarás con él mañana.",
+            "tags": [
+                "verb",
+                "hablar",
+                "future",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — HABLAR (él/ella/usted)",
+            "back": "hablará — he/she/you will speak\nEj: Ella hablará contigo.",
+            "tags": [
+                "verb",
+                "hablar",
+                "future",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you will speak (hablar, future)",
+            "back": "hablará\nEj: Ella hablará contigo.",
+            "tags": [
+                "verb",
+                "hablar",
+                "future",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — HABLAR (nosotros)",
+            "back": "hablaremos — we will speak\nEj: Hablaremos después.",
+            "tags": [
+                "verb",
+                "hablar",
+                "future",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we will speak (hablar, future)",
+            "back": "hablaremos\nEj: Hablaremos después.",
+            "tags": [
+                "verb",
+                "hablar",
+                "future",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — HABLAR (ellos/ellas/ustedes)",
+            "back": "hablarán — they/you all will speak\nEj: Ellos hablarán hoy.",
+            "tags": [
+                "verb",
+                "hablar",
+                "future",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all will speak (hablar, future)",
+            "back": "hablarán\nEj: Ellos hablarán hoy.",
+            "tags": [
+                "verb",
+                "hablar",
+                "future",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — COMER (yo)",
+            "back": "comeré — I will eat\nEj: Comeré pizza esta noche.",
+            "tags": [
+                "verb",
+                "comer",
+                "future",
+                "yo"
+            ]
+        },
+        {
+            "front": "I will eat (comer, future)",
+            "back": "comeré\nEj: Comeré pizza esta noche.",
+            "tags": [
+                "verb",
+                "comer",
+                "future",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — COMER (tú)",
+            "back": "comerás — you will eat\nEj: Comerás tarde.",
+            "tags": [
+                "verb",
+                "comer",
+                "future",
+                "tu"
+            ]
+        },
+        {
+            "front": "you will eat (comer, future)",
+            "back": "comerás\nEj: Comerás tarde.",
+            "tags": [
+                "verb",
+                "comer",
+                "future",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — COMER (él/ella/usted)",
+            "back": "comerá — he/she/you will eat\nEj: Ella comerá sopa.",
+            "tags": [
+                "verb",
+                "comer",
+                "future",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you will eat (comer, future)",
+            "back": "comerá\nEj: Ella comerá sopa.",
+            "tags": [
+                "verb",
+                "comer",
+                "future",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — COMER (nosotros)",
+            "back": "comeremos — we will eat\nEj: Comeremos juntos.",
+            "tags": [
+                "verb",
+                "comer",
+                "future",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we will eat (comer, future)",
+            "back": "comeremos\nEj: Comeremos juntos.",
+            "tags": [
+                "verb",
+                "comer",
+                "future",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — COMER (ellos/ellas/ustedes)",
+            "back": "comerán — they/you all will eat\nEj: Comerán temprano.",
+            "tags": [
+                "verb",
+                "comer",
+                "future",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all will eat (comer, future)",
+            "back": "comerán\nEj: Comerán temprano.",
+            "tags": [
+                "verb",
+                "comer",
+                "future",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — VIVIR (yo)",
+            "back": "viviré — I will live\nEj: Viviré en España.",
+            "tags": [
+                "verb",
+                "vivir",
+                "future",
+                "yo"
+            ]
+        },
+        {
+            "front": "I will live (vivir, future)",
+            "back": "viviré\nEj: Viviré en España.",
+            "tags": [
+                "verb",
+                "vivir",
+                "future",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — VIVIR (tú)",
+            "back": "vivirás — you will live\nEj: Vivirás cerca de mí.",
+            "tags": [
+                "verb",
+                "vivir",
+                "future",
+                "tu"
+            ]
+        },
+        {
+            "front": "you will live (vivir, future)",
+            "back": "vivirás\nEj: Vivirás cerca de mí.",
+            "tags": [
+                "verb",
+                "vivir",
+                "future",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — VIVIR (él/ella/usted)",
+            "back": "vivirá — he/she/you will live\nEj: Él vivirá solo.",
+            "tags": [
+                "verb",
+                "vivir",
+                "future",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you will live (vivir, future)",
+            "back": "vivirá\nEj: Él vivirá solo.",
+            "tags": [
+                "verb",
+                "vivir",
+                "future",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — VIVIR (nosotros)",
+            "back": "viviremos — we will live\nEj: Viviremos juntos.",
+            "tags": [
+                "verb",
+                "vivir",
+                "future",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we will live (vivir, future)",
+            "back": "viviremos\nEj: Viviremos juntos.",
+            "tags": [
+                "verb",
+                "vivir",
+                "future",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "FUTURE — VIVIR (ellos/ellas/ustedes)",
+            "back": "vivirán — they/you all will live\nEj: Vivirán cerca.",
+            "tags": [
+                "verb",
+                "vivir",
+                "future",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all will live (vivir, future)",
+            "back": "vivirán\nEj: Vivirán cerca.",
+            "tags": [
+                "verb",
+                "vivir",
+                "future",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — HABLAR (yo)",
+            "back": "hablaría — I would speak\nEj: Yo hablaría si pudiera.",
+            "tags": [
+                "verb",
+                "hablar",
+                "conditional",
+                "yo"
+            ]
+        },
+        {
+            "front": "I would speak (hablar, conditional)",
+            "back": "hablaría\nEj: Yo hablaría si pudiera.",
+            "tags": [
+                "verb",
+                "hablar",
+                "conditional",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — HABLAR (tú)",
+            "back": "hablarías — you would speak\nEj: Tú hablarías más.",
+            "tags": [
+                "verb",
+                "hablar",
+                "conditional",
+                "tu"
+            ]
+        },
+        {
+            "front": "you would speak (hablar, conditional)",
+            "back": "hablarías\nEj: Tú hablarías más.",
+            "tags": [
+                "verb",
+                "hablar",
+                "conditional",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — HABLAR (él/ella/usted)",
+            "back": "hablaría — he/she/you would speak\nEj: Él hablaría contigo.",
+            "tags": [
+                "verb",
+                "hablar",
+                "conditional",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you would speak (hablar, conditional)",
+            "back": "hablaría\nEj: Él hablaría contigo.",
+            "tags": [
+                "verb",
+                "hablar",
+                "conditional",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — HABLAR (nosotros)",
+            "back": "hablaríamos — we would speak\nEj: Hablaríamos mañana.",
+            "tags": [
+                "verb",
+                "hablar",
+                "conditional",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we would speak (hablar, conditional)",
+            "back": "hablaríamos\nEj: Hablaríamos mañana.",
+            "tags": [
+                "verb",
+                "hablar",
+                "conditional",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — HABLAR (ellos/ellas/ustedes)",
+            "back": "hablarían — they/you all would speak\nEj: Ellos hablarían ahora.",
+            "tags": [
+                "verb",
+                "hablar",
+                "conditional",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all would speak (hablar, conditional)",
+            "back": "hablarían\nEj: Ellos hablarían ahora.",
+            "tags": [
+                "verb",
+                "hablar",
+                "conditional",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — COMER (yo)",
+            "back": "comería — I would eat\nEj: Yo comería más tacos.",
+            "tags": [
+                "verb",
+                "comer",
+                "conditional",
+                "yo"
+            ]
+        },
+        {
+            "front": "I would eat (comer, conditional)",
+            "back": "comería\nEj: Yo comería más tacos.",
+            "tags": [
+                "verb",
+                "comer",
+                "conditional",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — COMER (tú)",
+            "back": "comerías — you would eat\nEj: Comerías temprano.",
+            "tags": [
+                "verb",
+                "comer",
+                "conditional",
+                "tu"
+            ]
+        },
+        {
+            "front": "you would eat (comer, conditional)",
+            "back": "comerías\nEj: Comerías temprano.",
+            "tags": [
+                "verb",
+                "comer",
+                "conditional",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — COMER (él/ella/usted)",
+            "back": "comería — he/she/you would eat\nEj: Ella comería más verduras.",
+            "tags": [
+                "verb",
+                "comer",
+                "conditional",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you would eat (comer, conditional)",
+            "back": "comería\nEj: Ella comería más verduras.",
+            "tags": [
+                "verb",
+                "comer",
+                "conditional",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — COMER (nosotros)",
+            "back": "comeríamos — we would eat\nEj: Comeríamos juntos.",
+            "tags": [
+                "verb",
+                "comer",
+                "conditional",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we would eat (comer, conditional)",
+            "back": "comeríamos\nEj: Comeríamos juntos.",
+            "tags": [
+                "verb",
+                "comer",
+                "conditional",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — COMER (ellos/ellas/ustedes)",
+            "back": "comerían — they/you all would eat\nEj: Comerían temprano.",
+            "tags": [
+                "verb",
+                "comer",
+                "conditional",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all would eat (comer, conditional)",
+            "back": "comerían\nEj: Comerían temprano.",
+            "tags": [
+                "verb",
+                "comer",
+                "conditional",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — VIVIR (yo)",
+            "back": "viviría — I would live\nEj: Viviría en México.",
+            "tags": [
+                "verb",
+                "vivir",
+                "conditional",
+                "yo"
+            ]
+        },
+        {
+            "front": "I would live (vivir, conditional)",
+            "back": "viviría\nEj: Viviría en México.",
+            "tags": [
+                "verb",
+                "vivir",
+                "conditional",
+                "yo",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — VIVIR (tú)",
+            "back": "vivirías — you would live\nEj: Vivirías cerca de mí.",
+            "tags": [
+                "verb",
+                "vivir",
+                "conditional",
+                "tu"
+            ]
+        },
+        {
+            "front": "you would live (vivir, conditional)",
+            "back": "vivirías\nEj: Vivirías cerca de mí.",
+            "tags": [
+                "verb",
+                "vivir",
+                "conditional",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — VIVIR (él/ella/usted)",
+            "back": "viviría — he/she/you would live\nEj: Él viviría en otro país.",
+            "tags": [
+                "verb",
+                "vivir",
+                "conditional",
+                "el"
+            ]
+        },
+        {
+            "front": "he/she/you would live (vivir, conditional)",
+            "back": "viviría\nEj: Él viviría en otro país.",
+            "tags": [
+                "verb",
+                "vivir",
+                "conditional",
+                "el",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — VIVIR (nosotros)",
+            "back": "viviríamos — we would live\nEj: Viviríamos juntos.",
+            "tags": [
+                "verb",
+                "vivir",
+                "conditional",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "we would live (vivir, conditional)",
+            "back": "viviríamos\nEj: Viviríamos juntos.",
+            "tags": [
+                "verb",
+                "vivir",
+                "conditional",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "CONDITIONAL — VIVIR (ellos/ellas/ustedes)",
+            "back": "vivirían — they/you all would live\nEj: Vivirían cerca.",
+            "tags": [
+                "verb",
+                "vivir",
+                "conditional",
+                "ellos"
+            ]
+        },
+        {
+            "front": "they/you all would live (vivir, conditional)",
+            "back": "vivirían\nEj: Vivirían cerca.",
+            "tags": [
+                "verb",
+                "vivir",
+                "conditional",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — HABLAR (tú)",
+            "back": "no hables — don't speak\nEj: No hables ahora.",
+            "tags": [
+                "verb",
+                "hablar",
+                "negative-command",
+                "tu"
+            ]
+        },
+        {
+            "front": "don't speak (hablar, negative tú)",
+            "back": "no hables\nEj: No hables ahora.",
+            "tags": [
+                "verb",
+                "hablar",
+                "negative-command",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — HABLAR (usted)",
+            "back": "no hable — don't speak (formal)\nEj: No hable tan rápido.",
+            "tags": [
+                "verb",
+                "hablar",
+                "negative-command",
+                "usted"
+            ]
+        },
+        {
+            "front": "don't speak (hablar, negative usted)",
+            "back": "no hable\nEj: No hable tan rápido.",
+            "tags": [
+                "verb",
+                "hablar",
+                "negative-command",
+                "usted",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — HABLAR (nosotros)",
+            "back": "no hablemos — let's not speak\nEj: No hablemos de eso.",
+            "tags": [
+                "verb",
+                "hablar",
+                "negative-command",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "let's not speak (hablar, negative nosotros)",
+            "back": "no hablemos\nEj: No hablemos de eso.",
+            "tags": [
+                "verb",
+                "hablar",
+                "negative-command",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — HABLAR (ellos/ellas/ustedes)",
+            "back": "no hablen — don't speak\nEj: No hablen tan alto.",
+            "tags": [
+                "verb",
+                "hablar",
+                "negative-command",
+                "ellos"
+            ]
+        },
+        {
+            "front": "don't speak (hablar, negative ustedes)",
+            "back": "no hablen\nEj: No hablen tan alto.",
+            "tags": [
+                "verb",
+                "hablar",
+                "negative-command",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — COMER (tú)",
+            "back": "no comas — don't eat\nEj: No comas eso.",
+            "tags": [
+                "verb",
+                "comer",
+                "negative-command",
+                "tu"
+            ]
+        },
+        {
+            "front": "don't eat (comer, negative tú)",
+            "back": "no comas\nEj: No comas eso.",
+            "tags": [
+                "verb",
+                "comer",
+                "negative-command",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — COMER (usted)",
+            "back": "no coma — don't eat (formal)\nEj: No coma rápido.",
+            "tags": [
+                "verb",
+                "comer",
+                "negative-command",
+                "usted"
+            ]
+        },
+        {
+            "front": "don't eat (comer, negative usted)",
+            "back": "no coma\nEj: No coma rápido.",
+            "tags": [
+                "verb",
+                "comer",
+                "negative-command",
+                "usted",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — COMER (nosotros)",
+            "back": "no comamos — let's not eat\nEj: No comamos tarde.",
+            "tags": [
+                "verb",
+                "comer",
+                "negative-command",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "let's not eat (comer, negative nosotros)",
+            "back": "no comamos\nEj: No comamos tarde.",
+            "tags": [
+                "verb",
+                "comer",
+                "negative-command",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — COMER (ellos/ellas/ustedes)",
+            "back": "no coman — don't eat\nEj: No coman aquí.",
+            "tags": [
+                "verb",
+                "comer",
+                "negative-command",
+                "ellos"
+            ]
+        },
+        {
+            "front": "don't eat (comer, negative ustedes)",
+            "back": "no coman\nEj: No coman aquí.",
+            "tags": [
+                "verb",
+                "comer",
+                "negative-command",
+                "ellos",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — VIVIR (tú)",
+            "back": "no vivas — don't live\nEj: No vivas con miedo.",
+            "tags": [
+                "verb",
+                "vivir",
+                "negative-command",
+                "tu"
+            ]
+        },
+        {
+            "front": "don't live (vivir, negative tú)",
+            "back": "no vivas\nEj: No vivas con miedo.",
+            "tags": [
+                "verb",
+                "vivir",
+                "negative-command",
+                "tu",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — VIVIR (usted)",
+            "back": "no viva — don't live (formal)\nEj: No viva solo.",
+            "tags": [
+                "verb",
+                "vivir",
+                "negative-command",
+                "usted"
+            ]
+        },
+        {
+            "front": "don't live (vivir, negative usted)",
+            "back": "no viva\nEj: No viva solo.",
+            "tags": [
+                "verb",
+                "vivir",
+                "negative-command",
+                "usted",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — VIVIR (nosotros)",
+            "back": "no vivamos — let's not live\nEj: No vivamos así.",
+            "tags": [
+                "verb",
+                "vivir",
+                "negative-command",
+                "nosotros"
+            ]
+        },
+        {
+            "front": "let's not live (vivir, negative nosotros)",
+            "back": "no vivamos\nEj: No vivamos así.",
+            "tags": [
+                "verb",
+                "vivir",
+                "negative-command",
+                "nosotros",
+                "reverse"
+            ]
+        },
+        {
+            "front": "NEG COMMAND — VIVIR (ellos/ellas/ustedes)",
+            "back": "no vivan — don't live\nEj: No vivan aquí.",
+            "tags": [
+                "verb",
+                "vivir",
+                "negative-command",
+                "ellos"
+            ]
+        },
+        {
+            "front": "don't live (vivir, negative ustedes)",
+            "back": "no vivan\nEj: No vivan aquí.",
+            "tags": [
+                "verb",
+                "vivir",
+                "negative-command",
+                "ellos",
+                "reverse"
+            ]
+        }
+    ]
+}

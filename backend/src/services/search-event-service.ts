@@ -177,7 +177,7 @@ export class SearchEventService {
             const keywordCounts: { [key: string]: { count: number; severity: string } } = {};
             events.forEach(event => {
                 const words = event.query.split(/\s+/);
-                words.forEach(word => {
+                words.forEach((word: string) => {
                     if (word.length > 2) { // Ignore very short words
                         const key = word.toLowerCase();
                         if (!keywordCounts[key]) {
@@ -245,7 +245,7 @@ export class SearchEventService {
             const keywordCounts: { [key: string]: { count: number; severity: string } } = {};
             events.forEach(event => {
                 const words = event.query.split(/\s+/);
-                words.forEach(word => {
+                words.forEach((word: string) => {
                     if (word.length > 2) { // Ignore very short words
                         const key = word.toLowerCase();
                         if (!keywordCounts[key]) {

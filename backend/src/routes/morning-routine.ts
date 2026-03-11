@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { notionService } from '../services/notion-service';
 import { morningRoutineService } from '../services/morning-routine';
+import { morningRoutineAIService } from '../services/morning-routine-ai';
 
 export const morningRoutineRouter = Router();
 
-// In-memory storage for daily progress (resets at midnight)
+// Enhanced in-memory storage for AI-guided routine
 let dailyProgress: {
     [userId: string]: {
         steps: Array<{
@@ -14,10 +15,19 @@ let dailyProgress: {
             completed: boolean;
             completedAt?: Date;
             estimatedDuration: number;
+            section?: string;
+            // AI enhancements
+            checklist?: string[];
+            frictionPoints?: string[];
+            microWins?: string[];
+            fallbacks?: string[];
+            energyLevel?: string;
+            timing?: string;
         }>;
         startedAt?: Date;
         completedAt?: Date;
         notionPageId?: string;
+        aiAnalysis?: any;
     };
 } = {};
 
@@ -31,22 +41,56 @@ setInterval(() => {
 }, 60000); // Check every minute
 
 /**
- * Start morning routine - reads steps from Notion
+ * Analyze morning routine with AI
+ */
+morningRoutineRouter.post('/analyze', async (req, res) => {
+    try {
+        const userId = req.body.userId || 'default-user';
+        const notionPageId = '1eaa2b80227d807aa39dec3c7dbfea97';
+
+        console.log(`🤖 Analyzing morning routine with AI for user: ${userId}`);
+
+        const analysis = await morningRoutineAIService.analyzeRoutine(userId, notionPageId);
+
+        res.json({
+            success: true,
+            data: analysis
+        });
+    } catch (error) {
+        console.error('❌ Error analyzing routine:', error);
+        res.status(500).json({
+            error: 'Failed to analyze routine',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+});
+
+/**
+ * Start morning routine - reads steps from Notion OR uses AI analysis
  */
 morningRoutineRouter.post('/start', async (req, res) => {
     try {
         const userId = req.body.userId || 'default-user';
         console.log(`🌅 Starting morning routine for user: ${userId}`);
 
-        // Find morning routine page in Notion
-        const notionPage = await notionService.findMorningRoutinePage();
+        // Use specific morning routine page from Notion
+        const morningRoutinePageId = '1eaa2b80227d807aa39dec3c7dbfea97';
+        const notionPageContent = await notionService.getPageContent(morningRoutinePageId);
 
-        if (!notionPage) {
+        if (!notionPageContent || !notionPageContent.content) {
             return res.status(404).json({
                 error: 'Morning routine page not found in Notion',
-                message: 'Please create a morning routine page in Notion with keywords like "morning", "routine", or "daily routine"'
+                message: 'Could not load the morning routine page'
             });
         }
+
+        // Create notionPage object from the content
+        const notionPage = {
+            id: morningRoutinePageId,
+            title: notionPageContent.title,
+            content: notionPageContent.content,
+            tasks: notionPageContent.tasks
+        };
 
         // Parse steps from Notion content
         const steps = parseStepsFromNotionContent(notionPage.content, notionPage.tasks);
@@ -70,16 +114,27 @@ morningRoutineRouter.post('/start', async (req, res) => {
 
         console.log(`✅ Morning routine started with ${steps.length} steps`);
 
+        const completedSteps = dailyProgress[userId].steps.filter(s => s.completed).length;
+        const totalSteps = dailyProgress[userId].steps.length;
+        const percentage = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
+
         res.json({
             success: true,
             message: 'Morning routine started successfully',
             data: {
+                started: true,
+                startedAt: dailyProgress[userId].startedAt,
                 steps: dailyProgress[userId].steps,
-                totalSteps: steps.length,
+                progress: {
+                    completedSteps,
+                    totalSteps,
+                    percentage,
+                    allCompleted: false
+                },
                 notionPage: {
                     id: notionPage.id,
                     title: notionPage.title,
-                    url: notionPage.url
+                    url: `https://notion.so/${notionPage.id}`
                 }
             }
         });
@@ -224,28 +279,40 @@ morningRoutineRouter.get('/progress', async (req, res) => {
 
 /**
  * Parse morning routine steps from Notion content
+ * Groups tasks by their section/heading from Notion
  */
 function parseStepsFromNotionContent(content: string, tasks: any[]): Array<{
     id: string;
     name: string;
     description: string;
     estimatedDuration: number;
+    section?: string;
 }> {
     const steps: Array<{
         id: string;
         name: string;
         description: string;
         estimatedDuration: number;
+        section?: string;
     }> = [];
 
-    // First, try to parse from tasks (to-do items)
+    // First, try to parse from tasks (to-do items/checkboxes)
     if (tasks.length > 0) {
         tasks.forEach((task, index) => {
+            // Extract estimated time from task title if present
+            const timeMatch = task.title.match(/\((\d+)\s*min\)/i);
+            const estimatedDuration = timeMatch ? parseInt(timeMatch[1]) : 10;
+            const cleanTitle = task.title.replace(/\((\d+)\s*min\)/i, '').trim();
+
+            // Use the task's list field (which contains the section/group from Notion)
+            const section = task.list && task.list !== 'page-content' ? task.list : undefined;
+
             steps.push({
                 id: `step_${index + 1}`,
-                name: task.title,
-                description: task.title,
-                estimatedDuration: 15 // Default duration
+                name: cleanTitle,
+                description: cleanTitle,
+                estimatedDuration,
+                section
             });
         });
         return steps;

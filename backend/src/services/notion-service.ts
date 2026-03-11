@@ -252,6 +252,7 @@ export class NotionService {
             let content = '';
             const subPages: Array<{ title: string; id: string; url: string }> = [];
             const tasks: NotionTask[] = [];
+            let currentSection = ''; // Track current section/group
 
             // Parse the page content
             for (const block of pageResponse.results) {
@@ -263,20 +264,40 @@ export class NotionService {
                         title = block.heading_2?.rich_text?.[0]?.plain_text || 'Untitled Page';
                     }
 
+                    // Track section headings for grouping
+                    if (block.type === 'heading_2' || block.type === 'heading_3') {
+                        const headingText = (block as any)[block.type]?.rich_text?.[0]?.plain_text || '';
+                        if (headingText) {
+                            currentSection = headingText;
+                            content += `\n## ${headingText}\n`;
+                        }
+                    }
+
                     // Extract content
                     if (block.type === 'paragraph' && block.paragraph?.rich_text) {
                         const text = block.paragraph.rich_text.map(rt => rt.plain_text).join('');
                         if (text.trim()) {
                             content += text + '\n';
                         }
+                        // Include list items as markdown-style bullets so downstream parsers can read them
+                    } else if (block.type === 'bulleted_list_item' && (block as any).bulleted_list_item?.rich_text) {
+                        const text = (block as any).bulleted_list_item.rich_text.map((rt: any) => rt.plain_text).join('');
+                        if (text.trim()) {
+                            content += `- ${text}\n`;
+                        }
+                    } else if (block.type === 'numbered_list_item' && (block as any).numbered_list_item?.rich_text) {
+                        const text = (block as any).numbered_list_item.rich_text.map((rt: any) => rt.plain_text).join('');
+                        if (text.trim()) {
+                            content += `- ${text}\n`;
+                        }
                     } else if (block.type === 'heading_1' || block.type === 'heading_2' || block.type === 'heading_3') {
                         const headingText = (block as any)[block.type]?.rich_text?.[0]?.plain_text || '';
-                        if (headingText) {
+                        if (headingText && block.type === 'heading_1') {
                             content += `\n## ${headingText}\n`;
                         }
                     }
 
-                    // Extract tasks
+                    // Extract tasks with section info
                     if (block.type === 'to_do') {
                         tasks.push({
                             id: block.id,
@@ -285,7 +306,7 @@ export class NotionService {
                             priority: 'Medium',
                             dueDate: undefined,
                             url: `https://notion.so/${pageId}#${block.id}`,
-                            list: 'page-content',
+                            list: currentSection || 'page-content', // Use current section as list
                             completed: block.to_do?.checked || false
                         });
                     }

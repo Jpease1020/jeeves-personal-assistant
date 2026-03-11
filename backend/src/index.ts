@@ -18,6 +18,8 @@ import { chromeExtensionRouter } from './routes/chrome-extension';
 import { blockedSiteRouter } from './routes/blocked-site';
 import morningRoutineRouter from './routes/morning-routine';
 import spanishQuizRouter from './routes/spanish-quiz';
+import { calendarRouter } from './routes/calendar';
+import { mochiRouter } from './routes/mochi';
 
 // Import MCP routes
 import notionMCPRouter from './routes/mcp/notion';
@@ -55,6 +57,8 @@ app.use('/api', notionAIRouter);
 app.use('/api', setupRouter);
 app.use('/api/morning-routine', morningRoutineRouter);
 app.use('/api/spanish', spanishQuizRouter);
+app.use('/api/calendar', calendarRouter);
+app.use('/api/mochi', mochiRouter);
 
 // MCP Routes (integrated)
 app.use('/api/mcp/notion', notionMCPRouter);

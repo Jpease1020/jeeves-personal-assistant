@@ -37,10 +37,9 @@ router.post('/', async (req, res) => {
             timestamp: timestamp || new Date().toISOString(),
             fullUrl: fullUrl || null,
             source: source || 'extension',
-            userAgent: userAgent || null,
+            userAgent: userAgent || req.get('User-Agent') || undefined,
             extensionVersion: extensionVersion || null,
-            ipAddress: req.ip || req.connection.remoteAddress,
-            userAgent: req.get('User-Agent') || null
+            ipAddress: req.ip || req.connection.remoteAddress
         };
 
         const result = await blockedSiteService.createEvent(eventData);
@@ -79,11 +78,11 @@ router.get('/:userId', async (req, res) => {
 
         const events = await blockedSiteService.getUserEvents({
             userId,
-            startDate,
-            endDate,
-            action,
-            limit: parseInt(limit),
-            offset: parseInt(offset)
+            startDate: startDate as string,
+            endDate: endDate as string,
+            action: action as string,
+            limit: parseInt(limit as string),
+            offset: parseInt(offset as string)
         });
 
         res.json({
@@ -110,7 +109,7 @@ router.get('/:userId/stats', async (req, res) => {
         const { userId } = req.params;
         const { days = 7 } = req.query;
 
-        const stats = await blockedSiteService.getUserStats(userId, parseInt(days));
+        const stats = await blockedSiteService.getUserStats(userId, parseInt(days as string));
 
         res.json({
             success: true,
@@ -135,7 +134,7 @@ router.get('/:userId/report', async (req, res) => {
         const { userId } = req.params;
         const { days = 7, format = 'json' } = req.query;
 
-        const report = await blockedSiteService.generateAccountabilityReport(userId, parseInt(days));
+        const report = await blockedSiteService.generateAccountabilityReport(userId, parseInt(days as string));
 
         if (format === 'csv') {
             // Generate CSV format

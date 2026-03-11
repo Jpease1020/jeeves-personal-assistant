@@ -1,0 +1,420 @@
+{
+    "name": "Spanish Lean A2 - Conjugations",
+    "cards": [
+        {
+            "front": "AR — Present",
+            "back": "-o, -as, -a, -amos, -an\n\nExample:\nhablo (I speak)",
+            "tags": [
+                "present",
+                "pattern",
+                "ar",
+                "lean"
+            ]
+        },
+        {
+            "front": "-o, -as, -a, -amos, -an",
+            "back": "AR — Present\n\nExample:\nhablo (I speak)",
+            "tags": [
+                "present",
+                "pattern",
+                "ar",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "ER — Present",
+            "back": "-o, -es, -e, -emos, -en\n\nExample:\ncomo (I eat)",
+            "tags": [
+                "present",
+                "pattern",
+                "er",
+                "lean"
+            ]
+        },
+        {
+            "front": "-o, -es, -e, -emos, -en",
+            "back": "ER — Present\n\nExample:\ncomo (I eat)",
+            "tags": [
+                "present",
+                "pattern",
+                "er",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "IR — Present",
+            "back": "-o, -es, -e, -imos, -en\n\nExample:\nvivo (I live)",
+            "tags": [
+                "present",
+                "pattern",
+                "ir",
+                "lean"
+            ]
+        },
+        {
+            "front": "-o, -es, -e, -imos, -en",
+            "back": "IR — Present\n\nExample:\nvivo (I live)",
+            "tags": [
+                "present",
+                "pattern",
+                "ir",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "Present Progressive",
+            "back": "estar (present) + -ando / -iendo\n\nExample:\nestoy hablando (I am speaking)",
+            "tags": [
+                "present-progressive",
+                "pattern",
+                "lean"
+            ]
+        },
+        {
+            "front": "estar + -ando / -iendo",
+            "back": "Present Progressive\n\nExample:\nestoy comiendo (I am eating)",
+            "tags": [
+                "present-progressive",
+                "pattern",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "AR — Preterite",
+            "back": "-é, -aste, -ó, -amos, -aron\n\nExample:\nhablé (I spoke)",
+            "tags": [
+                "preterite",
+                "pattern",
+                "ar",
+                "lean"
+            ]
+        },
+        {
+            "front": "-é, -aste, -ó, -amos, -aron",
+            "back": "AR — Preterite\n\nExample:\nhablé (I spoke)",
+            "tags": [
+                "preterite",
+                "pattern",
+                "ar",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "ER — Preterite",
+            "back": "-í, -iste, -ió, -imos, -ieron\n\nExample:\ncomí (I ate)",
+            "tags": [
+                "preterite",
+                "pattern",
+                "er",
+                "lean"
+            ]
+        },
+        {
+            "front": "-í, -iste, -ió, -imos, -ieron",
+            "back": "ER — Preterite\n\nExample:\ncomí (I ate)",
+            "tags": [
+                "preterite",
+                "pattern",
+                "er",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "IR — Preterite",
+            "back": "-í, -iste, -ió, -imos, -ieron\n\nExample:\nviví (I lived)",
+            "tags": [
+                "preterite",
+                "pattern",
+                "ir",
+                "lean"
+            ]
+        },
+        {
+            "front": "-í, -iste, -ió, -imos, -ieron",
+            "back": "IR — Preterite\n\nExample:\nviví (I lived)",
+            "tags": [
+                "preterite",
+                "pattern",
+                "ir",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "AR — Imperfect",
+            "back": "-aba, -abas, -aba, -ábamos, -aban\n\nExample:\nhablaba (I used to speak)",
+            "tags": [
+                "imperfect",
+                "pattern",
+                "ar",
+                "lean"
+            ]
+        },
+        {
+            "front": "-aba, -abas, -aba, -ábamos, -aban",
+            "back": "AR — Imperfect\n\nExample:\nhablaba (I used to speak)",
+            "tags": [
+                "imperfect",
+                "pattern",
+                "ar",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "ER — Imperfect",
+            "back": "-ía, -ías, -ía, -íamos, -ían\n\nExample:\ncomía (I used to eat)",
+            "tags": [
+                "imperfect",
+                "pattern",
+                "er",
+                "lean"
+            ]
+        },
+        {
+            "front": "-ía, -ías, -ía, -íamos, -ían",
+            "back": "ER — Imperfect\n\nExample:\ncomía (I used to eat)",
+            "tags": [
+                "imperfect",
+                "pattern",
+                "er",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "IR — Imperfect",
+            "back": "-ía, -ías, -ía, -íamos, -ían\n\nExample:\nvivía (I used to live)",
+            "tags": [
+                "imperfect",
+                "pattern",
+                "ir",
+                "lean"
+            ]
+        },
+        {
+            "front": "-ía, -ías, -ía, -íamos, -ían",
+            "back": "IR — Imperfect\n\nExample:\nvivía (I used to live)",
+            "tags": [
+                "imperfect",
+                "pattern",
+                "ir",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "AR/ER/IR — Future",
+            "back": "infinitive + -é, -ás, -á, -emos, -án\n\nExample:\nhablaré (I will speak)",
+            "tags": [
+                "future",
+                "pattern",
+                "all",
+                "lean"
+            ]
+        },
+        {
+            "front": "-é, -ás, -á, -emos, -án",
+            "back": "Future (add to infinitive)\n\nExample:\nhablaré (I will speak)",
+            "tags": [
+                "future",
+                "pattern",
+                "all",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "Imperative — AR",
+            "back": "tú: -a\nusted: -e\nnosotros: -emos\n\nExample:\nhabla (speak!)",
+            "tags": [
+                "imperative",
+                "pattern",
+                "ar",
+                "lean"
+            ]
+        },
+        {
+            "front": "habla / hable / hablemos",
+            "back": "Imperative — AR",
+            "tags": [
+                "imperative",
+                "pattern",
+                "ar",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "Imperative — ER/IR",
+            "back": "tú: -e\nusted: -a\nnosotros: -amos\n\nExample:\ncome (eat!)",
+            "tags": [
+                "imperative",
+                "pattern",
+                "er-ir",
+                "lean"
+            ]
+        },
+        {
+            "front": "come / coma / comamos",
+            "back": "Imperative — ER/IR",
+            "tags": [
+                "imperative",
+                "pattern",
+                "er-ir",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "Negative Imperative — AR",
+            "back": "tú: -es\nusted: -e\nnosotros: -emos\n\nExample:\nno hables (don't speak!)",
+            "tags": [
+                "neg-imperative",
+                "pattern",
+                "ar",
+                "lean"
+            ]
+        },
+        {
+            "front": "no hables / no hable / no hablemos",
+            "back": "Negative Imperative — AR",
+            "tags": [
+                "neg-imperative",
+                "pattern",
+                "ar",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "Negative Imperative — ER/IR",
+            "back": "tú: -as\nusted: -a\nnosotros: -amos\n\nExample:\nno comas (don't eat!)",
+            "tags": [
+                "neg-imperative",
+                "pattern",
+                "er-ir",
+                "lean"
+            ]
+        },
+        {
+            "front": "no comas / no coma / no comamos",
+            "back": "Negative Imperative — ER/IR",
+            "tags": [
+                "neg-imperative",
+                "pattern",
+                "er-ir",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "ser — present",
+            "back": "soy, eres, es, somos, son\n\nExample:\nSoy estudiante.",
+            "tags": [
+                "irregular",
+                "present",
+                "ser",
+                "lean"
+            ]
+        },
+        {
+            "front": "soy, eres, es, somos, son",
+            "back": "ser — present\n\nExample:\nSoy estudiante.",
+            "tags": [
+                "irregular",
+                "present",
+                "ser",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "ser — preterite",
+            "back": "fui, fuiste, fue, fuimos, fueron\n\nExample:\nFui profesor.",
+            "tags": [
+                "irregular",
+                "preterite",
+                "ser",
+                "lean"
+            ]
+        },
+        {
+            "front": "fui, fuiste, fue, fuimos, fueron",
+            "back": "ser — preterite\n\nExample:\nFui profesor.",
+            "tags": [
+                "irregular",
+                "preterite",
+                "ser",
+                "lean",
+                "reverse"
+            ]
+        },
+        {
+            "front": "estar — present",
+            "back": "estoy, estás, está, estamos, están\n\nExample:\nEstoy cansado.",
+            "tags": [
+                "irregular",
+                "present",
+                "estar",
+                "lean"
+            ]
+        },
+        {
+            "front": "tener — present",
+            "back": "tengo, tienes, tiene, tenemos, tienen\n\nExample:\nTengo un perro.",
+            "tags": [
+                "irregular",
+                "present",
+                "tener",
+                "lean"
+            ]
+        },
+        {
+            "front": "tener — preterite",
+            "back": "tuve, tuviste, tuvo, tuvimos, tuvieron\n\nExample:\nTuve un día bueno.",
+            "tags": [
+                "irregular",
+                "preterite",
+                "tener",
+                "lean"
+            ]
+        },
+        {
+            "front": "ir — present",
+            "back": "voy, vas, va, vamos, van\n\nExample:\nVoy a casa.",
+            "tags": [
+                "irregular",
+                "present",
+                "ir",
+                "lean"
+            ]
+        },
+        {
+            "front": "ir — preterite",
+            "back": "fui, fuiste, fue, fuimos, fueron\n\nExample:\nFui al parque.",
+            "tags": [
+                "irregular",
+                "preterite",
+                "ir",
+                "lean"
+            ]
+        },
+        {
+            "front": "hacer — present",
+            "back": "hago, haces, hace, hacemos, hacen\n\nExample:\nHago ejercicio.",
+            "tags": [
+                "irregular",
+                "present",
+                "hacer",
+                "lean"
+            ]
+        }
+    ]
+}
