@@ -15,7 +15,11 @@
     "test:services": "jest --testPathPattern=service-integration",
     "test:llm": "jest --testPathPattern=llm-response-quality",
     "test:e2e": "jest --testPathPattern=e2e-workflows",
-    "test:api": "jest --testPathPattern=api-integration"
+    "test:api": "jest --testPathPattern=api-integration",
+    "mochi:generate": "tsx scripts/generate-mochi-file.ts",
+    "mochi:create": "tsx scripts/create-mochi-cards.ts",
+    "mochi:test": "tsx scripts/test-mochi-api.ts",
+    "mochi:test-fresh": "tsx scripts/test-mochi-api-fresh.ts"
   },
   "keywords": [
     "personal-assistant",
@@ -28,6 +32,9 @@
     "@anthropic-ai/sdk": "^0.32.0",
     "@notionhq/client": "^2.2.15",
     "@supabase/supabase-js": "^2.47.10",
+    "@types/archiver": "^7.0.0",
+    "archiver": "^7.0.1",
+    "axios": "^1.12.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",

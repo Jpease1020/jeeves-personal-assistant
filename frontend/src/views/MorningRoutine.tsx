@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { colors, spacing, typography } from '../design/tokens/tokens';
+import { colors, spacing, fontSize, fontWeight } from '../design/tokens/tokens';
 
 const Container = styled.div`
   max-width: 800px;
@@ -20,11 +20,11 @@ const Title = styled.h1`
 
 const Subtitle = styled.p`
   color: ${colors.text.secondary};
-  font-size: ${typography.size.lg};
+  font-size: ${fontSize.lg};
 `;
 
 const ProgressCard = styled.div`
-  background: ${colors.background.card};
+  background: ${colors.background.secondary};
   border-radius: 12px;
   padding: ${spacing.lg};
   margin-bottom: ${spacing.lg};
@@ -43,7 +43,7 @@ const ProgressBar = styled.div`
 const ProgressFill = styled.div<{ percentage: number }>`
   width: ${props => props.percentage}%;
   height: 100%;
-  background: linear-gradient(90deg, ${colors.accent.primary}, ${colors.accent.secondary});
+  background: linear-gradient(90deg, ${colors.primary[500]}, ${colors.primary[600]});
   transition: width 0.3s ease;
 `;
 
@@ -55,13 +55,13 @@ const ProgressText = styled.div`
 `;
 
 const ProgressLabel = styled.span`
-  font-weight: ${typography.weight.semibold};
+  font-weight: ${fontWeight.semibold};
   color: ${colors.text.primary};
 `;
 
 const ProgressValue = styled.span`
-  font-weight: ${typography.weight.bold};
-  color: ${colors.accent.primary};
+  font-weight: ${fontWeight.bold};
+  color: ${colors.primary[600]};
 `;
 
 const StepsContainer = styled.div`
@@ -71,12 +71,12 @@ const StepsContainer = styled.div`
 `;
 
 const StepCard = styled.div<{ completed: boolean; current: boolean }>`
-  background: ${props => props.current ? colors.accent.light : colors.background.card};
+  background: ${props => props.current ? colors.primary[50] : colors.background.secondary};
   border: 2px solid ${props =>
-        props.completed ? colors.success.primary :
-            props.current ? colors.accent.primary :
-                colors.border.light
-    };
+    props.completed ? colors.success[500] :
+      props.current ? colors.primary[500] :
+        colors.border.light
+  };
   border-radius: 12px;
   padding: ${spacing.lg};
   transition: all 0.3s ease;
@@ -102,15 +102,15 @@ const StepNumber = styled.div<{ completed: boolean; current: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: ${typography.weight.bold};
+  font-weight: ${fontWeight.bold};
   background: ${props =>
-        props.completed ? colors.success.primary :
-            props.current ? colors.accent.primary :
-                colors.background.secondary
-    };
+    props.completed ? colors.success[500] :
+      props.current ? colors.primary[500] :
+        colors.background.tertiary
+  };
   color: ${props =>
-        props.completed || props.current ? colors.text.inverse : colors.text.secondary
-    };
+    props.completed || props.current ? colors.text.white : colors.text.secondary
+  };
 `;
 
 const StepTitle = styled.h3<{ completed: boolean }>`
@@ -127,21 +127,21 @@ const StepDescription = styled.p<{ completed: boolean }>`
 
 const StepDuration = styled.div`
   margin-top: ${spacing.sm};
-  font-size: ${typography.size.sm};
+  font-size: ${fontSize.sm};
   color: ${colors.text.secondary};
 `;
 
 const ActionButton = styled.button<{ variant: 'primary' | 'secondary' }>`
   background: ${props =>
-        props.variant === 'primary' ? colors.accent.primary : colors.background.secondary
-    };
+    props.variant === 'primary' ? colors.primary[500] : colors.background.secondary
+  };
   color: ${props =>
-        props.variant === 'primary' ? colors.text.inverse : colors.text.primary
-    };
+    props.variant === 'primary' ? colors.text.white : colors.text.primary
+  };
   border: none;
   border-radius: 8px;
   padding: ${spacing.md} ${spacing.lg};
-  font-weight: ${typography.weight.semibold};
+  font-weight: ${fontWeight.semibold};
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
@@ -149,8 +149,8 @@ const ActionButton = styled.button<{ variant: 'primary' | 'secondary' }>`
   
   &:hover {
     background: ${props =>
-        props.variant === 'primary' ? colors.accent.dark : colors.border.light
-    };
+    props.variant === 'primary' ? colors.primary[600] : colors.border.light
+  };
     transform: translateY(-1px);
   }
   
@@ -164,24 +164,24 @@ const ActionButton = styled.button<{ variant: 'primary' | 'secondary' }>`
 const CompletionMessage = styled.div`
   text-align: center;
   padding: ${spacing.xl};
-  background: ${colors.success.light};
+  background: ${colors.success[50]};
   border-radius: 12px;
   margin-top: ${spacing.lg};
 `;
 
 const CompletionTitle = styled.h2`
-  color: ${colors.success.primary};
+  color: ${colors.success[600]};
   margin-bottom: ${spacing.sm};
 `;
 
 const CompletionText = styled.p`
   color: ${colors.text.primary};
-  font-size: ${typography.size.lg};
+  font-size: ${fontSize.lg};
 `;
 
 const ErrorMessage = styled.div`
-  background: ${colors.error.light};
-  color: ${colors.error.primary};
+  background: ${colors.danger[50]};
+  color: ${colors.danger[600]};
   padding: ${spacing.md};
   border-radius: 8px;
   margin-bottom: ${spacing.lg};
@@ -195,255 +195,278 @@ const LoadingSpinner = styled.div`
 `;
 
 interface MorningRoutineStep {
-    id: string;
-    name: string;
-    description: string;
-    completed: boolean;
-    completedAt?: string;
-    estimatedDuration: number;
+  id: string;
+  name: string;
+  description: string;
+  completed: boolean;
+  completedAt?: string;
+  estimatedDuration: number;
+  section?: string;
 }
 
 interface MorningRoutineData {
-    started: boolean;
-    startedAt?: string;
-    completedAt?: string;
-    steps: MorningRoutineStep[];
-    progress: {
-        completedSteps: number;
-        totalSteps: number;
-        percentage: number;
-        allCompleted: boolean;
-    };
+  started: boolean;
+  startedAt?: string;
+  completedAt?: string;
+  steps: MorningRoutineStep[];
+  progress: {
+    completedSteps: number;
+    totalSteps: number;
+    percentage: number;
+    allCompleted: boolean;
+  };
 }
 
 export function MorningRoutine() {
-    const [data, setData] = useState<MorningRoutineData | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [completingStep, setCompletingStep] = useState<string | null>(null);
+  const [data, setData] = useState<MorningRoutineData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [completingStep, setCompletingStep] = useState<string | null>(null);
 
-    const userId = 'default-user'; // In a real app, this would come from auth
+  const userId = 'default-user'; // In a real app, this would come from auth
 
-    useEffect(() => {
-        loadProgress();
-    }, []);
+  useEffect(() => {
+    loadProgress();
+  }, []);
 
-    const loadProgress = async () => {
-        try {
-            setLoading(true);
-            setError(null);
+  const loadProgress = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-            const response = await fetch(`/api/morning-routine/progress?userId=${userId}`);
-            const result = await response.json();
+      const response = await fetch(`/api/morning-routine/progress?userId=${userId}`);
+      const result = await response.json();
 
-            if (!response.ok) {
-                throw new Error(result.error || 'Failed to load progress');
-            }
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to load progress');
+      }
 
-            setData(result.data);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to load morning routine');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const startRoutine = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-
-            const response = await fetch('/api/morning-routine/start', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId }),
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.error || 'Failed to start morning routine');
-            }
-
-            setData(result.data);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to start morning routine');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const completeStep = async (stepId: string) => {
-        try {
-            setCompletingStep(stepId);
-
-            const response = await fetch('/api/morning-routine/complete-step', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId, stepId }),
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.error || 'Failed to complete step');
-            }
-
-            // Update local state
-            setData(prevData => {
-                if (!prevData) return prevData;
-
-                const updatedSteps = prevData.steps.map(step =>
-                    step.id === stepId
-                        ? { ...step, completed: true, completedAt: result.data.step.completedAt }
-                        : step
-                );
-
-                return {
-                    ...prevData,
-                    steps: updatedSteps,
-                    progress: result.data.progress
-                };
-            });
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to complete step');
-        } finally {
-            setCompletingStep(null);
-        }
-    };
-
-    const getCurrentStep = () => {
-        if (!data?.steps) return null;
-        return data.steps.find(step => !step.completed);
-    };
-
-    const formatDuration = (minutes: number) => {
-        if (minutes < 60) {
-            return `${minutes}m`;
-        }
-        const hours = Math.floor(minutes / 60);
-        const remainingMinutes = minutes % 60;
-        return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`;
-    };
-
-    if (loading) {
-        return (
-            <Container>
-                <LoadingSpinner>
-                    <div>Loading your morning routine...</div>
-                </LoadingSpinner>
-            </Container>
-        );
+      setData(result.data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load morning routine');
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if (error) {
-        return (
-            <Container>
-                <ErrorMessage>{error}</ErrorMessage>
-                <ActionButton variant="primary" onClick={loadProgress}>
-                    Try Again
-                </ActionButton>
-            </Container>
-        );
+  const startRoutine = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch('/api/morning-routine/start', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to start morning routine');
+      }
+
+      setData(result.data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to start morning routine');
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if (!data?.started) {
-        return (
-            <Container>
-                <Header>
-                    <Title>🌅 Morning Routine</Title>
-                    <Subtitle>Start your day with intention and purpose</Subtitle>
-                </Header>
+  const completeStep = async (stepId: string) => {
+    try {
+      setCompletingStep(stepId);
 
-                <ProgressCard>
-                    <h3>Ready to begin?</h3>
-                    <p>Your morning routine will be loaded from your Notion page. Make sure you have a page with keywords like "morning", "routine", or "daily routine".</p>
-                </ProgressCard>
+      const response = await fetch('/api/morning-routine/complete-step', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, stepId }),
+      });
 
-                <ActionButton variant="primary" onClick={startRoutine}>
-                    Start Morning Routine
-                </ActionButton>
-            </Container>
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to complete step');
+      }
+
+      // Update local state
+      setData(prevData => {
+        if (!prevData) return prevData;
+
+        const updatedSteps = prevData.steps.map(step =>
+          step.id === stepId
+            ? { ...step, completed: true, completedAt: result.data.step.completedAt }
+            : step
         );
+
+        return {
+          ...prevData,
+          steps: updatedSteps,
+          progress: result.data.progress
+        };
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to complete step');
+    } finally {
+      setCompletingStep(null);
     }
+  };
 
-    const currentStep = getCurrentStep();
-    const progress = data.progress;
+  const getCurrentStep = () => {
+    if (!data?.steps) return null;
+    return data.steps.find(step => !step.completed);
+  };
 
+  const formatDuration = (minutes: number) => {
+    if (minutes < 60) {
+      return `${minutes}m`;
+    }
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`;
+  };
+
+  if (loading) {
     return (
-        <Container>
-            <Header>
-                <Title>🌅 Morning Routine</Title>
-                <Subtitle>Progress: {progress.completedSteps} of {progress.totalSteps} steps</Subtitle>
-            </Header>
-
-            <ProgressCard>
-                <ProgressText>
-                    <ProgressLabel>Progress</ProgressLabel>
-                    <ProgressValue>{progress.percentage}%</ProgressValue>
-                </ProgressText>
-                <ProgressBar>
-                    <ProgressFill percentage={progress.percentage} />
-                </ProgressBar>
-            </ProgressCard>
-
-            {data.progress.allCompleted ? (
-                <CompletionMessage>
-                    <CompletionTitle>🎉 Morning Routine Complete!</CompletionTitle>
-                    <CompletionText>
-                        Excellent work! You've set yourself up for a productive day.
-                        Your routine was completed at {new Date(data.completedAt!).toLocaleTimeString()}.
-                    </CompletionText>
-                </CompletionMessage>
-            ) : (
-                <StepsContainer>
-                    {data.steps.map((step, index) => {
-                        const isCurrent = step.id === currentStep?.id;
-                        const isCompleted = step.completed;
-
-                        return (
-                            <StepCard
-                                key={step.id}
-                                completed={isCompleted}
-                                current={isCurrent}
-                                onClick={() => isCurrent && !completingStep && completeStep(step.id)}
-                            >
-                                <StepHeader>
-                                    <StepNumber completed={isCompleted} current={isCurrent}>
-                                        {isCompleted ? '✓' : index + 1}
-                                    </StepNumber>
-                                    <StepTitle completed={isCompleted}>{step.name}</StepTitle>
-                                </StepHeader>
-
-                                <StepDescription completed={isCompleted}>
-                                    {step.description}
-                                </StepDescription>
-
-                                <StepDuration>
-                                    Estimated time: {formatDuration(step.estimatedDuration)}
-                                    {step.completedAt && (
-                                        <span> • Completed at {new Date(step.completedAt).toLocaleTimeString()}</span>
-                                    )}
-                                </StepDuration>
-
-                                {isCurrent && (
-                                    <ActionButton
-                                        variant="primary"
-                                        onClick={() => completeStep(step.id)}
-                                        disabled={completingStep === step.id}
-                                    >
-                                        {completingStep === step.id ? 'Completing...' : 'Mark Complete'}
-                                    </ActionButton>
-                                )}
-                            </StepCard>
-                        );
-                    })}
-                </StepsContainer>
-            )}
-        </Container>
+      <Container>
+        <LoadingSpinner>
+          <div>Loading your morning routine...</div>
+        </LoadingSpinner>
+      </Container>
     );
+  }
+
+  if (error) {
+    return (
+      <Container>
+        <ErrorMessage>{error}</ErrorMessage>
+        <ActionButton variant="primary" onClick={loadProgress}>
+          Try Again
+        </ActionButton>
+      </Container>
+    );
+  }
+
+  if (!data?.started) {
+    return (
+      <Container>
+        <Header>
+          <Title>🌅 Morning Routine</Title>
+          <Subtitle>Start your day with intention and purpose</Subtitle>
+        </Header>
+
+        <ProgressCard>
+          <h3>Ready to begin?</h3>
+          <p>Your morning routine will be loaded from your Notion page. Make sure you have a page with keywords like "morning", "routine", or "daily routine".</p>
+        </ProgressCard>
+
+        <ActionButton variant="primary" onClick={startRoutine}>
+          Start Morning Routine
+        </ActionButton>
+      </Container>
+    );
+  }
+
+  const currentStep = getCurrentStep();
+  const progress = data.progress;
+
+  return (
+    <Container>
+      <Header>
+        <Title>🌅 Morning Routine</Title>
+        <Subtitle>Progress: {progress.completedSteps} of {progress.totalSteps} steps</Subtitle>
+      </Header>
+
+      <ProgressCard>
+        <ProgressText>
+          <ProgressLabel>Progress</ProgressLabel>
+          <ProgressValue>{progress.percentage}%</ProgressValue>
+        </ProgressText>
+        <ProgressBar>
+          <ProgressFill percentage={progress.percentage} />
+        </ProgressBar>
+      </ProgressCard>
+
+      {data.progress.allCompleted ? (
+        <CompletionMessage>
+          <CompletionTitle>🎉 Morning Routine Complete!</CompletionTitle>
+          <CompletionText>
+            Excellent work! You've set yourself up for a productive day.
+            Your routine was completed at {new Date(data.completedAt!).toLocaleTimeString()}.
+          </CompletionText>
+        </CompletionMessage>
+      ) : (
+        <StepsContainer>
+          {(() => {
+            // Group steps by section
+            const groupedSteps = data.steps.reduce((groups, step) => {
+              const section = step.section || 'Other';
+              if (!groups[section]) {
+                groups[section] = [];
+              }
+              groups[section].push(step);
+              return groups;
+            }, {} as Record<string, typeof data.steps>);
+
+            // Render grouped steps
+            return Object.entries(groupedSteps).map(([section, steps]) => (
+              <div key={section}>
+                {section !== 'page-content' && (
+                  <h3 style={{ color: colors.text.primary, marginTop: spacing.lg, marginBottom: spacing.md }}>
+                    {section}
+                  </h3>
+                )}
+                {steps.map((step, index) => {
+                  const isCurrent = step.id === currentStep?.id;
+                  const isCompleted = step.completed;
+
+                  return (
+                    <StepCard
+                      key={step.id}
+                      completed={isCompleted}
+                      current={isCurrent}
+                      onClick={() => isCurrent && !completingStep && completeStep(step.id)}
+                    >
+                      <StepHeader>
+                        <StepNumber completed={isCompleted} current={isCurrent}>
+                          {isCompleted ? '✓' : index + 1}
+                        </StepNumber>
+                        <StepTitle completed={isCompleted}>{step.name}</StepTitle>
+                      </StepHeader>
+
+                      <StepDescription completed={isCompleted}>
+                        {step.description}
+                      </StepDescription>
+
+                      <StepDuration>
+                        Estimated time: {formatDuration(step.estimatedDuration)}
+                        {step.completedAt && (
+                          <span> • Completed at {new Date(step.completedAt).toLocaleTimeString()}</span>
+                        )}
+                      </StepDuration>
+
+                      {isCurrent && (
+                        <ActionButton
+                          variant="primary"
+                          onClick={() => completeStep(step.id)}
+                          disabled={completingStep === step.id}
+                        >
+                          {completingStep === step.id ? 'Completing...' : 'Mark Complete'}
+                        </ActionButton>
+                      )}
+                    </StepCard>
+                  );
+                })}
+              </div>
+            ));
+          })()}
+        </StepsContainer>
+      )}
+    </Container>
+  );
 }

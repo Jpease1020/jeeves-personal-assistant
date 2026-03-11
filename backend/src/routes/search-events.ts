@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
             matchedKeywords: matchedKeywords || [],
             timestamp: timestamp || new Date().toISOString(),
             ipAddress: req.ip || req.connection.remoteAddress,
-            userAgent: req.get('User-Agent') || null
+            userAgent: req.get('User-Agent') || undefined,
         };
 
         const result = await searchEventService.createEvent(eventData);
@@ -78,12 +78,12 @@ router.get('/:userId', async (req, res) => {
 
         const events = await searchEventService.getUserEvents({
             userId,
-            startDate,
-            endDate,
-            severity,
-            source,
-            limit: parseInt(limit),
-            offset: parseInt(offset)
+            startDate: startDate as string,
+            endDate: endDate as string,
+            severity: severity as string,
+            source: source as string,
+            limit: parseInt(limit as string),
+            offset: parseInt(offset as string)
         });
 
         res.json({
@@ -110,7 +110,7 @@ router.get('/:userId/stats', async (req, res) => {
         const { userId } = req.params;
         const { days = 7 } = req.query;
 
-        const stats = await searchEventService.getUserStats(userId, parseInt(days));
+        const stats = await searchEventService.getUserStats(userId, parseInt(days as string));
 
         res.json({
             success: true,
@@ -135,7 +135,7 @@ router.get('/:userId/keywords', async (req, res) => {
         const { userId } = req.params;
         const { days = 30, limit = 50 } = req.query;
 
-        const keywords = await searchEventService.getTopKeywords(userId, parseInt(days), parseInt(limit));
+        const keywords = await searchEventService.getTopKeywords(userId, parseInt(days as string), parseInt(limit as string));
 
         res.json({
             success: true,

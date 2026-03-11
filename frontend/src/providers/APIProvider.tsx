@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 const API_URL = import.meta.env.VITE_API_URL || 'https://personal-assistant-backend-production.up.railway.app';
 
 interface APIContextType {
-    sendMessage: (message: string) => Promise<string>;
+    sendMessage: (message: string, signal?: AbortSignal) => Promise<string>;
     getDashboard: () => Promise<any>;
     getBriefing: () => Promise<string>;
     checkIn: () => Promise<string>;
@@ -15,11 +15,12 @@ interface APIContextType {
 const APIContext = createContext<APIContextType | undefined>(undefined);
 
 export function APIProvider({ children }: { children: ReactNode }) {
-    const sendMessage = async (message: string): Promise<string> => {
+    const sendMessage = async (message: string, signal?: AbortSignal): Promise<string> => {
         const response = await fetch(`${API_URL}/api/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message, userId: 'e7c8419d-9c8c-4c09-b8d3-e9caf81e8ae4' }),
+            signal: signal
         });
         const data = await response.json();
         return data.response;

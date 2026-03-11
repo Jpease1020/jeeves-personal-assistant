@@ -40,7 +40,7 @@ export interface QuizQuestion {
 }
 
 export class SpanishStudyService {
-    private supabase: any;
+    public supabase: any;
 
     constructor() {
         const supabaseUrl = process.env.SUPABASE_URL;
@@ -63,25 +63,51 @@ export class SpanishStudyService {
         try {
             console.log('📚 Syncing Spanish study content from Notion...');
 
-            const spanishPages = await notionService.findSpanishStudyPages();
+            // Get the specific Spanish Study Plan page
+            const studyPlan = await notionService.getSpanishStudyPlan();
             let synced = 0;
             const errors: string[] = [];
 
-            for (const page of spanishPages) {
-                try {
-                    const studyItems = this.parseSpanishContent(page);
+            try {
+                // Parse the study plan content
+                const studyItems = this.parseSpanishContent({
+                    id: 'fb482487604c4558b8dbb2478f3a36c4',
+                    title: studyPlan.title,
+                    content: studyPlan.content,
+                    tasks: studyPlan.tasks
+                });
 
-                    for (const item of studyItems) {
-                        await this.saveStudyItem(item);
-                        synced++;
-                    }
-                } catch (error) {
-                    errors.push(`Failed to sync page "${page.title}": ${error}`);
-                    console.error(`Error syncing page ${page.title}:`, error);
+                for (const item of studyItems) {
+                    await this.saveStudyItem(item);
+                    synced++;
                 }
+
+                // Also process sub-pages if they exist
+                for (const subPage of studyPlan.subPages) {
+                    try {
+                        const subPageContent = await notionService.getPageContent(subPage.id, false);
+                        const subStudyItems = this.parseSpanishContent({
+                            id: subPage.id,
+                            title: subPageContent.title,
+                            content: subPageContent.content,
+                            tasks: subPageContent.tasks
+                        });
+
+                        for (const item of subStudyItems) {
+                            await this.saveStudyItem(item);
+                            synced++;
+                        }
+                    } catch (error) {
+                        errors.push(`Failed to sync sub-page "${subPage.title}": ${error}`);
+                        console.error(`Error syncing sub-page ${subPage.title}:`, error);
+                    }
+                }
+            } catch (error) {
+                errors.push(`Failed to sync study plan "${studyPlan.title}": ${error}`);
+                console.error(`Error syncing study plan ${studyPlan.title}:`, error);
             }
 
-            console.log(`✅ Synced ${synced} Spanish study items from ${spanishPages.length} pages`);
+            console.log(`✅ Synced ${synced} Spanish study items from the study plan`);
             return { synced, errors };
 
         } catch (error) {
@@ -539,11 +565,11 @@ export class SpanishStudyService {
                 .lte('next_review', now);
 
             const reviewedItems = reviewedData?.length || 0;
-            const totalCorrect = reviewedData?.reduce((sum, item) => sum + item.correct_count, 0) || 0;
-            const totalIncorrect = reviewedData?.reduce((sum, item) => sum + item.incorrect_count, 0) || 0;
+            const totalCorrect = reviewedData?.reduce((sum: number, item: any) => sum + item.correct_count, 0) || 0;
+            const totalIncorrect = reviewedData?.reduce((sum: number, item: any) => sum + item.incorrect_count, 0) || 0;
             const totalAnswers = totalCorrect + totalIncorrect;
             const correctRate = totalAnswers > 0 ? (totalCorrect / totalAnswers) * 100 : 0;
-            const maxStreak = reviewedData?.reduce((max, item) => Math.max(max, item.streak), 0) || 0;
+            const maxStreak = reviewedData?.reduce((max: number, item: any) => Math.max(max, item.streak), 0) || 0;
 
             return {
                 totalItems: totalItems || 0,
