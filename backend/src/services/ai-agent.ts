@@ -20,22 +20,6 @@ let anthropic: Anthropic | null = null;
 
 function getAnthropicClient(): Anthropic {
     if (!anthropic) {
-        // Debug: Log all environment variables that contain 'ANTHROPIC'
-        console.log('🤖 AI Agent: Environment variables check:');
-        Object.keys(process.env).forEach(key => {
-            if (key.includes('ANTHROPIC') || key.includes('API')) {
-                console.log(`  ${key}: ${process.env[key]?.substring(0, 20)}...`);
-            }
-        });
-
-        // Debug: Log API key format before creating client
-        console.log('🤖 AI Agent: API Key format check:', {
-            exists: !!process.env.ANTHROPIC_API_KEY,
-            length: process.env.ANTHROPIC_API_KEY?.length || 0,
-            startsWith: process.env.ANTHROPIC_API_KEY?.substring(0, 15) || 'N/A',
-            fullKey: process.env.ANTHROPIC_API_KEY || 'NOT_FOUND'
-        });
-
         if (!process.env.ANTHROPIC_API_KEY) {
             throw new Error('ANTHROPIC_API_KEY environment variable is not set');
         }
@@ -513,4 +497,3 @@ export async function chatWithAgent(
 export function clearConversationHistory(userId: string): void {
     conversationHistory.delete(userId);
 }
-
